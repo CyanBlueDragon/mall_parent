@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunyihenkey.auth.dao.mapper.MallSysSellerRoleMapper">
+    <resultMap id="BaseResultMap" type="com.yunyihenkey.auth.dao.vo.MallSysSellerRole">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="roleName" jdbcType="VARCHAR" property="role_name"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, role_name, description
+   </sql>
+    <!--查询角色权限-->
+    <select id="selectRolePermission" resultMap="UserPermissionVoResultMap">
+    SELECT
+        u.id,
+        u.user_name,
+        u.`password`,
+        r.role_name
+    FROM
+        mall_sys_seller_user u
+    LEFT JOIN mall_sys_seller_user_role ur ON ur.user_id = u.id
+    LEFT JOIN mall_sys_seller_role r ON r.id = ur.role_id
+  </select>
+
+</mapper>

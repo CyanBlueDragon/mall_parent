@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="mall_auth_dao_operation" />
+        <module name="mall_auth_dao_seller" />
+        <module name="mall_auth_dao_shoppingmall" />
+        <module name="mall_auth_dao_starter" />
+        <module name="mall_auth_dao_supplier" />
+        <module name="mall_auth_service" />
+        <module name="mall_auth_web" />
+        <module name="mall_basedao_malldb_others" />
+        <module name="mall_basedao_malldb_test" />
+        <module name="mall_basedao_starter" />
+        <module name="mall_common" />
+        <module name="mall_operation_dao" />
+        <module name="mall_operation_service" />
+        <module name="mall_operation_web" />
+        <module name="mall_seller_dao" />
+        <module name="mall_seller_service" />
+        <module name="mall_seller_web" />
+        <module name="mall_shoppingmall_dao" />
+        <module name="mall_shoppingmall_service" />
+        <module name="mall_shoppingmall_web" />
+        <module name="mall_supplier_dao" />
+        <module name="mall_supplier_service" />
+        <module name="mall_supplier_web" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>

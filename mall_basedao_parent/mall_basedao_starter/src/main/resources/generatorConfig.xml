@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!-- 配置mysql 驱动jar包路径.用了绝对路径 -->
+    <classPathEntry location="D:/repository/mysql/mysql-connector-java/5.1.46/mysql-connector-java-5.1.46.jar" />
+
+    <context id="wangyongzhi_mysql_tables" targetRuntime="MyBatis3">
+        <!-- 防止生成的代码中有很多注释，加入下面的配置控制 -->
+        <commentGenerator type="com.yunyihenkey.dbutil.MyCommentGenerator">
+            <property name="suppressAllComments" value="true" />
+            <property name="suppressDate" value="true" />
+        </commentGenerator>
+
+        <!-- 数据库连接 -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://192.168.10.204/test?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull"
+                        userId="root" password="develop321">
+
+            <!-- 针对oracle数据库 -->
+            <property name="remarksReporting" value="true"/>
+            <!-- 针对mysql数据库 -->
+            <property name="useInformationSchema" value="true"/>
+        </jdbcConnection>
+
+        <javaTypeResolver >
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!-- 数据表对应的model层  -->
+        <javaModelGenerator targetPackage="com.yunyihenkey.basedao.malldb.basevo"
+                            targetProject="E:\v1.0.0\mall_parent\mall_basedao_parent\mall_basedao_malldb_parent\mall_basedao_malldb_others\src\main\java">
+            <property name="enableSubPackages" value="true" />
+            <property name="trimStrings" value="true" />
+        </javaModelGenerator>
+
+        <!-- sql mapper 映射配置文件 -->
+        <sqlMapGenerator targetPackage="mybatis.basemapper.malldb"
+                         targetProject="E:\v1.0.0\mall_parent\mall_basedao_parent\mall_basedao_malldb_parent\mall_basedao_malldb_others\src\main\resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+
+        <!-- mybatis3中的mapper接口 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.yunyihenkey.basedao.malldb.basemapper"
+                             targetProject="E:\v1.0.0\mall_parent\mall_basedao_parent\mall_basedao_malldb_parent\mall_basedao_malldb_others\src\main\java">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+
+        <!-- 数据表进行生成操作 schema:相当于库名; tableName:表名; domainObjectName:对应的DO -->
+        <table schema="test" tableName="mall_sys_seller_user" domainObjectName="MallSysSellerEmpUser"
+               enableCountByExample="false" enableUpdateByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false"
+               selectByExampleQueryId="false">
+        </table>
+
+    </context>
+</generatorConfiguration>

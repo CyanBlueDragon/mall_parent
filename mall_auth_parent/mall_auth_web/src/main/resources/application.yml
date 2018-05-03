@@ -1,0 +1,8 @@
+server:
+  servlet:
+    context-path: /auth
+spring:
+  profiles:
+    active: sit
+logging:
+  config: classpath:log4j2.xml
