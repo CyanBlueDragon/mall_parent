@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.yunyihenkey.seller.dao.malldb.mapper.SellerRoleMapper">
+	<resultMap id="BaseResultMap"
+		type="com.yunyihenkey.basedao.malldb.basevo.SellerRole">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="roleName" jdbcType="VARCHAR"
+			property="role_name" />
+		<result column="description" jdbcType="VARCHAR"
+			property="description" />
+	</resultMap>
+
+
+</mapper>

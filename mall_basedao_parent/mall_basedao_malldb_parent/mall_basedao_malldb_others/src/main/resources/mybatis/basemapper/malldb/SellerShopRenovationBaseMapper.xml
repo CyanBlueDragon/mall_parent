@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunyihenkey.basedao.malldb.basemapper.SellerShopRenovationBaseMapper">
+  <resultMap id="BaseResultMap" type="com.yunyihenkey.basedao.malldb.basevo.SellerShopRenovation">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="shop_id" jdbcType="BIGINT" property="shopId" />
+    <result column="template_url" jdbcType="VARCHAR" property="templateUrl" />
+    <result column="template_id" jdbcType="BIGINT" property="templateId" />
+    <result column="color_scheme" jdbcType="VARCHAR" property="colorScheme" />
+    <result column="enable_flag" jdbcType="INTEGER" property="enableFlag" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, shop_id, template_url, template_id, color_scheme, enable_flag, type, create_time, 
+    update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from seller_shop_renovation
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from seller_shop_renovation
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerShopRenovation">
+    insert into seller_shop_renovation (id, shop_id, template_url, 
+      template_id, color_scheme, enable_flag, 
+      type, create_time, update_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{shopId,jdbcType=BIGINT}, #{templateUrl,jdbcType=VARCHAR}, 
+      #{templateId,jdbcType=BIGINT}, #{colorScheme,jdbcType=VARCHAR}, #{enableFlag,jdbcType=INTEGER}, 
+      #{type,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerShopRenovation">
+    insert into seller_shop_renovation
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="shopId != null">
+        shop_id,
+      </if>
+      <if test="templateUrl != null">
+        template_url,
+      </if>
+      <if test="templateId != null">
+        template_id,
+      </if>
+      <if test="colorScheme != null">
+        color_scheme,
+      </if>
+      <if test="enableFlag != null">
+        enable_flag,
+      </if>
+      <if test="type != null">
+        type,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="shopId != null">
+        #{shopId,jdbcType=BIGINT},
+      </if>
+      <if test="templateUrl != null">
+        #{templateUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="templateId != null">
+        #{templateId,jdbcType=BIGINT},
+      </if>
+      <if test="colorScheme != null">
+        #{colorScheme,jdbcType=VARCHAR},
+      </if>
+      <if test="enableFlag != null">
+        #{enableFlag,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerShopRenovation">
+    update seller_shop_renovation
+    <set>
+      <if test="shopId != null">
+        shop_id = #{shopId,jdbcType=BIGINT},
+      </if>
+      <if test="templateUrl != null">
+        template_url = #{templateUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="templateId != null">
+        template_id = #{templateId,jdbcType=BIGINT},
+      </if>
+      <if test="colorScheme != null">
+        color_scheme = #{colorScheme,jdbcType=VARCHAR},
+      </if>
+      <if test="enableFlag != null">
+        enable_flag = #{enableFlag,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerShopRenovation">
+    update seller_shop_renovation
+    set shop_id = #{shopId,jdbcType=BIGINT},
+      template_url = #{templateUrl,jdbcType=VARCHAR},
+      template_id = #{templateId,jdbcType=BIGINT},
+      color_scheme = #{colorScheme,jdbcType=VARCHAR},
+      enable_flag = #{enableFlag,jdbcType=INTEGER},
+      type = #{type,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

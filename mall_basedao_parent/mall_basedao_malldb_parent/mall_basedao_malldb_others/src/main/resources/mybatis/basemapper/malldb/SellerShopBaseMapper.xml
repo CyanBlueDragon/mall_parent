@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunyihenkey.basedao.malldb.basemapper.SellerShopBaseMapper">
+  <resultMap id="BaseResultMap" type="com.yunyihenkey.basedao.malldb.basevo.SellerShop">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="major_business" jdbcType="VARCHAR" property="majorBusiness" />
+    <result column="pay_password" jdbcType="VARCHAR" property="payPassword" />
+    <result column="audit_status" jdbcType="INTEGER" property="auditStatus" />
+    <result column="audit_time" jdbcType="TIMESTAMP" property="auditTime" />
+    <result column="logo_url" jdbcType="VARCHAR" property="logoUrl" />
+    <result column="is_customize" jdbcType="INTEGER" property="isCustomize" />
+    <result column="code" jdbcType="VARCHAR" property="code" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="operator" jdbcType="VARCHAR" property="operator" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="tx_qq" jdbcType="VARCHAR" property="txQq" />
+    <result column="tx_wx" jdbcType="VARCHAR" property="txWx" />
+    <result column="depict" jdbcType="VARCHAR" property="depict" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="seller_grade" jdbcType="INTEGER" property="sellerGrade" />
+    <result column="parent_shop_id" jdbcType="BIGINT" property="parentShopId" />
+    <result column="pay_wx" jdbcType="INTEGER" property="payWx" />
+    <result column="pay_ali" jdbcType="INTEGER" property="payAli" />
+    <result column="pay_union" jdbcType="INTEGER" property="payUnion" />
+    <result column="unpaid_time" jdbcType="VARCHAR" property="unpaidTime" />
+    <result column="confirm_order_time" jdbcType="INTEGER" property="confirmOrderTime" />
+    <result column="refund_time" jdbcType="INTEGER" property="refundTime" />
+    <result column="sell_out_time" jdbcType="INTEGER" property="sellOutTime" />
+    <result column="return_order_time" jdbcType="INTEGER" property="returnOrderTime" />
+    <result column="enable_flag" jdbcType="INTEGER" property="enableFlag" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, user_id, name, major_business, pay_password, audit_status, audit_time, logo_url, 
+    is_customize, code, status, operator, email, phone, tx_qq, tx_wx, depict, url, seller_grade, 
+    parent_shop_id, pay_wx, pay_ali, pay_union, unpaid_time, confirm_order_time, refund_time, 
+    sell_out_time, return_order_time, enable_flag, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from seller_shop
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from seller_shop
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerShop">
+    insert into seller_shop (id, user_id, name, 
+      major_business, pay_password, audit_status, 
+      audit_time, logo_url, is_customize, 
+      code, status, operator, 
+      email, phone, tx_qq, 
+      tx_wx, depict, url, 
+      seller_grade, parent_shop_id, pay_wx, 
+      pay_ali, pay_union, unpaid_time, 
+      confirm_order_time, refund_time, sell_out_time, 
+      return_order_time, enable_flag, create_time, 
+      update_time)
+    values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
+      #{majorBusiness,jdbcType=VARCHAR}, #{payPassword,jdbcType=VARCHAR}, #{auditStatus,jdbcType=INTEGER}, 
+      #{auditTime,jdbcType=TIMESTAMP}, #{logoUrl,jdbcType=VARCHAR}, #{isCustomize,jdbcType=INTEGER}, 
+      #{code,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{operator,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, #{txQq,jdbcType=VARCHAR}, 
+      #{txWx,jdbcType=VARCHAR}, #{depict,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR}, 
+      #{sellerGrade,jdbcType=INTEGER}, #{parentShopId,jdbcType=BIGINT}, #{payWx,jdbcType=INTEGER}, 
+      #{payAli,jdbcType=INTEGER}, #{payUnion,jdbcType=INTEGER}, #{unpaidTime,jdbcType=VARCHAR}, 
+      #{confirmOrderTime,jdbcType=INTEGER}, #{refundTime,jdbcType=INTEGER}, #{sellOutTime,jdbcType=INTEGER}, 
+      #{returnOrderTime,jdbcType=INTEGER}, #{enableFlag,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerShop">
+    insert into seller_shop
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="name != null">
+        name,
+      </if>
+      <if test="majorBusiness != null">
+        major_business,
+      </if>
+      <if test="payPassword != null">
+        pay_password,
+      </if>
+      <if test="auditStatus != null">
+        audit_status,
+      </if>
+      <if test="auditTime != null">
+        audit_time,
+      </if>
+      <if test="logoUrl != null">
+        logo_url,
+      </if>
+      <if test="isCustomize != null">
+        is_customize,
+      </if>
+      <if test="code != null">
+        code,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="operator != null">
+        operator,
+      </if>
+      <if test="email != null">
+        email,
+      </if>
+      <if test="phone != null">
+        phone,
+      </if>
+      <if test="txQq != null">
+        tx_qq,
+      </if>
+      <if test="txWx != null">
+        tx_wx,
+      </if>
+      <if test="depict != null">
+        depict,
+      </if>
+      <if test="url != null">
+        url,
+      </if>
+      <if test="sellerGrade != null">
+        seller_grade,
+      </if>
+      <if test="parentShopId != null">
+        parent_shop_id,
+      </if>
+      <if test="payWx != null">
+        pay_wx,
+      </if>
+      <if test="payAli != null">
+        pay_ali,
+      </if>
+      <if test="payUnion != null">
+        pay_union,
+      </if>
+      <if test="unpaidTime != null">
+        unpaid_time,
+      </if>
+      <if test="confirmOrderTime != null">
+        confirm_order_time,
+      </if>
+      <if test="refundTime != null">
+        refund_time,
+      </if>
+      <if test="sellOutTime != null">
+        sell_out_time,
+      </if>
+      <if test="returnOrderTime != null">
+        return_order_time,
+      </if>
+      <if test="enableFlag != null">
+        enable_flag,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="majorBusiness != null">
+        #{majorBusiness,jdbcType=VARCHAR},
+      </if>
+      <if test="payPassword != null">
+        #{payPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="auditStatus != null">
+        #{auditStatus,jdbcType=INTEGER},
+      </if>
+      <if test="auditTime != null">
+        #{auditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logoUrl != null">
+        #{logoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="isCustomize != null">
+        #{isCustomize,jdbcType=INTEGER},
+      </if>
+      <if test="code != null">
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="txQq != null">
+        #{txQq,jdbcType=VARCHAR},
+      </if>
+      <if test="txWx != null">
+        #{txWx,jdbcType=VARCHAR},
+      </if>
+      <if test="depict != null">
+        #{depict,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerGrade != null">
+        #{sellerGrade,jdbcType=INTEGER},
+      </if>
+      <if test="parentShopId != null">
+        #{parentShopId,jdbcType=BIGINT},
+      </if>
+      <if test="payWx != null">
+        #{payWx,jdbcType=INTEGER},
+      </if>
+      <if test="payAli != null">
+        #{payAli,jdbcType=INTEGER},
+      </if>
+      <if test="payUnion != null">
+        #{payUnion,jdbcType=INTEGER},
+      </if>
+      <if test="unpaidTime != null">
+        #{unpaidTime,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmOrderTime != null">
+        #{confirmOrderTime,jdbcType=INTEGER},
+      </if>
+      <if test="refundTime != null">
+        #{refundTime,jdbcType=INTEGER},
+      </if>
+      <if test="sellOutTime != null">
+        #{sellOutTime,jdbcType=INTEGER},
+      </if>
+      <if test="returnOrderTime != null">
+        #{returnOrderTime,jdbcType=INTEGER},
+      </if>
+      <if test="enableFlag != null">
+        #{enableFlag,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerShop">
+    update seller_shop
+    <set>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="majorBusiness != null">
+        major_business = #{majorBusiness,jdbcType=VARCHAR},
+      </if>
+      <if test="payPassword != null">
+        pay_password = #{payPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="auditStatus != null">
+        audit_status = #{auditStatus,jdbcType=INTEGER},
+      </if>
+      <if test="auditTime != null">
+        audit_time = #{auditTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logoUrl != null">
+        logo_url = #{logoUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="isCustomize != null">
+        is_customize = #{isCustomize,jdbcType=INTEGER},
+      </if>
+      <if test="code != null">
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null">
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null">
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="phone != null">
+        phone = #{phone,jdbcType=VARCHAR},
+      </if>
+      <if test="txQq != null">
+        tx_qq = #{txQq,jdbcType=VARCHAR},
+      </if>
+      <if test="txWx != null">
+        tx_wx = #{txWx,jdbcType=VARCHAR},
+      </if>
+      <if test="depict != null">
+        depict = #{depict,jdbcType=VARCHAR},
+      </if>
+      <if test="url != null">
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="sellerGrade != null">
+        seller_grade = #{sellerGrade,jdbcType=INTEGER},
+      </if>
+      <if test="parentShopId != null">
+        parent_shop_id = #{parentShopId,jdbcType=BIGINT},
+      </if>
+      <if test="payWx != null">
+        pay_wx = #{payWx,jdbcType=INTEGER},
+      </if>
+      <if test="payAli != null">
+        pay_ali = #{payAli,jdbcType=INTEGER},
+      </if>
+      <if test="payUnion != null">
+        pay_union = #{payUnion,jdbcType=INTEGER},
+      </if>
+      <if test="unpaidTime != null">
+        unpaid_time = #{unpaidTime,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmOrderTime != null">
+        confirm_order_time = #{confirmOrderTime,jdbcType=INTEGER},
+      </if>
+      <if test="refundTime != null">
+        refund_time = #{refundTime,jdbcType=INTEGER},
+      </if>
+      <if test="sellOutTime != null">
+        sell_out_time = #{sellOutTime,jdbcType=INTEGER},
+      </if>
+      <if test="returnOrderTime != null">
+        return_order_time = #{returnOrderTime,jdbcType=INTEGER},
+      </if>
+      <if test="enableFlag != null">
+        enable_flag = #{enableFlag,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerShop">
+    update seller_shop
+    set user_id = #{userId,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      major_business = #{majorBusiness,jdbcType=VARCHAR},
+      pay_password = #{payPassword,jdbcType=VARCHAR},
+      audit_status = #{auditStatus,jdbcType=INTEGER},
+      audit_time = #{auditTime,jdbcType=TIMESTAMP},
+      logo_url = #{logoUrl,jdbcType=VARCHAR},
+      is_customize = #{isCustomize,jdbcType=INTEGER},
+      code = #{code,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      operator = #{operator,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      phone = #{phone,jdbcType=VARCHAR},
+      tx_qq = #{txQq,jdbcType=VARCHAR},
+      tx_wx = #{txWx,jdbcType=VARCHAR},
+      depict = #{depict,jdbcType=VARCHAR},
+      url = #{url,jdbcType=VARCHAR},
+      seller_grade = #{sellerGrade,jdbcType=INTEGER},
+      parent_shop_id = #{parentShopId,jdbcType=BIGINT},
+      pay_wx = #{payWx,jdbcType=INTEGER},
+      pay_ali = #{payAli,jdbcType=INTEGER},
+      pay_union = #{payUnion,jdbcType=INTEGER},
+      unpaid_time = #{unpaidTime,jdbcType=VARCHAR},
+      confirm_order_time = #{confirmOrderTime,jdbcType=INTEGER},
+      refund_time = #{refundTime,jdbcType=INTEGER},
+      sell_out_time = #{sellOutTime,jdbcType=INTEGER},
+      return_order_time = #{returnOrderTime,jdbcType=INTEGER},
+      enable_flag = #{enableFlag,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

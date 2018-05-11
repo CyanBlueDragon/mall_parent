@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.yunyihenkey.seller.dao.malldb.mapper.AuthSellerPermMapper">
+	<resultMap id="BaseResultMap"
+		type="com.yunyihenkey.basedao.malldb.basevo.SellerPerm">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="pid" jdbcType="BIGINT" property="pid" />
+		<result column="permission_code" jdbcType="VARCHAR"
+			property="permissionCode" />
+		<result column="permission_name" jdbcType="VARCHAR"
+			property="permissionName" />
+		<result column="url" jdbcType="VARCHAR" property="url" />
+		<result column="description" jdbcType="VARCHAR"
+			property="description" />
+		<result column="type" jdbcType="INTEGER" property="type" />
+		<result column="create_time" jdbcType="TIMESTAMP"
+			property="createTime" />
+		<result column="update_time" jdbcType="TIMESTAMP"
+			property="updateTime" />
+	</resultMap>
+
+
+	<select id="getPermByUserId" resultMap="BaseResultMap">
+		SELECT DISTINCT
+		p.*
+		FROM
+		seller_perm p
+		INNER JOIN seller_role_perm rp ON p.id
+		= rp.permission_id
+		INNER JOIN seller_user_role ur ON
+		ur.role_id = rp.role_id
+		WHERE
+		ur.user_id = #{userId}
+	</select>
+
+
+
+</mapper>

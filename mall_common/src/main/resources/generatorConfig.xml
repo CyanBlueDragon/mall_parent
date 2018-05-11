@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <properties resource="generatorConfig.properties"/>
+    <!-- 配置mysql 驱动jar包路径.用了绝对路径 -->
+    <classPathEntry location= "${MYSQL.JAR.LOCATION}"/>
+
+    <context id="wangyongzhi_mysql_tables" targetRuntime="MyBatis3">
+        <!-- 防止生成的代码中有很多注释，加入下面的配置控制 -->
+        <commentGenerator type="com.yunyihenkey.basedao.malldb.generator.MyCommentGenerator">
+            <property name="suppressAllComments" value="true"/>
+            <property name="suppressDate" value="true"/>
+        </commentGenerator>
+
+        <!-- 数据库连接 -->
+        <jdbcConnection driverClass="${jdbc.driverClass}"
+                        connectionURL="${jdbc.connectionURL}"
+                        userId="${jdbc.userId}" password="${jdbc.password}">
+
+            <!-- 针对oracle数据库 -->
+            <property name="remarksReporting" value="true"/>
+            <!-- 针对mysql数据库 -->
+            <property name="useInformationSchema" value="true"/>
+        </jdbcConnection>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- 数据表对应的model层  -->
+        <javaModelGenerator targetPackage="${model.target.package}"
+                            targetProject="${model.mapper.target.project}">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- sql mapper 映射配置文件 -->
+        <sqlMapGenerator targetPackage="${mapperXML.target.package}"
+                         targetProject="${mapperXML.target.project}">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!-- mybatis3中的mapper接口 -->
+        <javaClientGenerator type="XMLMAPPER" targetPackage="${mapper.target.package}"
+                             targetProject="${model.mapper.target.project}">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+
+        <!-- 数据表进行生成操作 schema:相当于库名; tableName:表名; domainObjectName:对应的DO -->
+        <table tableName="operation_perm" domainObjectName="OperationPerm" mapperName="OperationPermBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+        <table tableName="operation_role" domainObjectName="OperationRole" mapperName="OperationRoleBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+        <table tableName="operation_role_perm" domainObjectName="OperationRolePerm" mapperName="OperationRolePermBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+        <table tableName="operation_user" domainObjectName="OperationUser" mapperName="OperationUserBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+        <table tableName="operation_user_role" domainObjectName="OperationUserRole" mapperName="OperationUserRoleBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+        <table tableName="operation_user_token" domainObjectName="OperationUserToken" mapperName="OperationUserTokenBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+        <table tableName="seller_bank" domainObjectName="SellerBank" mapperName="SellerBankBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+        <table tableName="seller_extension_coding" domainObjectName="SellerExtensionCoding" mapperName="SellerExtensionCodingBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+        <table tableName="seller_order_aftersale_info" domainObjectName="SellerOrderAftersaleInfo" mapperName="SellerOrderAftersaleInfoBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+        <table tableName="seller_order_info" domainObjectName="SellerOrderInfo" mapperName="SellerOrderInfoBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+        <table tableName="seller_order_product_info" domainObjectName="SellerOrderProductInfo" mapperName="SellerOrderProductInfoBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+        <table tableName="seller_perm" domainObjectName="SellerPerm" mapperName="SellerPermBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+        <table tableName="seller_role" domainObjectName="SellerRole" mapperName="SellerRoleBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+        <table tableName="seller_role_perm" domainObjectName="SellerRolePerm" mapperName="SellerRolePermBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+        <table tableName="seller_shop" domainObjectName="SellerShop" mapperName="SellerShopBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+        <table tableName="seller_shop_bank_info" domainObjectName="SellerShopBankInfo" mapperName="SellerShopBankInfoBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+        <table tableName="seller_shop_bank_update_log" domainObjectName="SellerShopBankUpdateLog" mapperName="SellerShopBankUpdateLogBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+        <table tableName="seller_shop_customize" domainObjectName="SellerShopCustomize" mapperName="SellerShopCustomizeBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+        <table tableName="seller_shop_renovation" domainObjectName="SellerShopRenovation" mapperName="SellerShopRenovationBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+        <table tableName="seller_template" domainObjectName="SellerTemplate" mapperName="SellerTemplateBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+        <table tableName="seller_user" domainObjectName="SellerUser" mapperName="SellerUserBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+        <table tableName="seller_user_role" domainObjectName="SellerUserRole" mapperName="SellerUserRoleBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+        <table tableName="seller_user_token" domainObjectName="SellerUserToken" mapperName="SellerUserTokenBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+        <table tableName="shoppingmall_user" domainObjectName="ShoppingmallUser" mapperName="ShoppingmallUserBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+        <table tableName="shoppingmall_user_address" domainObjectName="ShoppingmallUserAddress" mapperName="ShoppingmallUserAddressBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+        <table tableName="shoppingmall_user_token" domainObjectName="ShoppingmallUserToken" mapperName="ShoppingmallUserTokenBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+        <table tableName="supplier_user" domainObjectName="SupplierUser" mapperName="SupplierUserBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+        <table tableName="supplier_user_token" domainObjectName="SupplierUserToken" mapperName="SupplierUserTokenBaseMapper" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false" > </table>
+
+    </context>
+</generatorConfiguration>

@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunyihenkey.basedao.malldb.basemapper.ShoppingmallOrderProductInfoBaseMapper">
+  <resultMap id="BaseResultMap" type="com.yunyihenkey.basedao.malldb.basevo.ShoppingmallOrderProductInfo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="mall_id" jdbcType="BIGINT" property="mallId" />
+    <result column="supplier_id" jdbcType="BIGINT" property="supplierId" />
+    <result column="order_code" jdbcType="BIGINT" property="orderCode" />
+    <result column="product_id" jdbcType="BIGINT" property="productId" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="product_price" jdbcType="BIGINT" property="productPrice" />
+    <result column="product_count" jdbcType="INTEGER" property="productCount" />
+    <result column="postage_amount" jdbcType="BIGINT" property="postageAmount" />
+    <result column="postage_type" jdbcType="INTEGER" property="postageType" />
+    <result column="send_status" jdbcType="INTEGER" property="sendStatus" />
+    <result column="refund_sign" jdbcType="INTEGER" property="refundSign" />
+    <result column="send_time" jdbcType="TIMESTAMP" property="sendTime" />
+    <result column="received_time" jdbcType="TIMESTAMP" property="receivedTime" />
+    <result column="refund_time" jdbcType="TIMESTAMP" property="refundTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, mall_id, supplier_id, order_code, product_id, product_name, product_price, product_count, 
+    postage_amount, postage_type, send_status, refund_sign, send_time, received_time, 
+    refund_time, create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from shoppingmall_order_product_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shoppingmall_order_product_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yunyihenkey.basedao.malldb.basevo.ShoppingmallOrderProductInfo">
+    insert into shoppingmall_order_product_info (id, mall_id, supplier_id, 
+      order_code, product_id, product_name, 
+      product_price, product_count, postage_amount, 
+      postage_type, send_status, refund_sign, 
+      send_time, received_time, refund_time, 
+      create_time, update_time)
+    values (#{id,jdbcType=BIGINT}, #{mallId,jdbcType=BIGINT}, #{supplierId,jdbcType=BIGINT}, 
+      #{orderCode,jdbcType=BIGINT}, #{productId,jdbcType=BIGINT}, #{productName,jdbcType=VARCHAR}, 
+      #{productPrice,jdbcType=BIGINT}, #{productCount,jdbcType=INTEGER}, #{postageAmount,jdbcType=BIGINT}, 
+      #{postageType,jdbcType=INTEGER}, #{sendStatus,jdbcType=INTEGER}, #{refundSign,jdbcType=INTEGER}, 
+      #{sendTime,jdbcType=TIMESTAMP}, #{receivedTime,jdbcType=TIMESTAMP}, #{refundTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.ShoppingmallOrderProductInfo">
+    insert into shoppingmall_order_product_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="mallId != null">
+        mall_id,
+      </if>
+      <if test="supplierId != null">
+        supplier_id,
+      </if>
+      <if test="orderCode != null">
+        order_code,
+      </if>
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="productName != null">
+        product_name,
+      </if>
+      <if test="productPrice != null">
+        product_price,
+      </if>
+      <if test="productCount != null">
+        product_count,
+      </if>
+      <if test="postageAmount != null">
+        postage_amount,
+      </if>
+      <if test="postageType != null">
+        postage_type,
+      </if>
+      <if test="sendStatus != null">
+        send_status,
+      </if>
+      <if test="refundSign != null">
+        refund_sign,
+      </if>
+      <if test="sendTime != null">
+        send_time,
+      </if>
+      <if test="receivedTime != null">
+        received_time,
+      </if>
+      <if test="refundTime != null">
+        refund_time,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="mallId != null">
+        #{mallId,jdbcType=BIGINT},
+      </if>
+      <if test="supplierId != null">
+        #{supplierId,jdbcType=BIGINT},
+      </if>
+      <if test="orderCode != null">
+        #{orderCode,jdbcType=BIGINT},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="productName != null">
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productPrice != null">
+        #{productPrice,jdbcType=BIGINT},
+      </if>
+      <if test="productCount != null">
+        #{productCount,jdbcType=INTEGER},
+      </if>
+      <if test="postageAmount != null">
+        #{postageAmount,jdbcType=BIGINT},
+      </if>
+      <if test="postageType != null">
+        #{postageType,jdbcType=INTEGER},
+      </if>
+      <if test="sendStatus != null">
+        #{sendStatus,jdbcType=INTEGER},
+      </if>
+      <if test="refundSign != null">
+        #{refundSign,jdbcType=INTEGER},
+      </if>
+      <if test="sendTime != null">
+        #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receivedTime != null">
+        #{receivedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="refundTime != null">
+        #{refundTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.ShoppingmallOrderProductInfo">
+    update shoppingmall_order_product_info
+    <set>
+      <if test="mallId != null">
+        mall_id = #{mallId,jdbcType=BIGINT},
+      </if>
+      <if test="supplierId != null">
+        supplier_id = #{supplierId,jdbcType=BIGINT},
+      </if>
+      <if test="orderCode != null">
+        order_code = #{orderCode,jdbcType=BIGINT},
+      </if>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=BIGINT},
+      </if>
+      <if test="productName != null">
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productPrice != null">
+        product_price = #{productPrice,jdbcType=BIGINT},
+      </if>
+      <if test="productCount != null">
+        product_count = #{productCount,jdbcType=INTEGER},
+      </if>
+      <if test="postageAmount != null">
+        postage_amount = #{postageAmount,jdbcType=BIGINT},
+      </if>
+      <if test="postageType != null">
+        postage_type = #{postageType,jdbcType=INTEGER},
+      </if>
+      <if test="sendStatus != null">
+        send_status = #{sendStatus,jdbcType=INTEGER},
+      </if>
+      <if test="refundSign != null">
+        refund_sign = #{refundSign,jdbcType=INTEGER},
+      </if>
+      <if test="sendTime != null">
+        send_time = #{sendTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="receivedTime != null">
+        received_time = #{receivedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="refundTime != null">
+        refund_time = #{refundTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yunyihenkey.basedao.malldb.basevo.ShoppingmallOrderProductInfo">
+    update shoppingmall_order_product_info
+    set mall_id = #{mallId,jdbcType=BIGINT},
+      supplier_id = #{supplierId,jdbcType=BIGINT},
+      order_code = #{orderCode,jdbcType=BIGINT},
+      product_id = #{productId,jdbcType=BIGINT},
+      product_name = #{productName,jdbcType=VARCHAR},
+      product_price = #{productPrice,jdbcType=BIGINT},
+      product_count = #{productCount,jdbcType=INTEGER},
+      postage_amount = #{postageAmount,jdbcType=BIGINT},
+      postage_type = #{postageType,jdbcType=INTEGER},
+      send_status = #{sendStatus,jdbcType=INTEGER},
+      refund_sign = #{refundSign,jdbcType=INTEGER},
+      send_time = #{sendTime,jdbcType=TIMESTAMP},
+      received_time = #{receivedTime,jdbcType=TIMESTAMP},
+      refund_time = #{refundTime,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

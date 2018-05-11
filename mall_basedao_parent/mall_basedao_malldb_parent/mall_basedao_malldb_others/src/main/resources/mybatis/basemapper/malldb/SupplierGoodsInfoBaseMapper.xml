@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunyihenkey.basedao.malldb.basemapper.SupplierGoodsInfoBaseMapper">
+  <resultMap id="BaseResultMap" type="com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsInfo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="category_id" jdbcType="BIGINT" property="categoryId" />
+    <result column="supplier_id" jdbcType="BIGINT" property="supplierId" />
+    <result column="goods_code" jdbcType="VARCHAR" property="goodsCode" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="cat_id" jdbcType="INTEGER" property="catId" />
+    <result column="stock" jdbcType="INTEGER" property="stock" />
+    <result column="sell_point" jdbcType="VARCHAR" property="sellPoint" />
+    <result column="delivery_template_name" jdbcType="VARCHAR" property="deliveryTemplateName" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="supply_price" jdbcType="BIGINT" property="supplyPrice" />
+    <result column="min_retail_price" jdbcType="BIGINT" property="minRetailPrice" />
+    <result column="max_retail_price" jdbcType="BIGINT" property="maxRetailPrice" />
+    <result column="sale_amount" jdbcType="BIGINT" property="saleAmount" />
+    <result column="pv_value" jdbcType="BIGINT" property="pvValue" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsInfo">
+    <result column="pic_url" jdbcType="LONGVARCHAR" property="picUrl" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, category_id, supplier_id, goods_code, goods_name, cat_id, stock, sell_point, 
+    delivery_template_name, status, supply_price, min_retail_price, max_retail_price, 
+    sale_amount, pv_value, create_user, create_date, update_date
+  </sql>
+  <sql id="Blob_Column_List">
+    pic_url
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from supplier_goods_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from supplier_goods_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsInfo">
+    insert into supplier_goods_info (id, category_id, supplier_id, 
+      goods_code, goods_name, cat_id, 
+      stock, sell_point, delivery_template_name, 
+      status, supply_price, min_retail_price, 
+      max_retail_price, sale_amount, pv_value, 
+      create_user, create_date, update_date, 
+      pic_url)
+    values (#{id,jdbcType=BIGINT}, #{categoryId,jdbcType=BIGINT}, #{supplierId,jdbcType=BIGINT}, 
+      #{goodsCode,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, #{catId,jdbcType=INTEGER}, 
+      #{stock,jdbcType=INTEGER}, #{sellPoint,jdbcType=VARCHAR}, #{deliveryTemplateName,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER}, #{supplyPrice,jdbcType=BIGINT}, #{minRetailPrice,jdbcType=BIGINT}, 
+      #{maxRetailPrice,jdbcType=BIGINT}, #{saleAmount,jdbcType=BIGINT}, #{pvValue,jdbcType=BIGINT}, 
+      #{createUser,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, 
+      #{picUrl,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsInfo">
+    insert into supplier_goods_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="supplierId != null">
+        supplier_id,
+      </if>
+      <if test="goodsCode != null">
+        goods_code,
+      </if>
+      <if test="goodsName != null">
+        goods_name,
+      </if>
+      <if test="catId != null">
+        cat_id,
+      </if>
+      <if test="stock != null">
+        stock,
+      </if>
+      <if test="sellPoint != null">
+        sell_point,
+      </if>
+      <if test="deliveryTemplateName != null">
+        delivery_template_name,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="supplyPrice != null">
+        supply_price,
+      </if>
+      <if test="minRetailPrice != null">
+        min_retail_price,
+      </if>
+      <if test="maxRetailPrice != null">
+        max_retail_price,
+      </if>
+      <if test="saleAmount != null">
+        sale_amount,
+      </if>
+      <if test="pvValue != null">
+        pv_value,
+      </if>
+      <if test="createUser != null">
+        create_user,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="updateDate != null">
+        update_date,
+      </if>
+      <if test="picUrl != null">
+        pic_url,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="supplierId != null">
+        #{supplierId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsCode != null">
+        #{goodsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsName != null">
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="catId != null">
+        #{catId,jdbcType=INTEGER},
+      </if>
+      <if test="stock != null">
+        #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="sellPoint != null">
+        #{sellPoint,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryTemplateName != null">
+        #{deliveryTemplateName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="supplyPrice != null">
+        #{supplyPrice,jdbcType=BIGINT},
+      </if>
+      <if test="minRetailPrice != null">
+        #{minRetailPrice,jdbcType=BIGINT},
+      </if>
+      <if test="maxRetailPrice != null">
+        #{maxRetailPrice,jdbcType=BIGINT},
+      </if>
+      <if test="saleAmount != null">
+        #{saleAmount,jdbcType=BIGINT},
+      </if>
+      <if test="pvValue != null">
+        #{pvValue,jdbcType=BIGINT},
+      </if>
+      <if test="createUser != null">
+        #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="picUrl != null">
+        #{picUrl,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsInfo">
+    update supplier_goods_info
+    <set>
+      <if test="categoryId != null">
+        category_id = #{categoryId,jdbcType=BIGINT},
+      </if>
+      <if test="supplierId != null">
+        supplier_id = #{supplierId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsCode != null">
+        goods_code = #{goodsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsName != null">
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="catId != null">
+        cat_id = #{catId,jdbcType=INTEGER},
+      </if>
+      <if test="stock != null">
+        stock = #{stock,jdbcType=INTEGER},
+      </if>
+      <if test="sellPoint != null">
+        sell_point = #{sellPoint,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryTemplateName != null">
+        delivery_template_name = #{deliveryTemplateName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="supplyPrice != null">
+        supply_price = #{supplyPrice,jdbcType=BIGINT},
+      </if>
+      <if test="minRetailPrice != null">
+        min_retail_price = #{minRetailPrice,jdbcType=BIGINT},
+      </if>
+      <if test="maxRetailPrice != null">
+        max_retail_price = #{maxRetailPrice,jdbcType=BIGINT},
+      </if>
+      <if test="saleAmount != null">
+        sale_amount = #{saleAmount,jdbcType=BIGINT},
+      </if>
+      <if test="pvValue != null">
+        pv_value = #{pvValue,jdbcType=BIGINT},
+      </if>
+      <if test="createUser != null">
+        create_user = #{createUser,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateDate != null">
+        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="picUrl != null">
+        pic_url = #{picUrl,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsInfo">
+    update supplier_goods_info
+    set category_id = #{categoryId,jdbcType=BIGINT},
+      supplier_id = #{supplierId,jdbcType=BIGINT},
+      goods_code = #{goodsCode,jdbcType=VARCHAR},
+      goods_name = #{goodsName,jdbcType=VARCHAR},
+      cat_id = #{catId,jdbcType=INTEGER},
+      stock = #{stock,jdbcType=INTEGER},
+      sell_point = #{sellPoint,jdbcType=VARCHAR},
+      delivery_template_name = #{deliveryTemplateName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      supply_price = #{supplyPrice,jdbcType=BIGINT},
+      min_retail_price = #{minRetailPrice,jdbcType=BIGINT},
+      max_retail_price = #{maxRetailPrice,jdbcType=BIGINT},
+      sale_amount = #{saleAmount,jdbcType=BIGINT},
+      pv_value = #{pvValue,jdbcType=BIGINT},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      pic_url = #{picUrl,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsInfo">
+    update supplier_goods_info
+    set category_id = #{categoryId,jdbcType=BIGINT},
+      supplier_id = #{supplierId,jdbcType=BIGINT},
+      goods_code = #{goodsCode,jdbcType=VARCHAR},
+      goods_name = #{goodsName,jdbcType=VARCHAR},
+      cat_id = #{catId,jdbcType=INTEGER},
+      stock = #{stock,jdbcType=INTEGER},
+      sell_point = #{sellPoint,jdbcType=VARCHAR},
+      delivery_template_name = #{deliveryTemplateName,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      supply_price = #{supplyPrice,jdbcType=BIGINT},
+      min_retail_price = #{minRetailPrice,jdbcType=BIGINT},
+      max_retail_price = #{maxRetailPrice,jdbcType=BIGINT},
+      sale_amount = #{saleAmount,jdbcType=BIGINT},
+      pv_value = #{pvValue,jdbcType=BIGINT},
+      create_user = #{createUser,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      update_date = #{updateDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

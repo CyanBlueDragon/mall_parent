@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunyihenkey.basedao.malldb.basemapper.ShoppingmallOrderAftersaleInfoBaseMapper">
+  <resultMap id="BaseResultMap" type="com.yunyihenkey.basedao.malldb.basevo.ShoppingmallOrderAftersaleInfo">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="mall_id" jdbcType="BIGINT" property="mallId" />
+    <result column="supplier_id" jdbcType="BIGINT" property="supplierId" />
+    <result column="aftersale_code" jdbcType="BIGINT" property="aftersaleCode" />
+    <result column="order_code" jdbcType="BIGINT" property="orderCode" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="product_count" jdbcType="INTEGER" property="productCount" />
+    <result column="refund_amount" jdbcType="BIGINT" property="refundAmount" />
+    <result column="aftersale_reason" jdbcType="VARCHAR" property="aftersaleReason" />
+    <result column="member_account" jdbcType="VARCHAR" property="memberAccount" />
+    <result column="member_name" jdbcType="VARCHAR" property="memberName" />
+    <result column="aftersale_status" jdbcType="INTEGER" property="aftersaleStatus" />
+    <result column="express_code" jdbcType="VARCHAR" property="expressCode" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, mall_id, supplier_id, aftersale_code, order_code, product_name, product_count, 
+    refund_amount, aftersale_reason, member_account, member_name, aftersale_status, express_code, 
+    create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from shoppingmall_order_aftersale_info
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shoppingmall_order_aftersale_info
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.yunyihenkey.basedao.malldb.basevo.ShoppingmallOrderAftersaleInfo">
+    insert into shoppingmall_order_aftersale_info (id, mall_id, supplier_id, 
+      aftersale_code, order_code, product_name, 
+      product_count, refund_amount, aftersale_reason, 
+      member_account, member_name, aftersale_status, 
+      express_code, create_time, update_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{mallId,jdbcType=BIGINT}, #{supplierId,jdbcType=BIGINT}, 
+      #{aftersaleCode,jdbcType=BIGINT}, #{orderCode,jdbcType=BIGINT}, #{productName,jdbcType=VARCHAR}, 
+      #{productCount,jdbcType=INTEGER}, #{refundAmount,jdbcType=BIGINT}, #{aftersaleReason,jdbcType=VARCHAR}, 
+      #{memberAccount,jdbcType=VARCHAR}, #{memberName,jdbcType=VARCHAR}, #{aftersaleStatus,jdbcType=INTEGER}, 
+      #{expressCode,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.ShoppingmallOrderAftersaleInfo">
+    insert into shoppingmall_order_aftersale_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="mallId != null">
+        mall_id,
+      </if>
+      <if test="supplierId != null">
+        supplier_id,
+      </if>
+      <if test="aftersaleCode != null">
+        aftersale_code,
+      </if>
+      <if test="orderCode != null">
+        order_code,
+      </if>
+      <if test="productName != null">
+        product_name,
+      </if>
+      <if test="productCount != null">
+        product_count,
+      </if>
+      <if test="refundAmount != null">
+        refund_amount,
+      </if>
+      <if test="aftersaleReason != null">
+        aftersale_reason,
+      </if>
+      <if test="memberAccount != null">
+        member_account,
+      </if>
+      <if test="memberName != null">
+        member_name,
+      </if>
+      <if test="aftersaleStatus != null">
+        aftersale_status,
+      </if>
+      <if test="expressCode != null">
+        express_code,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="mallId != null">
+        #{mallId,jdbcType=BIGINT},
+      </if>
+      <if test="supplierId != null">
+        #{supplierId,jdbcType=BIGINT},
+      </if>
+      <if test="aftersaleCode != null">
+        #{aftersaleCode,jdbcType=BIGINT},
+      </if>
+      <if test="orderCode != null">
+        #{orderCode,jdbcType=BIGINT},
+      </if>
+      <if test="productName != null">
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productCount != null">
+        #{productCount,jdbcType=INTEGER},
+      </if>
+      <if test="refundAmount != null">
+        #{refundAmount,jdbcType=BIGINT},
+      </if>
+      <if test="aftersaleReason != null">
+        #{aftersaleReason,jdbcType=VARCHAR},
+      </if>
+      <if test="memberAccount != null">
+        #{memberAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="memberName != null">
+        #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="aftersaleStatus != null">
+        #{aftersaleStatus,jdbcType=INTEGER},
+      </if>
+      <if test="expressCode != null">
+        #{expressCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.ShoppingmallOrderAftersaleInfo">
+    update shoppingmall_order_aftersale_info
+    <set>
+      <if test="mallId != null">
+        mall_id = #{mallId,jdbcType=BIGINT},
+      </if>
+      <if test="supplierId != null">
+        supplier_id = #{supplierId,jdbcType=BIGINT},
+      </if>
+      <if test="aftersaleCode != null">
+        aftersale_code = #{aftersaleCode,jdbcType=BIGINT},
+      </if>
+      <if test="orderCode != null">
+        order_code = #{orderCode,jdbcType=BIGINT},
+      </if>
+      <if test="productName != null">
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productCount != null">
+        product_count = #{productCount,jdbcType=INTEGER},
+      </if>
+      <if test="refundAmount != null">
+        refund_amount = #{refundAmount,jdbcType=BIGINT},
+      </if>
+      <if test="aftersaleReason != null">
+        aftersale_reason = #{aftersaleReason,jdbcType=VARCHAR},
+      </if>
+      <if test="memberAccount != null">
+        member_account = #{memberAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="memberName != null">
+        member_name = #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="aftersaleStatus != null">
+        aftersale_status = #{aftersaleStatus,jdbcType=INTEGER},
+      </if>
+      <if test="expressCode != null">
+        express_code = #{expressCode,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yunyihenkey.basedao.malldb.basevo.ShoppingmallOrderAftersaleInfo">
+    update shoppingmall_order_aftersale_info
+    set mall_id = #{mallId,jdbcType=BIGINT},
+      supplier_id = #{supplierId,jdbcType=BIGINT},
+      aftersale_code = #{aftersaleCode,jdbcType=BIGINT},
+      order_code = #{orderCode,jdbcType=BIGINT},
+      product_name = #{productName,jdbcType=VARCHAR},
+      product_count = #{productCount,jdbcType=INTEGER},
+      refund_amount = #{refundAmount,jdbcType=BIGINT},
+      aftersale_reason = #{aftersaleReason,jdbcType=VARCHAR},
+      member_account = #{memberAccount,jdbcType=VARCHAR},
+      member_name = #{memberName,jdbcType=VARCHAR},
+      aftersale_status = #{aftersaleStatus,jdbcType=INTEGER},
+      express_code = #{expressCode,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunyihenkey.seller.dao.malldb.mapper.AuthSellerRegistrationCodeMapper">
+<resultMap id="BaseResultMap" type="com.yunyihenkey.basedao.malldb.basevo.SellerRegistrationCode">
+	<id column="registration_code" jdbcType="VARCHAR" property="registrationCode" />
+	<result column="apply" jdbcType="INTEGER" property="apply" />
+</resultMap>
+<sql id="Base_Column_List">
+    registration_code, apply
+  </sql>
+
+<insert id="insert" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerRegistrationCode">
+    insert into seller_registration_code (registration_code, apply)
+    values (#{registrationCode,jdbcType=VARCHAR}, #{apply,jdbcType=INTEGER})
+  </insert>
+
+
+<insert id="insertBatch" parameterType="java.util.List" >
+	insert into seller_registration_code (registration_code,apply)
+	values
+	<foreach collection="list" item="code" index="index" separator=",">
+		(#{code.registrationCode,jdbcType=VARCHAR},#{code.apply,jdbcType=INTEGER})
+	</foreach>
+</insert>
+</mapper>

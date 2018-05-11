@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunyihenkey.seller.dao.malldb.mapper.ShoppingmallOrderAftersaleInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.yunyihenkey.basedao.malldb.basevo.ShoppingmallOrderAftersaleInfo">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="mall_id" jdbcType="BIGINT" property="mallId" />
+        <result column="supplier_id" jdbcType="BIGINT" property="supplierId" />
+        <result column="aftersale_code" jdbcType="BIGINT" property="aftersaleCode" />
+        <result column="order_code" jdbcType="BIGINT" property="orderCode" />
+        <result column="product_name" jdbcType="VARCHAR" property="productName" />
+        <result column="product_count" jdbcType="INTEGER" property="productCount" />
+        <result column="refund_amount" jdbcType="BIGINT" property="refundAmount" />
+        <result column="aftersale_reason" jdbcType="VARCHAR" property="aftersaleReason" />
+        <result column="member_account" jdbcType="VARCHAR" property="memberAccount" />
+        <result column="member_name" jdbcType="VARCHAR" property="memberName" />
+        <result column="aftersale_status" jdbcType="INTEGER" property="aftersaleStatus" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+
+    <resultMap id="orderAftersaleExportVo" type="com.yunyihenkey.seller.dao.malldb.exportVo.OrderAftersaleExportVo">
+        <result column="order_code" jdbcType="BIGINT" property="orderCode" />
+        <result column="product_name" jdbcType="VARCHAR" property="productName" />
+        <result column="refund_amount" jdbcType="BIGINT" property="refundAmount" />
+        <result column="member_account" jdbcType="VARCHAR" property="memberAccount" />
+        <result column="member_name" jdbcType="VARCHAR" property="memberName" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" javaType="java.util.Date"/>
+        <result column="aftersale_status" jdbcType="INTEGER" property="aftersaleStatus" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, mall_id, supplier_id, aftersale_code, order_code, product_name, product_count,
+        refund_amount, aftersale_reason, member_account, member_name, aftersale_status, create_time,
+        update_time
+    </sql>
+
+    <!-- 列表查询 -->
+    <select id="selectAll" resultType="java.util.Map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        from shoppingmall_order_aftersale_info
+        WHERE 1=1
+        <if test="mallId != null and mallId != ''">
+            AND mall_id = #{mallId}
+        </if>
+        <if test="orderCode != null and orderCode != ''">
+            AND order_code LIKE CONCAT(CONCAT('%',#{orderCode},'%'))
+        </if>
+        <if test="memberAccount != null and memberAccount != ''">
+            AND member_account LIKE CONCAT(CONCAT('%',#{memberAccount},'%'))
+        </if>
+        <if test="aftersaleStatus != null">
+            AND aftersale_status IN
+            <foreach collection="aftersaleStatus" separator="," open="(" close=")" item="status">
+                #{status}
+            </foreach>
+        </if>
+        ORDER BY aftersale_status ASC, create_time DESC
+    </select>
+
+    <select id="selectExportVo" resultMap="orderAftersaleExportVo">
+        SELECT
+        order_code,
+        CONCAT(product_name, ' x', product_count) 'product_name',
+        refund_amount,
+        member_account,
+        member_name,
+        create_time,
+        aftersale_status
+        from shoppingmall_order_aftersale_info
+        WHERE 1=1
+        <if test="mallId != null and mallId != ''">
+            AND mall_id = #{mallId}
+        </if>
+        <if test="orderCode != null and orderCode != ''">
+            AND order_code LIKE CONCAT(CONCAT('%',#{orderCode},'%'))
+        </if>
+        <if test="memberAccount != null and memberAccount != ''">
+            AND member_account LIKE CONCAT(CONCAT('%',#{memberAccount},'%'))
+        </if>
+        <if test="aftersaleStatus != null">
+            AND aftersale_status IN
+            <foreach collection="aftersaleStatus" separator="," open="(" close=")" item="status">
+                #{status}
+            </foreach>
+        </if>
+        ORDER BY aftersale_status ASC, create_time DESC
+    </select>
+
+</mapper>

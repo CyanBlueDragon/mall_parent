@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunyihenkey.seller.dao.malldb.mapper.SellerUserMapper">
+    <resultMap id="BaseResultMap" type="com.yunyihenkey.basedao.malldb.basevo.SellerUser">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="sex" jdbcType="INTEGER" property="sex"/>
+        <result column="logo_url" jdbcType="VARCHAR" property="logoUrl"/>
+        <result column="birthday" jdbcType="TIMESTAMP" property="birthday"/>
+        <result column="user_type" jdbcType="INTEGER" property="userType"/>
+        <result column="parent_user_id" jdbcType="BIGINT" property="parentUserId"/>
+        <result column="register_source" jdbcType="INTEGER" property="registerSource"/>
+        <result column="register_ip" jdbcType="VARCHAR" property="registerIp"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="city_code" jdbcType="VARCHAR" property="cityCode"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, user_name, password, email, mobile, sex, logo_url, birthday, user_type, parent_user_id, 
+    register_source, register_ip, update_time, create_time, city_code
+  </sql>
+    <select id="selectUser">
+        select
+        <include refid="Base_Column_List"/>
+        from
+        seller_user
+        <where>
+            1=1
+            <if test=" user_name!=null and user_name!='' ">
+                and user_name ='#{user_name}'
+            </if>
+            <if test=" password!=null and password!='' ">
+                and password ='#{password}'
+            </if>
+        </where>
+
+    </select>
+</mapper>

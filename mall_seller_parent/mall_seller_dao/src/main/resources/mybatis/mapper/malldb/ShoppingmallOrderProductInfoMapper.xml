@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunyihenkey.seller.dao.malldb.mapper.ShoppingmallOrderProductInfoMapper">
+
+    <resultMap id="BaseResultMap" type="com.yunyihenkey.basedao.malldb.basevo.ShoppingmallOrderProductInfo">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="mall_id" jdbcType="BIGINT" property="mallId" />
+        <result column="supplier_id" jdbcType="BIGINT" property="supplierId" />
+        <result column="order_code" jdbcType="BIGINT" property="orderCode" />
+        <result column="product_id" jdbcType="BIGINT" property="productId" />
+        <result column="product_name" jdbcType="VARCHAR" property="productName" />
+        <result column="product_price" jdbcType="BIGINT" property="productPrice" />
+        <result column="product_count" jdbcType="INTEGER" property="productCount" />
+        <result column="postage_amount" jdbcType="BIGINT" property="postageAmount" />
+        <result column="postage_type" jdbcType="INTEGER" property="postageType" />
+        <result column="send_status" jdbcType="INTEGER" property="sendStatus" />
+        <result column="refund_sign" jdbcType="INTEGER" property="refundSign" />
+        <result column="send_time" jdbcType="TIMESTAMP" property="sendTime" />
+        <result column="received_time" jdbcType="TIMESTAMP" property="receivedTime" />
+        <result column="refund_time" jdbcType="TIMESTAMP" property="refundTime" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+
+    <resultMap id="orderProductExportVo" type="com.yunyihenkey.seller.dao.malldb.exportVo.OrderProductExportVo">
+        <result column="product_name" jdbcType="VARCHAR" property="productName" />
+        <result column="product_price" jdbcType="BIGINT" property="productPrice" />
+        <result column="receiver_name" jdbcType="VARCHAR" property="receiverName" />
+        <result column="receiver_phone" jdbcType="VARCHAR" property="receiverPhone" />
+        <result column="receiver_address" jdbcType="VARCHAR" property="receiverAddress" />
+        <result column="send_status" jdbcType="INTEGER" property="sendStatus" />
+        <result column="postage_type" jdbcType="INTEGER" property="postageType" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" javaType="java.util.Date"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        a.id, a.mall_id, a.supplier_id, a.order_code, a.product_id, a.product_name, a.product_price, a.product_count,
+        a.postage_amount, a.postage_type, a.send_status, a.refund_sign, a.send_time, a.received_time,
+        a.refund_time, a.create_time, a.update_time
+    </sql>
+
+    <!-- 列表查询 -->
+    <select id="selectAll" resultType="java.util.Map">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM shoppingmall_order_product_info a
+        LEFT JOIN shoppingmall_order_info b ON (a.order_code = b.order_code)
+        WHERE 1=1
+        <if test="productName != null and productName != ''">
+            AND a.product_name LIKE CONCAT(CONCAT('%',#{productName},'%'))
+        </if>
+        <if test="receiverName != null and receiverName != ''">
+            AND b.receiver_name LIKE CONCAT(CONCAT('%',#{receiverName},'%'))
+        </if>
+        ORDER BY a.send_status ASC, a.create_time DESC
+    </select>
+
+    <select id="selectByOrderCode" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM shoppingmall_order_product_info a
+        WHERE a.order_code = #{orderCode}
+    </select>
+
+    <select id="selectExportVo" resultMap="orderProductExportVo">
+        SELECT
+          a.product_name,
+          a.product_price,
+          b.receiver_name,
+          b.receiver_phone,
+          b.receiver_address,
+          a.send_status,
+          a.postage_type,
+          a.create_time
+        FROM shoppingmall_order_product_info a LEFT JOIN shoppingmall_order_info b ON (a.order_code = b.order_code)
+        WHERE 1=1
+        <if test="productName != null and productName != ''">
+            AND a.product_name LIKE CONCAT(CONCAT('%',#{productName},'%'))
+        </if>
+        <if test="receiverName != null and receiverName != ''">
+            AND b.receiver_name LIKE CONCAT(CONCAT('%',#{receiverName},'%'))
+        </if>
+        ORDER BY a.send_status ASC, a.create_time DESC
+    </select>
+
+</mapper>

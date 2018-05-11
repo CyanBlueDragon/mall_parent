@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunyihenkey.basedao.malldb.basemapper.SellerRegistrationCodeBaseMapper">
+  <resultMap id="BaseResultMap" type="com.yunyihenkey.basedao.malldb.basevo.SellerRegistrationCode">
+    <id column="registration_code" jdbcType="VARCHAR" property="registrationCode" />
+    <result column="apply" jdbcType="INTEGER" property="apply" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    registration_code, apply
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from seller_registration_code
+    where registration_code = #{registrationCode,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from seller_registration_code
+    where registration_code = #{registrationCode,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerRegistrationCode">
+    insert into seller_registration_code (registration_code, apply)
+    values (#{registrationCode,jdbcType=VARCHAR}, #{apply,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerRegistrationCode">
+    insert into seller_registration_code
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="registrationCode != null">
+        registration_code,
+      </if>
+      <if test="apply != null">
+        apply,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="registrationCode != null">
+        #{registrationCode,jdbcType=VARCHAR},
+      </if>
+      <if test="apply != null">
+        #{apply,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerRegistrationCode">
+    update seller_registration_code
+    <set>
+      <if test="apply != null">
+        apply = #{apply,jdbcType=INTEGER},
+      </if>
+    </set>
+    where registration_code = #{registrationCode,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerRegistrationCode">
+    update seller_registration_code
+    set apply = #{apply,jdbcType=INTEGER}
+    where registration_code = #{registrationCode,jdbcType=VARCHAR}
+  </update>
+</mapper>
