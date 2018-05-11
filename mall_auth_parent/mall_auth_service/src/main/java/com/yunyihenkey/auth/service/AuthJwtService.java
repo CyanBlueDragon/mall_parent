@@ -1,11 +1,10 @@
 package com.yunyihenkey.auth.service;
 
-import com.yunyihenkey.auth.service.vo.authjwt.GetTokenParam;
+import javax.servlet.http.HttpServletRequest;
+
+import com.yunyihenkey.auth.service.enums.LoginSourceEnum;
 import com.yunyihenkey.common.vo.resultinfo.ResultInfo;
 import com.yunyihenkey.common.vo.resultinfo.SystemCodeEnum;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
 
 /**
  * 
@@ -19,18 +18,28 @@ public interface AuthJwtService {
 	/**
 	 * 
 	 * @desc 授权token
-	 * @param getTokenParam
+	 * @auth wulm
+	 * @param userName
+	 *            用户名
+	 * @param password
+	 *            密码
+	 * @param systemCodeEnum
+	 *            系统来源
+	 * @param loginSourceEnum
+	 *            登录来源
 	 * @return
 	 */
-	ResultInfo<String> getToken(GetTokenParam getTokenParam);
+	ResultInfo<String> createToken(String userName, String password, SystemCodeEnum systemCodeEnum,
+			LoginSourceEnum loginSourceEnum);
 
 	/**
 	 * 
 	 * @desc 认证token,
-	 * @param jwtStr
+	 * @param request TODO
+	 * @param authenticationTokenParam
 	 * @return
 	 */
-	ResultInfo<Jws<Claims>> validateToken(String jwtStr);
+	ResultInfo<Object> validateToken(HttpServletRequest request, SystemCodeEnum systemCodeEnum);
 
 	/**
 	 * 
@@ -44,7 +53,7 @@ public interface AuthJwtService {
 	 * @desc 注销、登出token
 	 * @return
 	 */
-	ResultInfo loginout(String jwtStr);
+	ResultInfo<Object> loginout(String jwtStr);
 
 	/**
 	 * 
@@ -53,5 +62,14 @@ public interface AuthJwtService {
 	 * @param systemCodeEnum
 	 * @return
 	 */
-	ResultInfo LoginoutAllUpdPwd(String userName, SystemCodeEnum systemCodeEnum);
+	void LoginoutAllUpdPwd(String userName, SystemCodeEnum systemCodeEnum);
+
+	/**
+	 * 
+	 * @desc 指定登出注销自己账户的某个token
+	 * @auth wulm
+	 * @date 2018年5月4日 下午3:49:20
+	 * @return
+	 */
+	ResultInfo<Object> appointLoginout(String jwtStr, String appointTokenId);
 }

@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.yunyihenkey.basedao.malldb.basemapper.MallSnowflakeDatacenterMapper;
+import com.yunyihenkey.basedao.malldb.commonMapper.MallSnowflakeDatacenterMapper;
 import com.yunyihenkey.common.idworker.IdWorker;
 import com.yunyihenkey.common.idworker.SnowflakeIdWorker;
 import com.yunyihenkey.common.utils.LogUtils;

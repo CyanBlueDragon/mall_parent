@@ -13,7 +13,7 @@
 
 		<dependency>
 			<groupId>com.yunyihenkey</groupId>
-			<artifactId>mall_auth_dao_starter</artifactId>
+			<artifactId>mall_auth_dao</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

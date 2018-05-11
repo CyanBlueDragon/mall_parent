@@ -19,17 +19,21 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class ValidatorUtils {
-	public static String a (){
-		System.out.println("sdadasd!");
-		return "nihao";
-	}
 
 	/** 验证器工厂 */
 	public static final ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
 
-	@Value("${spring.profiles.active}")
-	public String active;
+	public @Value("${spring.profiles.active}") String active;
 
+	/**
+	 * 
+	 * @desc 开始验证参数
+	 * @auth wulm
+	 * @date 2018年5月11日 下午12:00:14
+	 * @param object
+	 * @param groups
+	 * @return 返回错误信息，错误信息为空表示正确，不为空表示错误
+	 */
 	public <T> String validateAndGetErrorInfo(T object, Class<?>... groups) {
 		Validator validator = validatorFactory.getValidator();
 

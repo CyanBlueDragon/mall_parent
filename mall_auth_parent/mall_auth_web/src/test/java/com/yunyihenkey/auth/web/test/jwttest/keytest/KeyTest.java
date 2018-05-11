@@ -7,7 +7,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.yunyihenkey.Application;
+import com.yunyihenkey.auth.service.enums.LoginSourceEnum;
 import com.yunyihenkey.auth.service.util.JwtUtils;
+import com.yunyihenkey.common.vo.resultinfo.SystemCodeEnum;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -31,8 +33,8 @@ public class KeyTest {
 		System.out.println("privatekey！！！！" + jwtUtils.getPrivateKey());
 		System.out.println("publickey！！！！" + jwtUtils.getPublicKey());
 
-		String compactJws = jwtUtils.cretaJwt(null);
-		System.out.println("jwtstr::::::::::::::" + compactJws);
+		String compactJws = jwtUtils.cretaJwt("13265602329", SystemCodeEnum.SELLER, LoginSourceEnum.Web);
+		System.out.println("length::::" + compactJws.length() + "jwtstr::::::::::::::" + compactJws);
 
 		try {
 			Jws<Claims> j = Jwts.parser().setSigningKey(jwtUtils.getPrivateKey()).parseClaimsJws(compactJws);

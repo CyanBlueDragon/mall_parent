@@ -8,10 +8,9 @@ import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
-import com.yunyihenkey.common.utils.RedisUtil;
-import org.springframework.stereotype.Component;
+import com.yunyihenkey.common.vo.base.SMSResult;
 
-import javax.annotation.Resource;
+
 import java.util.Random;
 
 /*
@@ -19,12 +18,12 @@ import java.util.Random;
  * @date 2018/4/28 10:43
 */
 
-@Component
-public class MessageServer {
-    @Resource
-    private RedisUtil redisUtil;
 
-    public String sendMessage(String phoneNumber ,Integer type){
+public class MessageServer {
+
+
+    public SMSResult sendMessage(String phoneNumber , Integer type){
+        SMSResult smsResult = new SMSResult();
         System.setProperty("sun.net.client.defaultConnectTimeout", "20000");
         System.setProperty("sun.net.client.defaultReadTimeout", "20000");
         // 初始化ascClient需要的几个参数
@@ -73,14 +72,17 @@ public class MessageServer {
         if (sendSmsResponse != null) {
             if (sendSmsResponse.getCode() != null && sendSmsResponse.getCode().equals("OK")) {
                 // 请求成功
-                String key = type + phoneNumber;
-                if (redisUtil.hasKey(key)) {
+                //String key = type + phoneNumber;
+               /* if (redisUtil.hasKey(key)) {
                     redisUtil.expire(key,0);
+                }*/
+                smsResult.setCode(String.valueOf(x));
+                smsResult.setResulltMesseage(sendSmsResponse.getCode());
+
+                return smsResult;
                 }
-                    redisUtil.set(key,60,x);
-                    return sendSmsResponse.getCode();
-                }
-                return sendSmsResponse.getCode();
+                 smsResult.setResulltMesseage(sendSmsResponse.getCode());
+                return smsResult;
             }
             return null;
         }

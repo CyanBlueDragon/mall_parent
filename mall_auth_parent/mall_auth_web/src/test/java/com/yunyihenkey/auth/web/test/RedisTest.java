@@ -20,8 +20,8 @@ public class RedisTest {
 	@Test
 	public void test() {
 
-		boolean set = redisUtil.set("test:namejjj", "你好大猪头");
-		System.out.println("debug...............set=" + redisUtil.get("test:namejjj"));
+		boolean set = redisUtil.set("DmSequenceUtil:namejjj", "你好大猪头");
+		System.out.println("debug...............set=" + redisUtil.get("DmSequenceUtil:namejjj"));
 
 	}
 

@@ -10,37 +10,25 @@ import com.yunyihenkey.Application;
 import com.yunyihenkey.auth.service.AuthJwtService;
 import com.yunyihenkey.auth.service.enums.LoginSourceEnum;
 import com.yunyihenkey.auth.service.util.JwtUtils;
-import com.yunyihenkey.auth.service.vo.authjwt.GetTokenParam;
-import com.yunyihenkey.common.utils.DateUtil;
-import com.yunyihenkey.common.utils.RedisUtil;
 import com.yunyihenkey.common.vo.resultinfo.SystemCodeEnum;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 public class ServiceTest {
 
-	@Autowired
+	@Autowired(required = false)
 	AuthJwtService authJwtService;
 	
-	@Autowired
+	@Autowired(required = false)
 	JwtUtils jwtUtils;
-	
+
 	@Test
 	public void testLogOut() throws InterruptedException {
-		
-		GetTokenParam getTokenParam = new GetTokenParam();
-		getTokenParam.setUserName("张三");
-		getTokenParam.setPassword("temp");
-		getTokenParam.setSystemCodeEnum(SystemCodeEnum.SELLER);
-		getTokenParam.setLoginSourceEnum(LoginSourceEnum.Web);
-		String token = jwtUtils.cretaJwt(getTokenParam);
-		
-		
-		
+
+		String token = jwtUtils.cretaJwt("",SystemCodeEnum.SELLER,LoginSourceEnum.Web);
+
 		System.out.println("token=" + token);
 		System.out.println("logOutResult=" + authJwtService.loginout(token));
-		
-		
-	}
 
+	}
 }

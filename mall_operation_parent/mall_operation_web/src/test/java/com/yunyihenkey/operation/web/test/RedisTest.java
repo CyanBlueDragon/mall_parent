@@ -21,8 +21,8 @@ public class RedisTest {
 	public void test() {
 		System.out.println("redis::::::::::::::::::::" + redisUtil);
 
-		boolean set = redisUtil.set("test:name", "测试set方法");
-		System.out.println("debug...............set=" + redisUtil.get("test:name"));
+		boolean set = redisUtil.set("DmSequenceUtil:name", "测试set方法");
+		System.out.println("debug...............set=" + redisUtil.get("DmSequenceUtil:name"));
 
 	}
 

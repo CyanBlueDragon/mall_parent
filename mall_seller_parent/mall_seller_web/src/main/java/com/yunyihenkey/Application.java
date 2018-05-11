@@ -1,6 +1,5 @@
 package com.yunyihenkey;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

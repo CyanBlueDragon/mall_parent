@@ -12,4 +12,12 @@
   	<module>mall_supplier_service</module>
   	<module>mall_supplier_dao</module>
   </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.yunyihenkey</groupId>
+            <artifactId>mall_basedao_starter</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
 </project>

@@ -6,11 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="mall_auth_dao_operation" />
-        <module name="mall_auth_dao_seller" />
-        <module name="mall_auth_dao_shoppingmall" />
-        <module name="mall_auth_dao_starter" />
-        <module name="mall_auth_dao_supplier" />
+        <module name="mall_auth_dao" />
         <module name="mall_auth_service" />
         <module name="mall_auth_web" />
         <module name="mall_basedao_malldb_others" />
@@ -31,5 +27,13 @@
         <module name="mall_supplier_web" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="mall_auth_dao_operation" target="1.8" />
+      <module name="mall_auth_dao_parent" target="1.8" />
+      <module name="mall_auth_dao_seller" target="1.8" />
+      <module name="mall_auth_dao_shoppingmall" target="1.8" />
+      <module name="mall_auth_dao_starter" target="1.8" />
+      <module name="mall_auth_dao_supplier" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

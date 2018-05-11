@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
-	namespace="com.yunyihenkey.basedao.malldb.basemapper.MallSnowflakeDatacenterMapper">
+	namespace="com.yunyihenkey.basedao.malldb.commonMapper.MallSnowflakeDatacenterMapper">
 
 	<select id="selectByMacAddress" parameterType="java.lang.String"
 		resultType="map">
@@ -13,6 +13,10 @@
 		mac_address
 		=#{macStr}
 		LIMIT 1
+	</select>
+
+	<select id="test" resultType="map">
+	SELECT * FROM seller_role_perm
 	</select>
 
 

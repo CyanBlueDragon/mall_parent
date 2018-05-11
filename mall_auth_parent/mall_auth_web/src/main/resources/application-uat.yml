@@ -36,3 +36,4 @@ jwt:
   rsa:
     publicKey: jwt/rsa/uat/yunyihenkeyJwt-uat.cer
     privateKey: jwt/rsa/uat/yunyihenkeyJwt-uat.pfx
+

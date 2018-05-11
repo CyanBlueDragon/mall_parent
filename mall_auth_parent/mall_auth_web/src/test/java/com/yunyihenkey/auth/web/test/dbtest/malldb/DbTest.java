@@ -1,10 +1,10 @@
-//package com.yunyihenkey.auth.web.test.dbtest.malldb;
+//package com.yunyihenkey.auth.web.DmSequenceUtil.dbtest.malldb;
 //
-//import org.junit.Test;
+//import org.junit.RegistrationCodeUtil;
 //import org.junit.runner.RunWith;
 //import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.boot.test.context.SpringBootTest;
-//import org.springframework.test.context.junit4.SpringRunner;
+//import org.springframework.boot.DmSequenceUtil.context.SpringBootTest;
+//import org.springframework.DmSequenceUtil.context.junit4.SpringRunner;
 //
 //import com.yunyihenkey.Application;
 //import com.yunyihenkey.auth.service.AtqTest;
@@ -29,10 +29,10 @@
 //	// @Autowired
 //	// private LocalDb2Mapper localDb2Mapper;
 //
-//	@Test
-//	public void test() {
+//	@RegistrationCodeUtil
+//	public void DmSequenceUtil() {
 //
-//		System.out.println("hello test!!!!666666666666666666666666!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + atq);
+//		System.out.println("hello DmSequenceUtil!!!!666666666666666666666666!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + atq);
 //		atq.aa();
 //		// System.out.println("服务器---testDbMapper:::" + testDbMapper +
 //		// "--------testDb2Mapper::::" /* + testDb2Mapper */);
@@ -54,7 +54,7 @@
 //		// System.out.println("本地---localDbMapper::::======" +
 //		// localDbMapper.insert(localDb));
 //
-//		System.out.println("test end!!!");
+//		System.out.println("DmSequenceUtil end!!!");
 //
 //	}
 //

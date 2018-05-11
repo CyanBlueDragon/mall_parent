@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yunyihenkey.common.idworker.IdWorker;
-import com.yunyihenkey.common.web.BaseController;
+import com.yunyihenkey.common.vo.base.BaseController;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/userController")
 public class UserController extends BaseController {
 
 	@Autowired

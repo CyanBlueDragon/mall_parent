@@ -44,4 +44,15 @@ public enum LoginSourceEnum {
 		this.text = text;
 	}
 
+	public static LoginSourceEnum getByValue(Integer value) {
+		if (value == null) {
+			return null;
+		}
+		for (LoginSourceEnum code : values()) {
+			if (code.getValue() == value) {
+				return code;
+			}
+		}
+		return null;
+	}
 }

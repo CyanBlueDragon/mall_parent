@@ -8,10 +8,12 @@ import java.util.Random;
 import javax.xml.bind.DatatypeConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.yunyihenkey.basedao.malldb.basemapper.MallSnowflakeDatacenterMapper;
+import com.yunyihenkey.basedao.malldb.commonMapper.MallSnowflakeDatacenterMapper;
+import com.yunyihenkey.common.constant.MallConstants;
 import com.yunyihenkey.common.idworker.IdWorker;
 import com.yunyihenkey.common.idworker.SnowflakeIdWorker;
 import com.yunyihenkey.common.utils.LogUtils;
@@ -21,6 +23,8 @@ public class IdWorkerConfig {
 
 	@Autowired
 	private MallSnowflakeDatacenterMapper mallSnowflakeDatacenterMapper;
+
+	public @Value("${spring.profiles.active}") String active;
 
 	@Bean
 	public IdWorker configIdWorker() {
@@ -46,6 +50,10 @@ public class IdWorkerConfig {
 
 		} catch (Exception e) {
 			LogUtils.getLogger().error("！！！！！！！！数据中心读取绑定异常！！！！！！！！", e);
+
+			if (MallConstants.ACTIVE_PRD.equals(active)) {
+				throw new IllegalArgumentException("生产环境必须绑定到id生成器");
+			}
 
 			workerId = IdWorker.maxWorkerId;
 			long ranD = new Random().nextInt(((int) IdWorker.maxDatacenterId) + 1);

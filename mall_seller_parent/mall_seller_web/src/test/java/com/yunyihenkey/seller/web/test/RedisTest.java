@@ -22,9 +22,13 @@ public class RedisTest {
 	public void test() {
 		LogUtils.getLogger().info("redis::::::::::::::::::::" + redisUtil);
 
-		boolean set = redisUtil.set("test:name", "测试set方法");
-		LogUtils.getLogger().info("debug...............set=" + redisUtil.get("test:name"));
-
+		boolean set = redisUtil.set("DmSequenceUtil:name", "测试set方法");
+		
+		Object o= redisUtil.get("DmSequenceUtil:name");
+		LogUtils.getLogger().info("debug...............set=" + o);
+		
+		System.out.println(o.getClass());
+		System.out.println(32222);
 	}
 
 }

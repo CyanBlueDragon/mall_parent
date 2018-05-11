@@ -25,8 +25,9 @@ import com.yunyihenkey.common.utils.LogUtils;
  * @author josnow
  */
 @Configuration
-@MapperScan(basePackages = { "com.yunyihenkey.basedao.malldb.basemapper", "com.yunyihenkey.operation.dao.malldb.mapper",
-		"com.yunyihenkey.seller.dao.malldb.mapper", "com.yunyihenkey.shoppingmall.dao.malldb.mapper",
+@MapperScan(basePackages = { "com.yunyihenkey.basedao.malldb.basemapper", "com.yunyihenkey.basedao.malldb.commonMapper",
+		"com.yunyihenkey.operation.dao.malldb.mapper", "com.yunyihenkey.seller.dao.malldb.mapper",
+		"com.yunyihenkey.shoppingmall.dao.malldb.mapper",
 		"com.yunyihenkey.supplier.dao.malldb.mapper", }, sqlSessionTemplateRef = "malldbSqlSessionTemplate")
 
 public class MybatisConfigmalldb {

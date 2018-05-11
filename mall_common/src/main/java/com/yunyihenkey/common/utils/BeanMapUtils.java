@@ -1,11 +1,11 @@
 package com.yunyihenkey.common.utils;
 
-import org.springframework.cglib.beans.BeanMap;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.cglib.beans.BeanMap;
 
 public class BeanMapUtils {
 
@@ -90,5 +90,10 @@ public class BeanMapUtils {
 			}
 		}
 		return list;
+	}
+
+	public static void main(String[] args) {
+		mapToBean(null, BeanMapUtils.class);
+
 	}
 }
