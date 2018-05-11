@@ -1,0 +1,11 @@
+server:
+  servlet:
+    context-path: /supplier
+spring:
+  profiles:
+    active: sit
+logging:
+  config: classpath:log4j2.xml
+
+
+

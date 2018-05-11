@@ -1,0 +1,44 @@
+server:
+  port: 8081
+spring:
+  datasource:
+    malldb:
+      driverClassName: com.mysql.jdbc.Driver
+      url: jdbc:mysql://192.168.10.204:3306/test?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&useSSL=false&tinyInt1isBit=false
+      username: root
+      password: develop321
+      initialSize: 5
+      minIdle: 5
+      maxIdle: 50
+      maxActive: 50
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 1
+      poolPreparedStatements: true
+      testWhileIdle: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      filters: stat,wall,logback
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+  ## Redis 配置
+  redis:
+    ## Redis数据库索引（默认为0）
+    database: 0
+    ## Redis服务器地址
+    host: 192.168.10.204
+    ## Redis服务器连接端口
+    port: 6379
+    ## Redis服务器连接密码（默认为空）
+    password: 
+    jedis:
+      pool:
+        # 连接池最大连接数（使用负值表示没有限制）
+        max-active: 1000
+        # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1
+        # 连接池中的最大空闲连接
+        max-idle: 100
+        # 连接池中的最小空闲连接
+        min-idle: 0
+    # 连接超时时间（毫秒）
+    timeout: 10000
