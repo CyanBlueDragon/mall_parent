@@ -1,15 +1,61 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
-	namespace="com.yunyihenkey.seller.dao.malldb.mapper.SellerRoleMapper">
-	<resultMap id="BaseResultMap"
-		type="com.yunyihenkey.basedao.malldb.basevo.SellerRole">
-		<id column="id" jdbcType="BIGINT" property="id" />
-		<result column="roleName" jdbcType="VARCHAR"
-			property="role_name" />
-		<result column="description" jdbcType="VARCHAR"
-			property="description" />
-	</resultMap>
+        namespace="com.yunyihenkey.seller.dao.malldb.mapper.SellerRoleMapper">
+    <resultMap id="BaseResultMap"
+               type="com.yunyihenkey.basedao.malldb.basevo.SellerRole">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="name" jdbcType="VARCHAR"
+                property="name"/>
+        <result column="description" jdbcType="VARCHAR"
+                property="description"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, name, description, create_time, update_time
+    </sql>
+    <select id="queryRoleList"
+            resultType="com.yunyihenkey.seller.dao.malldb.vo.param.userController.QueryRoleListResult">
+        SELECT
+        r.id,
+        r.name,
+        COUNT(ur.user_id) numb,
+        r.create_time createTime
+        FROM
+        seller_role r
+        LEFT JOIN seller_user_role ur ON r.id = ur.role_id
+        <where>
+            1=1
+            <if test="name != null and name != ''">
+                AND r.name LIKE CONCAT('%',#{name},'%')
+            </if>
+        </where>
+        GROUP BY
+        ur.role_id
+        ORDER BY
+        r.create_time DESC
+    </select>
 
+    <select id="queryAllRoleList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        seller_role
+        <where>
+            1=1
+            <if test="name!=null and name!=''">
+                and name=#{name}
+            </if>
+        </where>
+
+    </select>
+    <insert id="saveBatchRolePermission" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerRolePerm">
+        INSERT INTO
+            seller_role_perm
+            (role_id,permission_id)
+        VALUES
+        <foreach collection="list" item="i" separator=",">
+            (#{i.roleId},#{i.permissionId})
+        </foreach>
+    </insert>
 
 </mapper>

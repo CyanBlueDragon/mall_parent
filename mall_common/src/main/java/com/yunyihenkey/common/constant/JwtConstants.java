@@ -12,12 +12,12 @@ public class JwtConstants {
 	public static final String JWT_USER_PERMISSION = "userPerm";
 
 	/** jwt web网页端失效时间（秒） web端1天后过期； */
-	public static final int EXPIRATION_WEB = 86400;
+	public static final long EXPIRATION_WEB = 86400;
 	/** jwt 其他端失效时间（秒） 其他端7天后过期 */
-	public static final int EXPIRATION_OTHERS = 604800;
-	/** 集群环境各个机器时间差最大范围 (秒) */
-	public static final int MAX_DIFFER = 300;
+	public static final long EXPIRATION_OTHERS = 604800;
+	/** jwt 其他端失效时间（秒） 其他端7天后过期 */
+	public static final long REFRESH_TOKEN_TIME = 7200000;
+	/** 集群环境各个机器时间差最大范围 (秒) 防止集群环境各个机器时间不同步 */
+	public static final long MAX_DIFFER = 300;
 
-	/** 获取请求头中保存的token key */
-	public static final String HEADER_TOKEN = "token";
 }

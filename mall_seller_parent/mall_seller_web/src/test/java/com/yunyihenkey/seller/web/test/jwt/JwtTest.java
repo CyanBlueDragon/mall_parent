@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.yunyihenkey.Application;
-import com.yunyihenkey.auth.service.enums.LoginSourceEnum;
+import com.yunyihenkey.auth.service.enums.ReqSourceEnum;
 import com.yunyihenkey.auth.service.util.JwtUtils;
 import com.yunyihenkey.auth.service.vo.authjwt.seller.AuthSellerUser;
 import com.yunyihenkey.common.constant.JwtConstants;
@@ -40,7 +40,25 @@ public class JwtTest {
 		System.out.println("privatekey！！！！" + jwtUtils.getPrivateKey());
 		System.out.println("publickey！！！！" + jwtUtils.getPublicKey());
 
-		String compactJws = jwtUtils.cretaJwt("13265602329", SystemCodeEnum.SELLER, LoginSourceEnum.Web);
+		String jwtStr = "eyJhbGciOiJSUzI1NiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAADWPy07EMAxF_8XrLJxHk7RbFogNQgI-IJ26TCBNq6SViEbz7yQUdva9OsfyDY5M6YXSAkM8QmAQxxkG3gmNvbBSM8gl77Q8rBPVHAUDnzMMUI5Y_JXiFxVgQN_bSene9I3ybv_XSN6CdgeGG_ipwspIKbBXVgsU1iJWRb6u21MrNZcotFRwQs9uqZeBS6ENGlONf8Vb2VrR1s0livt7DZvhfCRTCJQek5t-cbgz-Nx9HUcrLOfKdqND1U_aCa6IzzRfOoWmk9UX1g8fX9cjXSqL9x9nHtVvJgEAAA.PqVvnh23ob_SxjRT_TqYkw5fLsrVIF4DPrGRa0MLfuKKLCMmEIeQP5rCz9ESKotHfS8bAAYNopDjE2mMvuwGhLhprvGMVfI1raazPpy9ZvHtwbvBPfUisQtzw02uKaqyYee3ow4d5Aq5ROovmYi1gq_Efn737lAjcNd3kgPlSmo";
+
+		Jws<Claims> j = jwtUtils.parseJwtStr(jwtStr);
+		Claims body = j.getBody();
+		System.out.println("body::::::" + JacksonUtils.writeValueAsString(body));
+
+		AuthSellerUser authSellerUser = jwtUtils.getSellerUser(jwtStr);
+
+		System.out.println(authSellerUser);
+		System.out.println(JacksonUtils.writeValueAsString(authSellerUser));
+	}
+
+	@Test
+	public void test2() {
+
+		System.out.println("privatekey！！！！" + jwtUtils.getPrivateKey());
+		System.out.println("publickey！！！！" + jwtUtils.getPublicKey());
+
+		String compactJws = jwtUtils.cretaJwt("13265602329", SystemCodeEnum.SELLER, ReqSourceEnum.WEB);
 		System.out.println("length::::" + compactJws.length() + "jwtstr::::::::::::::" + compactJws);
 
 		try {
@@ -78,5 +96,4 @@ public class JwtTest {
 			e.printStackTrace();
 		}
 	}
-
 }

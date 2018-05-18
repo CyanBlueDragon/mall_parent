@@ -14,6 +14,10 @@
         <result column="postage_amount" jdbcType="BIGINT" property="postageAmount" />
         <result column="postage_type" jdbcType="INTEGER" property="postageType" />
         <result column="send_status" jdbcType="INTEGER" property="sendStatus" />
+        <result column="notice_sign" jdbcType="INTEGER" property="noticeSign" />
+        <result column="express_number" jdbcType="VARCHAR" property="expressNumber" />
+        <result column="express_code" jdbcType="VARCHAR" property="expressCode" />
+        <result column="express_company" jdbcType="VARCHAR" property="expressCompany" />
         <result column="refund_sign" jdbcType="INTEGER" property="refundSign" />
         <result column="send_time" jdbcType="TIMESTAMP" property="sendTime" />
         <result column="received_time" jdbcType="TIMESTAMP" property="receivedTime" />
@@ -35,12 +39,13 @@
 
     <sql id="Base_Column_List">
         a.id, a.mall_id, a.supplier_id, a.order_code, a.product_id, a.product_name, a.product_price, a.product_count,
-        a.postage_amount, a.postage_type, a.send_status, a.refund_sign, a.send_time, a.received_time,
-        a.refund_time, a.create_time, a.update_time
+        a.postage_amount, a.postage_type, a.send_status, a.notice_sign, a.express_number, a.express_code,
+        a.express_company, a.refund_sign, a.send_time, a.received_time, a.refund_time, a.create_time,
+        a.update_time
     </sql>
 
     <!-- 列表查询 -->
-    <select id="selectAll" resultType="java.util.Map">
+    <select id="selectAll" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM shoppingmall_order_product_info a
@@ -55,6 +60,7 @@
         ORDER BY a.send_status ASC, a.create_time DESC
     </select>
 
+    <!-- 通过订单号查询订单商品集合 -->
     <select id="selectByOrderCode" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
@@ -62,6 +68,7 @@
         WHERE a.order_code = #{orderCode}
     </select>
 
+    <!-- 查询需要导出Excel对象 -->
     <select id="selectExportVo" resultMap="orderProductExportVo">
         SELECT
           a.product_name,
@@ -81,6 +88,14 @@
             AND b.receiver_name LIKE CONCAT(CONCAT('%',#{receiverName},'%'))
         </if>
         ORDER BY a.send_status ASC, a.create_time DESC
+    </select>
+
+    <!-- 获取未发货的订单商品数量 -->
+    <select id="countUnsendByOrderCode" resultType="java.lang.Integer">
+        SELECT
+          count(0)
+        FROM shoppingmall_order_product_info
+        WHERE order_code = #{orderCode} AND send_status = 0
     </select>
 
 </mapper>

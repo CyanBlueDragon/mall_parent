@@ -5,7 +5,6 @@ import com.yunyihenkey.common.vo.base.BaseService;
 import com.yunyihenkey.seller.dao.malldb.exportVo.OrderAftersaleExportVo;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author SunQ
@@ -18,9 +17,9 @@ public interface ShoppingmallOrderAftersaleInfoService extends BaseService<Shopp
      * @author SunQ
      * @Date 16:04 2018/5/11 0011
      * @Param [mallId, orderCode, memberAccount, aftersaleStatus]
-     * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
+     * @return java.util.List<ShoppingmallOrderAftersaleInfo>
      */
-    List<Map<String, Object>> selectAllByPage(String mallId, String orderCode, String memberAccount, String[] aftersaleStatus);
+    List<ShoppingmallOrderAftersaleInfo> selectAllByPage(String mallId, String orderCode, String memberAccount, String[] aftersaleStatus);
 
     /**
      * 获取需要导出的对象集合

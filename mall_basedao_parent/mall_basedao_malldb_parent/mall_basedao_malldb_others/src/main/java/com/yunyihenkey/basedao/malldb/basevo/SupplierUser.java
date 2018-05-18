@@ -13,9 +13,6 @@ public class SupplierUser implements Serializable {
 
     private String password;
 
-    /** 状态#0,停用|Disable;1,启用|Enable */
-    private Integer enableFlag;
-
     /** 最近登录时间 */
     private Date loginTime;
 
@@ -25,6 +22,9 @@ public class SupplierUser implements Serializable {
     private Date createTime;
 
     private Date updateTime;
+
+    /** 是否删除#0,否|No;1,是|Yes */
+    private Integer isDelete;
 
     private static final long serialVersionUID = 1L;
 
@@ -60,14 +60,6 @@ public class SupplierUser implements Serializable {
         this.password = password == null ? null : password.trim();
     }
 
-    public Integer getEnableFlag() {
-        return enableFlag;
-    }
-
-    public void setEnableFlag(Integer enableFlag) {
-        this.enableFlag = enableFlag;
-    }
-
     public Date getLoginTime() {
         return loginTime;
     }
@@ -100,6 +92,14 @@ public class SupplierUser implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -110,11 +110,11 @@ public class SupplierUser implements Serializable {
         sb.append(", name=").append(name);
         sb.append(", nickname=").append(nickname);
         sb.append(", password=").append(password);
-        sb.append(", enableFlag=").append(enableFlag);
         sb.append(", loginTime=").append(loginTime);
         sb.append(", mobile=").append(mobile);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
+        sb.append(", isDelete=").append(isDelete);
         sb.append("]");
         return sb.toString();
     }

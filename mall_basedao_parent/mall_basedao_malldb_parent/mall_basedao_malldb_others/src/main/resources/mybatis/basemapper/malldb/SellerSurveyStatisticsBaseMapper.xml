@@ -2,38 +2,46 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yunyihenkey.basedao.malldb.basemapper.SellerSurveyStatisticsBaseMapper">
   <resultMap id="BaseResultMap" type="com.yunyihenkey.basedao.malldb.basevo.SellerSurveyStatistics">
-    <id column="date_of_the_day" jdbcType="VARCHAR" property="dateOfTheDay" />
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="date_of_the_day" jdbcType="VARCHAR" property="dateOfTheDay" />
     <result column="count_new_members" jdbcType="INTEGER" property="countNewMembers" />
     <result column="count_order_today" jdbcType="INTEGER" property="countOrderToday" />
     <result column="order_amount_of_today" jdbcType="BIGINT" property="orderAmountOfToday" />
     <result column="count_refund_after_sale" jdbcType="INTEGER" property="countRefundAfterSale" />
     <result column="todays_earnings" jdbcType="BIGINT" property="todaysEarnings" />
+    <result column="shop_id" jdbcType="BIGINT" property="shopId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
   </resultMap>
   <sql id="Base_Column_List">
-    date_of_the_day, count_new_members, count_order_today, order_amount_of_today, count_refund_after_sale, 
-    todays_earnings
+    id, date_of_the_day, count_new_members, count_order_today, order_amount_of_today, 
+    count_refund_after_sale, todays_earnings, shop_id, create_time
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from seller_survey_statistics
-    where date_of_the_day = #{dateOfTheDay,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from seller_survey_statistics
-    where date_of_the_day = #{dateOfTheDay,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerSurveyStatistics">
-    insert into seller_survey_statistics (date_of_the_day, count_new_members, count_order_today, 
-      order_amount_of_today, count_refund_after_sale, 
-      todays_earnings)
-    values (#{dateOfTheDay,jdbcType=VARCHAR}, #{countNewMembers,jdbcType=INTEGER}, #{countOrderToday,jdbcType=INTEGER}, 
-      #{orderAmountOfToday,jdbcType=BIGINT}, #{countRefundAfterSale,jdbcType=INTEGER}, 
-      #{todaysEarnings,jdbcType=BIGINT})
+    insert into seller_survey_statistics (id, date_of_the_day, count_new_members, 
+      count_order_today, order_amount_of_today, count_refund_after_sale, 
+      todays_earnings, shop_id, create_time
+      )
+    values (#{id,jdbcType=BIGINT}, #{dateOfTheDay,jdbcType=VARCHAR}, #{countNewMembers,jdbcType=INTEGER}, 
+      #{countOrderToday,jdbcType=INTEGER}, #{orderAmountOfToday,jdbcType=BIGINT}, #{countRefundAfterSale,jdbcType=INTEGER}, 
+      #{todaysEarnings,jdbcType=BIGINT}, #{shopId,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerSurveyStatistics">
     insert into seller_survey_statistics
     <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
       <if test="dateOfTheDay != null">
         date_of_the_day,
       </if>
@@ -52,8 +60,17 @@
       <if test="todaysEarnings != null">
         todays_earnings,
       </if>
+      <if test="shopId != null">
+        shop_id,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
       <if test="dateOfTheDay != null">
         #{dateOfTheDay,jdbcType=VARCHAR},
       </if>
@@ -72,11 +89,20 @@
       <if test="todaysEarnings != null">
         #{todaysEarnings,jdbcType=BIGINT},
       </if>
+      <if test="shopId != null">
+        #{shopId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerSurveyStatistics">
     update seller_survey_statistics
     <set>
+      <if test="dateOfTheDay != null">
+        date_of_the_day = #{dateOfTheDay,jdbcType=VARCHAR},
+      </if>
       <if test="countNewMembers != null">
         count_new_members = #{countNewMembers,jdbcType=INTEGER},
       </if>
@@ -92,16 +118,25 @@
       <if test="todaysEarnings != null">
         todays_earnings = #{todaysEarnings,jdbcType=BIGINT},
       </if>
+      <if test="shopId != null">
+        shop_id = #{shopId,jdbcType=BIGINT},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
     </set>
-    where date_of_the_day = #{dateOfTheDay,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerSurveyStatistics">
     update seller_survey_statistics
-    set count_new_members = #{countNewMembers,jdbcType=INTEGER},
+    set date_of_the_day = #{dateOfTheDay,jdbcType=VARCHAR},
+      count_new_members = #{countNewMembers,jdbcType=INTEGER},
       count_order_today = #{countOrderToday,jdbcType=INTEGER},
       order_amount_of_today = #{orderAmountOfToday,jdbcType=BIGINT},
       count_refund_after_sale = #{countRefundAfterSale,jdbcType=INTEGER},
-      todays_earnings = #{todaysEarnings,jdbcType=BIGINT}
-    where date_of_the_day = #{dateOfTheDay,jdbcType=VARCHAR}
+      todays_earnings = #{todaysEarnings,jdbcType=BIGINT},
+      shop_id = #{shopId,jdbcType=BIGINT},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

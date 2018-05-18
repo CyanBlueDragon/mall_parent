@@ -1,7 +1,6 @@
 package com.yunyihenkey.supplier.web;
 
 import com.yunyihenkey.Application;
-import com.yunyihenkey.common.utils.LogUtils;
 import com.yunyihenkey.common.utils.RedisUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,16 +18,8 @@ public class RedisTest {
 
 	@Test
 	public void test() {
-		LogUtils.getLogger().info("redis::::::::::::::::::::" + redisUtil);
 
-		boolean set = redisUtil.set("DmSequenceUtil:name", "测试set方法");
-		
-		Object o= redisUtil.get("CATEGORY_KEY");
-		LogUtils.getLogger().info("debug...............set=" + o);
 		redisUtil.del("CATEGORY_KEY");
-		System.out.println(o);
-		System.out.println(32222);
-
 
 	}
 

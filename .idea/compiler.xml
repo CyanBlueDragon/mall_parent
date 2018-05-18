@@ -8,7 +8,6 @@
         <outputRelativeToContentRoot value="true" />
         <module name="mall_auth_dao" />
         <module name="mall_auth_service" />
-        <module name="mall_auth_web" />
         <module name="mall_basedao_malldb_others" />
         <module name="mall_basedao_malldb_test" />
         <module name="mall_basedao_starter" />
@@ -34,6 +33,7 @@
       <module name="mall_auth_dao_shoppingmall" target="1.8" />
       <module name="mall_auth_dao_starter" target="1.8" />
       <module name="mall_auth_dao_supplier" target="1.8" />
+      <module name="mall_auth_web" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -12,6 +12,12 @@ public class SellerUser implements Serializable {
     /** 用户名 */
     private String userName;
 
+    /** 父ID 用于员工用户 */
+    private Long parentUserId;
+
+    /** 使用人 */
+    private String nickName;
+
     /** 密码 */
     private String password;
 
@@ -33,11 +39,8 @@ public class SellerUser implements Serializable {
     /** 用户类型#0,分销商|SELLER;2,员工|STAFF */
     private Integer userType;
 
-    /** 父ID 用于员工用户 */
-    private Long parentUserId;
-
-    /** 注册来源#0,Android|Android;1,IOS|IOS;2,Web|Web */
-    private Integer registerSource;
+    /** 注册来源 */
+    private String registerSource;
 
     /** 注册ip */
     private String registerIp;
@@ -45,12 +48,24 @@ public class SellerUser implements Serializable {
     /** 城市区号 */
     private String cityCode;
 
-    /** 用户类型#0,A级分销商|A;1,B级分销商|B;2,C级分销商|C */
+    /** 省编码 */
+    private String provinceCode;
+
+    /** 分销商级别#0,A级分销商|A;1,B级分销商|B;2,C级分销商|C */
     private Integer sellerGrade;
+
+    /** 状态#0,使用中|ENABLE;1,屏蔽|DISABLE  */
+    private Integer status;
+
+    /** 最近登录时间 */
+    private Date loginTime;
 
     private Date createTime;
 
     private Date updateTime;
+
+    /** 是否删除#0,否|No;1,是|Yes */
+    private Integer isDelete;
 
     private static final long serialVersionUID = 1L;
 
@@ -76,6 +91,22 @@ public class SellerUser implements Serializable {
 
     public void setUserName(String userName) {
         this.userName = userName == null ? null : userName.trim();
+    }
+
+    public Long getParentUserId() {
+        return parentUserId;
+    }
+
+    public void setParentUserId(Long parentUserId) {
+        this.parentUserId = parentUserId;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName == null ? null : nickName.trim();
     }
 
     public String getPassword() {
@@ -134,20 +165,12 @@ public class SellerUser implements Serializable {
         this.userType = userType;
     }
 
-    public Long getParentUserId() {
-        return parentUserId;
-    }
-
-    public void setParentUserId(Long parentUserId) {
-        this.parentUserId = parentUserId;
-    }
-
-    public Integer getRegisterSource() {
+    public String getRegisterSource() {
         return registerSource;
     }
 
-    public void setRegisterSource(Integer registerSource) {
-        this.registerSource = registerSource;
+    public void setRegisterSource(String registerSource) {
+        this.registerSource = registerSource == null ? null : registerSource.trim();
     }
 
     public String getRegisterIp() {
@@ -166,12 +189,36 @@ public class SellerUser implements Serializable {
         this.cityCode = cityCode == null ? null : cityCode.trim();
     }
 
+    public String getProvinceCode() {
+        return provinceCode;
+    }
+
+    public void setProvinceCode(String provinceCode) {
+        this.provinceCode = provinceCode == null ? null : provinceCode.trim();
+    }
+
     public Integer getSellerGrade() {
         return sellerGrade;
     }
 
     public void setSellerGrade(Integer sellerGrade) {
         this.sellerGrade = sellerGrade;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Date getLoginTime() {
+        return loginTime;
+    }
+
+    public void setLoginTime(Date loginTime) {
+        this.loginTime = loginTime;
     }
 
     public Date getCreateTime() {
@@ -190,6 +237,14 @@ public class SellerUser implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -199,6 +254,8 @@ public class SellerUser implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", shopId=").append(shopId);
         sb.append(", userName=").append(userName);
+        sb.append(", parentUserId=").append(parentUserId);
+        sb.append(", nickName=").append(nickName);
         sb.append(", password=").append(password);
         sb.append(", email=").append(email);
         sb.append(", mobile=").append(mobile);
@@ -206,13 +263,16 @@ public class SellerUser implements Serializable {
         sb.append(", logoUrl=").append(logoUrl);
         sb.append(", birthday=").append(birthday);
         sb.append(", userType=").append(userType);
-        sb.append(", parentUserId=").append(parentUserId);
         sb.append(", registerSource=").append(registerSource);
         sb.append(", registerIp=").append(registerIp);
         sb.append(", cityCode=").append(cityCode);
+        sb.append(", provinceCode=").append(provinceCode);
         sb.append(", sellerGrade=").append(sellerGrade);
+        sb.append(", status=").append(status);
+        sb.append(", loginTime=").append(loginTime);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
+        sb.append(", isDelete=").append(isDelete);
         sb.append("]");
         return sb.toString();
     }

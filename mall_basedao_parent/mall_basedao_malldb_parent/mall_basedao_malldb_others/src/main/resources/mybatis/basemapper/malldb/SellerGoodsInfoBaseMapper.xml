@@ -6,39 +6,31 @@
     <result column="shop_id" jdbcType="BIGINT" property="shopId" />
     <result column="category_id" jdbcType="BIGINT" property="categoryId" />
     <result column="goods_id" jdbcType="BIGINT" property="goodsId" />
-    <result column="goods_code" jdbcType="VARCHAR" property="goodsCode" />
-    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_code" jdbcType="BIGINT" property="goodsCode" />
     <result column="stock" jdbcType="INTEGER" property="stock" />
-    <result column="sell_point" jdbcType="VARCHAR" property="sellPoint" />
+    <result column="goods_title" jdbcType="VARCHAR" property="goodsTitle" />
     <result column="delivery_template_name" jdbcType="VARCHAR" property="deliveryTemplateName" />
     <result column="supply_price" jdbcType="BIGINT" property="supplyPrice" />
     <result column="price" jdbcType="BIGINT" property="price" />
-    <result column="min_retail_price" jdbcType="BIGINT" property="minRetailPrice" />
-    <result column="max_retail_price" jdbcType="BIGINT" property="maxRetailPrice" />
     <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="pic_url" jdbcType="VARCHAR" property="picUrl" />
     <result column="create_user" jdbcType="VARCHAR" property="createUser" />
-    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
-    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="sale_amount" jdbcType="BIGINT" property="saleAmount" />
     <result column="pv_value" jdbcType="BIGINT" property="pvValue" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yunyihenkey.basedao.malldb.basevo.SellerGoodsInfo">
-    <result column="pic_url" jdbcType="LONGVARCHAR" property="picUrl" />
+    <result column="add_count" jdbcType="INTEGER" property="addCount" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, shop_id, category_id, goods_id, goods_code, goods_name, stock, sell_point, delivery_template_name, 
-    supply_price, price, min_retail_price, max_retail_price, status, create_user, create_date, 
-    update_user, update_date, sale_amount, pv_value
+    id, shop_id, category_id, goods_id, goods_code, stock, goods_title, delivery_template_name, 
+    supply_price, price, status, pic_url, create_user, create_time, update_user, update_time, 
+    sale_amount, pv_value, add_count, is_delete
   </sql>
-  <sql id="Blob_Column_List">
-    pic_url
-  </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
     from seller_goods_info
     where id = #{id,jdbcType=BIGINT}
   </select>
@@ -48,21 +40,19 @@
   </delete>
   <insert id="insert" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerGoodsInfo">
     insert into seller_goods_info (id, shop_id, category_id, 
-      goods_id, goods_code, goods_name, 
-      stock, sell_point, delivery_template_name, 
-      supply_price, price, min_retail_price, 
-      max_retail_price, status, create_user, 
-      create_date, update_user, update_date, 
-      sale_amount, pv_value, pic_url
-      )
+      goods_id, goods_code, stock, 
+      goods_title, delivery_template_name, supply_price, 
+      price, status, pic_url, 
+      create_user, create_time, update_user, 
+      update_time, sale_amount, pv_value, 
+      add_count, is_delete)
     values (#{id,jdbcType=BIGINT}, #{shopId,jdbcType=BIGINT}, #{categoryId,jdbcType=BIGINT}, 
-      #{goodsId,jdbcType=BIGINT}, #{goodsCode,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, 
-      #{stock,jdbcType=INTEGER}, #{sellPoint,jdbcType=VARCHAR}, #{deliveryTemplateName,jdbcType=VARCHAR}, 
-      #{supplyPrice,jdbcType=BIGINT}, #{price,jdbcType=BIGINT}, #{minRetailPrice,jdbcType=BIGINT}, 
-      #{maxRetailPrice,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, #{createUser,jdbcType=VARCHAR}, 
-      #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, 
-      #{saleAmount,jdbcType=BIGINT}, #{pvValue,jdbcType=BIGINT}, #{picUrl,jdbcType=LONGVARCHAR}
-      )
+      #{goodsId,jdbcType=BIGINT}, #{goodsCode,jdbcType=BIGINT}, #{stock,jdbcType=INTEGER}, 
+      #{goodsTitle,jdbcType=VARCHAR}, #{deliveryTemplateName,jdbcType=VARCHAR}, #{supplyPrice,jdbcType=BIGINT}, 
+      #{price,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, #{picUrl,jdbcType=VARCHAR}, 
+      #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{saleAmount,jdbcType=BIGINT}, #{pvValue,jdbcType=BIGINT}, 
+      #{addCount,jdbcType=INTEGER}, #{isDelete,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerGoodsInfo">
     insert into seller_goods_info
@@ -82,14 +72,11 @@
       <if test="goodsCode != null">
         goods_code,
       </if>
-      <if test="goodsName != null">
-        goods_name,
-      </if>
       <if test="stock != null">
         stock,
       </if>
-      <if test="sellPoint != null">
-        sell_point,
+      <if test="goodsTitle != null">
+        goods_title,
       </if>
       <if test="deliveryTemplateName != null">
         delivery_template_name,
@@ -100,26 +87,23 @@
       <if test="price != null">
         price,
       </if>
-      <if test="minRetailPrice != null">
-        min_retail_price,
-      </if>
-      <if test="maxRetailPrice != null">
-        max_retail_price,
-      </if>
       <if test="status != null">
         status,
+      </if>
+      <if test="picUrl != null">
+        pic_url,
       </if>
       <if test="createUser != null">
         create_user,
       </if>
-      <if test="createDate != null">
-        create_date,
+      <if test="createTime != null">
+        create_time,
       </if>
       <if test="updateUser != null">
         update_user,
       </if>
-      <if test="updateDate != null">
-        update_date,
+      <if test="updateTime != null">
+        update_time,
       </if>
       <if test="saleAmount != null">
         sale_amount,
@@ -127,8 +111,11 @@
       <if test="pvValue != null">
         pv_value,
       </if>
-      <if test="picUrl != null">
-        pic_url,
+      <if test="addCount != null">
+        add_count,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -145,16 +132,13 @@
         #{goodsId,jdbcType=BIGINT},
       </if>
       <if test="goodsCode != null">
-        #{goodsCode,jdbcType=VARCHAR},
-      </if>
-      <if test="goodsName != null">
-        #{goodsName,jdbcType=VARCHAR},
+        #{goodsCode,jdbcType=BIGINT},
       </if>
       <if test="stock != null">
         #{stock,jdbcType=INTEGER},
       </if>
-      <if test="sellPoint != null">
-        #{sellPoint,jdbcType=VARCHAR},
+      <if test="goodsTitle != null">
+        #{goodsTitle,jdbcType=VARCHAR},
       </if>
       <if test="deliveryTemplateName != null">
         #{deliveryTemplateName,jdbcType=VARCHAR},
@@ -165,26 +149,23 @@
       <if test="price != null">
         #{price,jdbcType=BIGINT},
       </if>
-      <if test="minRetailPrice != null">
-        #{minRetailPrice,jdbcType=BIGINT},
-      </if>
-      <if test="maxRetailPrice != null">
-        #{maxRetailPrice,jdbcType=BIGINT},
-      </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
+      </if>
+      <if test="picUrl != null">
+        #{picUrl,jdbcType=VARCHAR},
       </if>
       <if test="createUser != null">
         #{createUser,jdbcType=VARCHAR},
       </if>
-      <if test="createDate != null">
-        #{createDate,jdbcType=TIMESTAMP},
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateUser != null">
         #{updateUser,jdbcType=VARCHAR},
       </if>
-      <if test="updateDate != null">
-        #{updateDate,jdbcType=TIMESTAMP},
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="saleAmount != null">
         #{saleAmount,jdbcType=BIGINT},
@@ -192,8 +173,11 @@
       <if test="pvValue != null">
         #{pvValue,jdbcType=BIGINT},
       </if>
-      <if test="picUrl != null">
-        #{picUrl,jdbcType=LONGVARCHAR},
+      <if test="addCount != null">
+        #{addCount,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -210,16 +194,13 @@
         goods_id = #{goodsId,jdbcType=BIGINT},
       </if>
       <if test="goodsCode != null">
-        goods_code = #{goodsCode,jdbcType=VARCHAR},
-      </if>
-      <if test="goodsName != null">
-        goods_name = #{goodsName,jdbcType=VARCHAR},
+        goods_code = #{goodsCode,jdbcType=BIGINT},
       </if>
       <if test="stock != null">
         stock = #{stock,jdbcType=INTEGER},
       </if>
-      <if test="sellPoint != null">
-        sell_point = #{sellPoint,jdbcType=VARCHAR},
+      <if test="goodsTitle != null">
+        goods_title = #{goodsTitle,jdbcType=VARCHAR},
       </if>
       <if test="deliveryTemplateName != null">
         delivery_template_name = #{deliveryTemplateName,jdbcType=VARCHAR},
@@ -230,26 +211,23 @@
       <if test="price != null">
         price = #{price,jdbcType=BIGINT},
       </if>
-      <if test="minRetailPrice != null">
-        min_retail_price = #{minRetailPrice,jdbcType=BIGINT},
-      </if>
-      <if test="maxRetailPrice != null">
-        max_retail_price = #{maxRetailPrice,jdbcType=BIGINT},
-      </if>
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="picUrl != null">
+        pic_url = #{picUrl,jdbcType=VARCHAR},
       </if>
       <if test="createUser != null">
         create_user = #{createUser,jdbcType=VARCHAR},
       </if>
-      <if test="createDate != null">
-        create_date = #{createDate,jdbcType=TIMESTAMP},
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateUser != null">
         update_user = #{updateUser,jdbcType=VARCHAR},
       </if>
-      <if test="updateDate != null">
-        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="saleAmount != null">
         sale_amount = #{saleAmount,jdbcType=BIGINT},
@@ -257,34 +235,13 @@
       <if test="pvValue != null">
         pv_value = #{pvValue,jdbcType=BIGINT},
       </if>
-      <if test="picUrl != null">
-        pic_url = #{picUrl,jdbcType=LONGVARCHAR},
+      <if test="addCount != null">
+        add_count = #{addCount,jdbcType=INTEGER},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
       </if>
     </set>
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerGoodsInfo">
-    update seller_goods_info
-    set shop_id = #{shopId,jdbcType=BIGINT},
-      category_id = #{categoryId,jdbcType=BIGINT},
-      goods_id = #{goodsId,jdbcType=BIGINT},
-      goods_code = #{goodsCode,jdbcType=VARCHAR},
-      goods_name = #{goodsName,jdbcType=VARCHAR},
-      stock = #{stock,jdbcType=INTEGER},
-      sell_point = #{sellPoint,jdbcType=VARCHAR},
-      delivery_template_name = #{deliveryTemplateName,jdbcType=VARCHAR},
-      supply_price = #{supplyPrice,jdbcType=BIGINT},
-      price = #{price,jdbcType=BIGINT},
-      min_retail_price = #{minRetailPrice,jdbcType=BIGINT},
-      max_retail_price = #{maxRetailPrice,jdbcType=BIGINT},
-      status = #{status,jdbcType=INTEGER},
-      create_user = #{createUser,jdbcType=VARCHAR},
-      create_date = #{createDate,jdbcType=TIMESTAMP},
-      update_user = #{updateUser,jdbcType=VARCHAR},
-      update_date = #{updateDate,jdbcType=TIMESTAMP},
-      sale_amount = #{saleAmount,jdbcType=BIGINT},
-      pv_value = #{pvValue,jdbcType=BIGINT},
-      pic_url = #{picUrl,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerGoodsInfo">
@@ -292,22 +249,22 @@
     set shop_id = #{shopId,jdbcType=BIGINT},
       category_id = #{categoryId,jdbcType=BIGINT},
       goods_id = #{goodsId,jdbcType=BIGINT},
-      goods_code = #{goodsCode,jdbcType=VARCHAR},
-      goods_name = #{goodsName,jdbcType=VARCHAR},
+      goods_code = #{goodsCode,jdbcType=BIGINT},
       stock = #{stock,jdbcType=INTEGER},
-      sell_point = #{sellPoint,jdbcType=VARCHAR},
+      goods_title = #{goodsTitle,jdbcType=VARCHAR},
       delivery_template_name = #{deliveryTemplateName,jdbcType=VARCHAR},
       supply_price = #{supplyPrice,jdbcType=BIGINT},
       price = #{price,jdbcType=BIGINT},
-      min_retail_price = #{minRetailPrice,jdbcType=BIGINT},
-      max_retail_price = #{maxRetailPrice,jdbcType=BIGINT},
       status = #{status,jdbcType=INTEGER},
+      pic_url = #{picUrl,jdbcType=VARCHAR},
       create_user = #{createUser,jdbcType=VARCHAR},
-      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
       update_user = #{updateUser,jdbcType=VARCHAR},
-      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
       sale_amount = #{saleAmount,jdbcType=BIGINT},
-      pv_value = #{pvValue,jdbcType=BIGINT}
+      pv_value = #{pvValue,jdbcType=BIGINT},
+      add_count = #{addCount,jdbcType=INTEGER},
+      is_delete = #{isDelete,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

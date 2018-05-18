@@ -37,6 +37,18 @@ public class ShoppingmallOrderProductInfo implements Serializable {
     /** 发货状态#0,未发货|UNSEND;1,配送中|DISTRIBUTION;2,已签收|RECEIVED;3,退款/售后|AFTERSALE */
     private Integer sendStatus;
 
+    /** 通知发货标记#0,未通知|NOTNOTICE;1,已通知|NOTICEED */
+    private Integer noticeSign;
+
+    /** 快递单号 */
+    private String expressNumber;
+
+    /** 快递公司编码 */
+    private String expressCode;
+
+    /** 快递公司名称 */
+    private String expressCompany;
+
     /** 退款标记#0,未退款|UNREFUND;1,已退款|REFUNDED */
     private Integer refundSign;
 
@@ -54,6 +66,9 @@ public class ShoppingmallOrderProductInfo implements Serializable {
 
     /** 更新时间 */
     private Date updateTime;
+
+    /** 是否删除#0,否|No;1,是|Yes */
+    private Integer isDelete;
 
     private static final long serialVersionUID = 1L;
 
@@ -145,6 +160,38 @@ public class ShoppingmallOrderProductInfo implements Serializable {
         this.sendStatus = sendStatus;
     }
 
+    public Integer getNoticeSign() {
+        return noticeSign;
+    }
+
+    public void setNoticeSign(Integer noticeSign) {
+        this.noticeSign = noticeSign;
+    }
+
+    public String getExpressNumber() {
+        return expressNumber;
+    }
+
+    public void setExpressNumber(String expressNumber) {
+        this.expressNumber = expressNumber == null ? null : expressNumber.trim();
+    }
+
+    public String getExpressCode() {
+        return expressCode;
+    }
+
+    public void setExpressCode(String expressCode) {
+        this.expressCode = expressCode == null ? null : expressCode.trim();
+    }
+
+    public String getExpressCompany() {
+        return expressCompany;
+    }
+
+    public void setExpressCompany(String expressCompany) {
+        this.expressCompany = expressCompany == null ? null : expressCompany.trim();
+    }
+
     public Integer getRefundSign() {
         return refundSign;
     }
@@ -193,6 +240,14 @@ public class ShoppingmallOrderProductInfo implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -210,12 +265,17 @@ public class ShoppingmallOrderProductInfo implements Serializable {
         sb.append(", postageAmount=").append(postageAmount);
         sb.append(", postageType=").append(postageType);
         sb.append(", sendStatus=").append(sendStatus);
+        sb.append(", noticeSign=").append(noticeSign);
+        sb.append(", expressNumber=").append(expressNumber);
+        sb.append(", expressCode=").append(expressCode);
+        sb.append(", expressCompany=").append(expressCompany);
         sb.append(", refundSign=").append(refundSign);
         sb.append(", sendTime=").append(sendTime);
         sb.append(", receivedTime=").append(receivedTime);
         sb.append(", refundTime=").append(refundTime);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
+        sb.append(", isDelete=").append(isDelete);
         sb.append("]");
         return sb.toString();
     }

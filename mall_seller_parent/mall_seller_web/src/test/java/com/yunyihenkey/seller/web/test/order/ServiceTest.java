@@ -1,8 +1,22 @@
 package com.yunyihenkey.seller.web.test.order;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.Date;
+import java.util.List;
+
+import com.yunyihenkey.seller.dao.malldb.vo.param.deliverGoodsController.DeliveryParam;
+import com.yunyihenkey.seller.dao.malldb.vo.param.orderController.ShoppingmallOrderInfoResult;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yunyihenkey.Application;
+import com.yunyihenkey.basedao.malldb.basevo.ShoppingmallOrderAftersaleInfo;
 import com.yunyihenkey.basedao.malldb.basevo.ShoppingmallOrderInfo;
 import com.yunyihenkey.basedao.malldb.basevo.ShoppingmallOrderProductInfo;
 import com.yunyihenkey.basedao.malldb.basevoEnum.ShoppingmallOrderInfo.OrderStatusEnum;
@@ -10,24 +24,12 @@ import com.yunyihenkey.common.idworker.IdWorker;
 import com.yunyihenkey.common.utils.excel.ExcelUtils;
 import com.yunyihenkey.seller.dao.malldb.exportVo.OrderAftersaleExportVo;
 import com.yunyihenkey.seller.dao.malldb.exportVo.OrderProductExportVo;
-import com.yunyihenkey.seller.dao.malldb.vo.ShoppingmallOrderInfoVo;
+import com.yunyihenkey.seller.dao.malldb.vo.param.aftersaleController.OrderAftersaleInfoParam;
+import com.yunyihenkey.seller.dao.malldb.vo.param.deliverGoodsController.OrderProductInfoParam;
+import com.yunyihenkey.seller.dao.malldb.vo.param.orderController.OrderInfoParam;
 import com.yunyihenkey.seller.service.ShoppingmallOrderAftersaleInfoService;
 import com.yunyihenkey.seller.service.ShoppingmallOrderInfoService;
 import com.yunyihenkey.seller.service.ShoppingmallOrderProductInfoService;
-import com.yunyihenkey.seller.web.vo.param.aftersaleController.OrderAftersaleInfoParam;
-import com.yunyihenkey.seller.web.vo.param.deliverGoodsController.OrderProductInfoParam;
-import com.yunyihenkey.seller.web.vo.param.orderController.OrderInfoParam;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @Author SunQ
@@ -56,8 +58,8 @@ public class ServiceTest {
         param.setPageSize(10);
         param.setMallId("45899847553249281");
         param.setOrderStatus(new int[]{OrderStatusEnum.WAITPAY.getValue(), OrderStatusEnum.WAITSEND.getValue(), OrderStatusEnum.WAITRECEIVED.getValue()});
-        List<ShoppingmallOrderInfoVo> list = shoppingmallOrderInfoService.selectAllByPage(param.getMallId(), param.getOrderCode(), param.getMemberAccount(), param.getOrderStatus());
-        PageInfo<ShoppingmallOrderInfoVo> pageInfo = new PageInfo<ShoppingmallOrderInfoVo>(list);
+        List<ShoppingmallOrderInfoResult> list = shoppingmallOrderInfoService.selectAllByPage(param.getMallId(), param.getOrderCode(), param.getMemberAccount(), param.getOrderStatus());
+        PageInfo<ShoppingmallOrderInfoResult> pageInfo = new PageInfo<ShoppingmallOrderInfoResult>(list);
         System.out.print(pageInfo);
     }
 
@@ -69,7 +71,7 @@ public class ServiceTest {
 
     @Test
     public void selectByOrderCode() {
-        ShoppingmallOrderInfoVo shoppingmallOrderInfo = shoppingmallOrderInfoService.selectByOrderCode("45899847553249282");
+        ShoppingmallOrderInfoResult shoppingmallOrderInfo = shoppingmallOrderInfoService.selectByOrderCode("45899847553249282");
         System.out.print(shoppingmallOrderInfo);
     }
 
@@ -98,7 +100,7 @@ public class ServiceTest {
         param.setPageNum(1);
         param.setPageSize(10);
         PageHelper.startPage(param.getPageNum(), param.getPageSize());
-        List<Map<String, Object>> list = shoppingmallOrderProductInfoService.selectAllByPage(param.getMallId(), param.getSupplierId(), param.getProductName(), param.getReceiverName());
+        List<ShoppingmallOrderProductInfo> list = shoppingmallOrderProductInfoService.selectAllByPage(param.getMallId(), param.getSupplierId(), param.getProductName(), param.getReceiverName());
         System.out.print(list);
     }
 
@@ -118,12 +120,23 @@ public class ServiceTest {
     }
 
     @Test
+    public void delivery() {
+        DeliveryParam deliveryParam = new DeliveryParam();
+        deliveryParam.setOrderProductId("46651047849881600");
+        deliveryParam.setOrderCode("45899847553249282");
+        deliveryParam.setExpressNumber("123");
+        deliveryParam.setExpressCode("sf");
+        deliveryParam.setExpressCompany("顺丰速运");
+        System.out.print(shoppingmallOrderProductInfoService.delivery(deliveryParam));
+    }
+
+    @Test
     public void selectAllByPage3() {
         OrderAftersaleInfoParam param = new OrderAftersaleInfoParam();
         param.setPageNum(1);
         param.setPageSize(10);
         PageHelper.startPage(param.getPageNum(), param.getPageSize());
-        List<Map<String, Object>> list = shoppingmallOrderAftersaleInfoService.selectAllByPage(param.getMallId(), param.getOrderCode(), param.getMemberAccount(), param.getAftersaleStatus());
+        List<ShoppingmallOrderAftersaleInfo> list = shoppingmallOrderAftersaleInfoService.selectAllByPage(param.getMallId(), param.getOrderCode(), param.getMemberAccount(), param.getAftersaleStatus());
         System.out.print(list);
     }
 

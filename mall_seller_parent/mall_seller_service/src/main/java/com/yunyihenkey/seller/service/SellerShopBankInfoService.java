@@ -1,7 +1,10 @@
 package com.yunyihenkey.seller.service;
 
+import java.util.List;
+
 import com.yunyihenkey.basedao.malldb.basevo.SellerShopBankInfo;
 import com.yunyihenkey.common.vo.base.BaseService;
+import com.yunyihenkey.seller.dao.malldb.vo.param.accountController.GetBankListResult;
 
 /**
  * 
@@ -12,6 +15,8 @@ import com.yunyihenkey.common.vo.base.BaseService;
  */
 public interface SellerShopBankInfoService extends BaseService<SellerShopBankInfo, Long> {
 
-	boolean isExistCard(String shopId, String bankCardNumber);
+	boolean isExistCard(Long shopId, String bankCardNumber);
+
+	List<GetBankListResult> getBankCardList(Long shopId);
 
 }

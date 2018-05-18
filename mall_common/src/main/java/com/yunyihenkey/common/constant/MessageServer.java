@@ -9,6 +9,7 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 import com.yunyihenkey.common.vo.base.SMSResult;
+import org.springframework.stereotype.Component;
 
 
 import java.util.Random;
@@ -17,12 +18,11 @@ import java.util.Random;
  * @author LiarYang
  * @date 2018/4/28 10:43
 */
-
-
+@Component
 public class MessageServer {
 
 
-    public SMSResult sendMessage(String phoneNumber , Integer type){
+    public SMSResult sendMessage(String phoneNumber , SMSTemplateEnum smsTemplateEnum){
         SMSResult smsResult = new SMSResult();
         System.setProperty("sun.net.client.defaultConnectTimeout", "20000");
         System.setProperty("sun.net.client.defaultReadTimeout", "20000");
@@ -49,11 +49,14 @@ public class MessageServer {
         // 必填:短信签名-可在短信控制台中找到
         request.setSignName("阿里云短信测试专用");
         // 必填:短信模板-可在短信控制台中找到
-        request.setTemplateCode(SMSTemplateEnum.getByValue(type).getText());
+        request.setTemplateCode(smsTemplateEnum.getText());
         // 可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
         int x = new Random().nextInt(1000000);
-        String  template = null;//根据不用类型选择不同的短信模板
-        switch (type){
+        while (x <100000 ){
+            x = x * 10;
+        }
+        String  template = "{\"code\":\"" + x + "\"}";//根据不用类型选择不同的短信模板
+        switch (smsTemplateEnum.getValue()){
             case 1:
                 template =  "{\"code\":\"" + x + "\"}";
                 break;
@@ -77,11 +80,11 @@ public class MessageServer {
                     redisUtil.expire(key,0);
                 }*/
                 smsResult.setCode(String.valueOf(x));
-                smsResult.setResulltMesseage(sendSmsResponse.getCode());
+                smsResult.setResult(true);
 
                 return smsResult;
                 }
-                 smsResult.setResulltMesseage(sendSmsResponse.getCode());
+                 smsResult.setResult(false);
                 return smsResult;
             }
             return null;
@@ -91,6 +94,10 @@ public class MessageServer {
 
 
     public static void main(String[] args) {
-       // new MessageServer().sendMessage("13267077260",1);
+        int x = new Random().nextInt(1000000);
+        while (x <100000 ){
+            x = x * 10;
+        }
+        System.out.println(x);
     }
 }

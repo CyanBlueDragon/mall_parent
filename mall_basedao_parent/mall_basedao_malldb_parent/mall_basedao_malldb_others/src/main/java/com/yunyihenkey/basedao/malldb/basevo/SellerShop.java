@@ -19,6 +19,9 @@ public class SellerShop implements Serializable {
     /** 支付密码 */
     private String payPassword;
 
+    /** 支付密码绑定的手机（用于下次修改支付密码） */
+    private String payPasswordMobile;
+
     /** 店铺审核状态#0,待审核|PENDING;1,审核通过|PASSED;2,审核不通过|NOT_THROUGH  */
     private Integer auditStatus;
 
@@ -56,7 +59,7 @@ public class SellerShop implements Serializable {
     /** 店铺链接 */
     private String url;
 
-    /** 用户类型#0,A级分销商|A;1,B级分销商|B;2,C级分销商|C */
+    /** 分销商级别#0,A级分销商|A;1,B级分销商|B;2,C级分销商|C */
     private Integer sellerGrade;
 
     /** 上级店铺Id */
@@ -71,8 +74,8 @@ public class SellerShop implements Serializable {
     /** 银联支付是否开启#0,停用|DISABLE;1,启用|ENABLE */
     private Integer payUnion;
 
-    /** 未支付倒计时 格式 d-h-m-s */
-    private String unpaidTime;
+    /** 未支付倒计时 单位秒 */
+    private Long unpaidTime;
 
     /** 订单确认收货 */
     private Integer confirmOrderTime;
@@ -86,14 +89,29 @@ public class SellerShop implements Serializable {
     /** 买家申请退换货 */
     private Integer returnOrderTime;
 
-    /** 状态#0,停用|DISABLE;1,启用|ENABLE */
-    private Integer enableFlag;
+    /** 店铺营业额 */
+    private Long shopTurnover;
+
+    /** 总销量 */
+    private Integer totalSales;
+
+    /** 退款金额 */
+    private Long refundAmount;
+
+    /** 退款总数量 */
+    private Integer refundCount;
+
+    /** 店铺商品数量 */
+    private Integer storeQuantity;
 
     /** 创建时间 */
     private Date createTime;
 
     /** 修改时间 */
     private Date updateTime;
+
+    /** 是否删除#0,否|No;1,是|Yes */
+    private Integer isDelete;
 
     private static final long serialVersionUID = 1L;
 
@@ -135,6 +153,14 @@ public class SellerShop implements Serializable {
 
     public void setPayPassword(String payPassword) {
         this.payPassword = payPassword == null ? null : payPassword.trim();
+    }
+
+    public String getPayPasswordMobile() {
+        return payPasswordMobile;
+    }
+
+    public void setPayPasswordMobile(String payPasswordMobile) {
+        this.payPasswordMobile = payPasswordMobile == null ? null : payPasswordMobile.trim();
     }
 
     public Integer getAuditStatus() {
@@ -281,12 +307,12 @@ public class SellerShop implements Serializable {
         this.payUnion = payUnion;
     }
 
-    public String getUnpaidTime() {
+    public Long getUnpaidTime() {
         return unpaidTime;
     }
 
-    public void setUnpaidTime(String unpaidTime) {
-        this.unpaidTime = unpaidTime == null ? null : unpaidTime.trim();
+    public void setUnpaidTime(Long unpaidTime) {
+        this.unpaidTime = unpaidTime;
     }
 
     public Integer getConfirmOrderTime() {
@@ -321,12 +347,44 @@ public class SellerShop implements Serializable {
         this.returnOrderTime = returnOrderTime;
     }
 
-    public Integer getEnableFlag() {
-        return enableFlag;
+    public Long getShopTurnover() {
+        return shopTurnover;
     }
 
-    public void setEnableFlag(Integer enableFlag) {
-        this.enableFlag = enableFlag;
+    public void setShopTurnover(Long shopTurnover) {
+        this.shopTurnover = shopTurnover;
+    }
+
+    public Integer getTotalSales() {
+        return totalSales;
+    }
+
+    public void setTotalSales(Integer totalSales) {
+        this.totalSales = totalSales;
+    }
+
+    public Long getRefundAmount() {
+        return refundAmount;
+    }
+
+    public void setRefundAmount(Long refundAmount) {
+        this.refundAmount = refundAmount;
+    }
+
+    public Integer getRefundCount() {
+        return refundCount;
+    }
+
+    public void setRefundCount(Integer refundCount) {
+        this.refundCount = refundCount;
+    }
+
+    public Integer getStoreQuantity() {
+        return storeQuantity;
+    }
+
+    public void setStoreQuantity(Integer storeQuantity) {
+        this.storeQuantity = storeQuantity;
     }
 
     public Date getCreateTime() {
@@ -345,6 +403,14 @@ public class SellerShop implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -356,6 +422,7 @@ public class SellerShop implements Serializable {
         sb.append(", name=").append(name);
         sb.append(", majorBusiness=").append(majorBusiness);
         sb.append(", payPassword=").append(payPassword);
+        sb.append(", payPasswordMobile=").append(payPasswordMobile);
         sb.append(", auditStatus=").append(auditStatus);
         sb.append(", auditTime=").append(auditTime);
         sb.append(", logoUrl=").append(logoUrl);
@@ -379,9 +446,14 @@ public class SellerShop implements Serializable {
         sb.append(", refundTime=").append(refundTime);
         sb.append(", sellOutTime=").append(sellOutTime);
         sb.append(", returnOrderTime=").append(returnOrderTime);
-        sb.append(", enableFlag=").append(enableFlag);
+        sb.append(", shopTurnover=").append(shopTurnover);
+        sb.append(", totalSales=").append(totalSales);
+        sb.append(", refundAmount=").append(refundAmount);
+        sb.append(", refundCount=").append(refundCount);
+        sb.append(", storeQuantity=").append(storeQuantity);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
+        sb.append(", isDelete=").append(isDelete);
         sb.append("]");
         return sb.toString();
     }

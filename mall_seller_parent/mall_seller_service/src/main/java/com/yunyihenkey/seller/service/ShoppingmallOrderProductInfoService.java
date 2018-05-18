@@ -3,6 +3,7 @@ package com.yunyihenkey.seller.service;
 import com.yunyihenkey.basedao.malldb.basevo.ShoppingmallOrderProductInfo;
 import com.yunyihenkey.common.vo.base.BaseService;
 import com.yunyihenkey.seller.dao.malldb.exportVo.OrderProductExportVo;
+import com.yunyihenkey.seller.dao.malldb.vo.param.deliverGoodsController.DeliveryParam;
 
 import java.util.List;
 import java.util.Map;
@@ -18,9 +19,9 @@ public interface ShoppingmallOrderProductInfoService extends BaseService<Shoppin
      * @author SunQ
      * @Date 15:57 2018/5/11 0011
      * @Param [mallId, supplierId, productName, receiverName]
-     * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
+     * @return java.util.List<ShoppingmallOrderProductInfo>
      */
-    List<Map<String, Object>> selectAllByPage(String mallId, String supplierId, String productName, String receiverName);
+    List<ShoppingmallOrderProductInfo> selectAllByPage(String mallId, String supplierId, String productName, String receiverName);
 
     /**
      * 新增
@@ -48,4 +49,22 @@ public interface ShoppingmallOrderProductInfoService extends BaseService<Shoppin
      * @return java.util.List<com.yunyihenkey.seller.dao.malldb.exportVo.OrderProductExportVo>
      */
     List<OrderProductExportVo> selectExportVo(String mallId, String supplierId, String productName, String receiverName);
+    
+    /**
+     * 通知发货
+     * @author SunQ
+     * @Date 10:15 2018/5/12
+     * @Param [id]
+     * @return boolean
+     */
+    boolean noticeSend(Long id);
+    
+    /**
+     * 订单发货
+     * @author SunQ
+     * @Date 10:06 2018/5/18
+     * @Param [deliveryParam]
+     * @return boolean
+     */
+    boolean delivery(DeliveryParam deliveryParam);
 }

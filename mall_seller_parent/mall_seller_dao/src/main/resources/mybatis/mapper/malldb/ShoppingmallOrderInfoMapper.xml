@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yunyihenkey.seller.dao.malldb.mapper.ShoppingmallOrderInfoMapper">
 
-    <resultMap id="BaseResultMap" type="com.yunyihenkey.seller.dao.malldb.vo.ShoppingmallOrderInfoVo">
+    <resultMap id="BaseResultMap" type="com.yunyihenkey.seller.dao.malldb.vo.param.orderController.ShoppingmallOrderInfoResult">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="mall_id" jdbcType="BIGINT" property="mallId"/>
         <result column="order_code" jdbcType="BIGINT" property="orderCode"/>
@@ -27,6 +27,28 @@
                     select="com.yunyihenkey.seller.dao.malldb.mapper.ShoppingmallOrderProductInfoMapper.selectByOrderCode"></collection>
     </resultMap>
 
+    <resultMap id="ShoppingmallOrderInfo" type="com.yunyihenkey.basedao.malldb.basevo.ShoppingmallOrderInfo">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="mall_id" jdbcType="BIGINT" property="mallId" />
+        <result column="order_code" jdbcType="BIGINT" property="orderCode" />
+        <result column="order_amount" jdbcType="BIGINT" property="orderAmount" />
+        <result column="discount_amount" jdbcType="BIGINT" property="discountAmount" />
+        <result column="postage_amount" jdbcType="BIGINT" property="postageAmount" />
+        <result column="pay_amount" jdbcType="BIGINT" property="payAmount" />
+        <result column="refund_amount" jdbcType="BIGINT" property="refundAmount" />
+        <result column="order_status" jdbcType="INTEGER" property="orderStatus" />
+        <result column="member_id" jdbcType="BIGINT" property="memberId" />
+        <result column="member_account" jdbcType="VARCHAR" property="memberAccount" />
+        <result column="member_name" jdbcType="VARCHAR" property="memberName" />
+        <result column="receiver_name" jdbcType="VARCHAR" property="receiverName" />
+        <result column="receiver_phone" jdbcType="VARCHAR" property="receiverPhone" />
+        <result column="receiver_address" jdbcType="VARCHAR" property="receiverAddress" />
+        <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
+        <result column="cancle_time" jdbcType="TIMESTAMP" property="cancleTime" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+
     <sql id="Base_Column_List">
         id, mall_id, order_code, order_amount, discount_amount, postage_amount, pay_amount,
         refund_amount, order_status, member_id, member_account, member_name, receiver_name,
@@ -48,7 +70,7 @@
         <if test="memberAccount != null and memberAccount != ''">
             AND member_account LIKE CONCAT(CONCAT('%',#{memberAccount},'%'))
         </if>
-        <if test="orderStatus != null">
+        <if test="orderStatus != null and orderStatus.length > 0">
             AND order_status IN
             <foreach collection="orderStatus" separator="," open="(" close=")" item="status">
               #{status}
@@ -57,12 +79,20 @@
         ORDER BY order_status ASC, create_time DESC
     </select>
 
-    <!-- 订单号查询 -->
+    <!-- 订单号查询(返回订单信息+订单商品集合) -->
     <select id="selectByOrderCode" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List" />
         FROM shoppingmall_order_info
         WHERE order_code LIKE CONCAT(CONCAT('%',#{orderCode},'%'))
+    </select>
+
+    <!-- 订单号查询(只返回订单信息) -->
+    <select id="selectByOrderCodeSingle" resultMap="ShoppingmallOrderInfo">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM shoppingmall_order_info
+        WHERE order_code = #{orderCode}
     </select>
 
 </mapper>

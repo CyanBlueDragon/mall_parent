@@ -21,12 +21,15 @@ public class SellerPerm implements Serializable {
     /** 描述 */
     private String description;
 
-    /** 资源类型 0,URL|URL;1,菜单|menu */
+    /** 资源类型 0,button|按钮;1,菜单|menu */
     private Integer type;
 
     private Date createTime;
 
     private Date updateTime;
+
+    /** 图标 */
+    private String icon;
 
     private static final long serialVersionUID = 1L;
 
@@ -102,6 +105,14 @@ public class SellerPerm implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon == null ? null : icon.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -117,6 +128,7 @@ public class SellerPerm implements Serializable {
         sb.append(", type=").append(type);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
+        sb.append(", icon=").append(icon);
         sb.append("]");
         return sb.toString();
     }

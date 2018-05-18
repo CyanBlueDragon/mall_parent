@@ -9,6 +9,8 @@ public enum StatusEnum {
 	selling(1,"上架中"),
 	/**已售罄*/
 	sold(2,"已售罄"),
+	/**已下架*/
+	already_down(3,"已下架"),
 	;
 	private int value;
 	private String text;

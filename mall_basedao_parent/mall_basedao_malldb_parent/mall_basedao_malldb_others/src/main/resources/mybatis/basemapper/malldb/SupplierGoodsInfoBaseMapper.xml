@@ -17,9 +17,13 @@
     <result column="max_retail_price" jdbcType="BIGINT" property="maxRetailPrice" />
     <result column="sale_amount" jdbcType="BIGINT" property="saleAmount" />
     <result column="pv_value" jdbcType="BIGINT" property="pvValue" />
+    <result column="min_profit" jdbcType="VARCHAR" property="minProfit" />
+    <result column="max_profit" jdbcType="VARCHAR" property="maxProfit" />
     <result column="create_user" jdbcType="VARCHAR" property="createUser" />
-    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsInfo">
     <result column="pic_url" jdbcType="LONGVARCHAR" property="picUrl" />
@@ -27,7 +31,8 @@
   <sql id="Base_Column_List">
     id, category_id, supplier_id, goods_code, goods_name, cat_id, stock, sell_point, 
     delivery_template_name, status, supply_price, min_retail_price, max_retail_price, 
-    sale_amount, pv_value, create_user, create_date, update_date
+    sale_amount, pv_value, min_profit, max_profit, create_user, update_user, create_time, 
+    update_time, is_delete
   </sql>
   <sql id="Blob_Column_List">
     pic_url
@@ -50,15 +55,17 @@
       stock, sell_point, delivery_template_name, 
       status, supply_price, min_retail_price, 
       max_retail_price, sale_amount, pv_value, 
-      create_user, create_date, update_date, 
-      pic_url)
+      min_profit, max_profit, create_user, 
+      update_user, create_time, update_time, 
+      is_delete, pic_url)
     values (#{id,jdbcType=BIGINT}, #{categoryId,jdbcType=BIGINT}, #{supplierId,jdbcType=BIGINT}, 
       #{goodsCode,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, #{catId,jdbcType=INTEGER}, 
       #{stock,jdbcType=INTEGER}, #{sellPoint,jdbcType=VARCHAR}, #{deliveryTemplateName,jdbcType=VARCHAR}, 
       #{status,jdbcType=INTEGER}, #{supplyPrice,jdbcType=BIGINT}, #{minRetailPrice,jdbcType=BIGINT}, 
       #{maxRetailPrice,jdbcType=BIGINT}, #{saleAmount,jdbcType=BIGINT}, #{pvValue,jdbcType=BIGINT}, 
-      #{createUser,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{updateDate,jdbcType=TIMESTAMP}, 
-      #{picUrl,jdbcType=LONGVARCHAR})
+      #{minProfit,jdbcType=VARCHAR}, #{maxProfit,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+      #{updateUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
+      #{isDelete,jdbcType=INTEGER}, #{picUrl,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsInfo">
     insert into supplier_goods_info
@@ -108,14 +115,26 @@
       <if test="pvValue != null">
         pv_value,
       </if>
+      <if test="minProfit != null">
+        min_profit,
+      </if>
+      <if test="maxProfit != null">
+        max_profit,
+      </if>
       <if test="createUser != null">
         create_user,
       </if>
-      <if test="createDate != null">
-        create_date,
+      <if test="updateUser != null">
+        update_user,
       </if>
-      <if test="updateDate != null">
-        update_date,
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
       </if>
       <if test="picUrl != null">
         pic_url,
@@ -167,14 +186,26 @@
       <if test="pvValue != null">
         #{pvValue,jdbcType=BIGINT},
       </if>
+      <if test="minProfit != null">
+        #{minProfit,jdbcType=VARCHAR},
+      </if>
+      <if test="maxProfit != null">
+        #{maxProfit,jdbcType=VARCHAR},
+      </if>
       <if test="createUser != null">
         #{createUser,jdbcType=VARCHAR},
       </if>
-      <if test="createDate != null">
-        #{createDate,jdbcType=TIMESTAMP},
+      <if test="updateUser != null">
+        #{updateUser,jdbcType=VARCHAR},
       </if>
-      <if test="updateDate != null">
-        #{updateDate,jdbcType=TIMESTAMP},
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
       </if>
       <if test="picUrl != null">
         #{picUrl,jdbcType=LONGVARCHAR},
@@ -226,14 +257,26 @@
       <if test="pvValue != null">
         pv_value = #{pvValue,jdbcType=BIGINT},
       </if>
+      <if test="minProfit != null">
+        min_profit = #{minProfit,jdbcType=VARCHAR},
+      </if>
+      <if test="maxProfit != null">
+        max_profit = #{maxProfit,jdbcType=VARCHAR},
+      </if>
       <if test="createUser != null">
         create_user = #{createUser,jdbcType=VARCHAR},
       </if>
-      <if test="createDate != null">
-        create_date = #{createDate,jdbcType=TIMESTAMP},
+      <if test="updateUser != null">
+        update_user = #{updateUser,jdbcType=VARCHAR},
       </if>
-      <if test="updateDate != null">
-        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
       </if>
       <if test="picUrl != null">
         pic_url = #{picUrl,jdbcType=LONGVARCHAR},
@@ -257,9 +300,13 @@
       max_retail_price = #{maxRetailPrice,jdbcType=BIGINT},
       sale_amount = #{saleAmount,jdbcType=BIGINT},
       pv_value = #{pvValue,jdbcType=BIGINT},
+      min_profit = #{minProfit,jdbcType=VARCHAR},
+      max_profit = #{maxProfit,jdbcType=VARCHAR},
       create_user = #{createUser,jdbcType=VARCHAR},
-      create_date = #{createDate,jdbcType=TIMESTAMP},
-      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=INTEGER},
       pic_url = #{picUrl,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -279,9 +326,13 @@
       max_retail_price = #{maxRetailPrice,jdbcType=BIGINT},
       sale_amount = #{saleAmount,jdbcType=BIGINT},
       pv_value = #{pvValue,jdbcType=BIGINT},
+      min_profit = #{minProfit,jdbcType=VARCHAR},
+      max_profit = #{maxProfit,jdbcType=VARCHAR},
       create_user = #{createUser,jdbcType=VARCHAR},
-      create_date = #{createDate,jdbcType=TIMESTAMP},
-      update_date = #{updateDate,jdbcType=TIMESTAMP}
+      update_user = #{updateUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

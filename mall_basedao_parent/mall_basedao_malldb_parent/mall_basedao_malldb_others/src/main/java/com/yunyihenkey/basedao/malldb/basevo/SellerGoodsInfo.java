@@ -7,7 +7,7 @@ public class SellerGoodsInfo implements Serializable {
     /** 主键 */
     private Long id;
 
-    /** 店铺编号 */
+    /** 店铺id */
     private Long shopId;
 
     /** 分类id */
@@ -16,17 +16,14 @@ public class SellerGoodsInfo implements Serializable {
     /** 供应商商品id */
     private Long goodsId;
 
-    /** 商品编码 */
-    private String goodsCode;
-
-    /** 商品名称 */
-    private String goodsName;
+    /** 商品编号 */
+    private Long goodsCode;
 
     /** 库存 */
     private Integer stock;
 
-    /** 卖点 */
-    private String sellPoint;
+    /** 商品标题 */
+    private String goodsTitle;
 
     /** 运费模版 */
     private String deliveryTemplateName;
@@ -37,26 +34,23 @@ public class SellerGoodsInfo implements Serializable {
     /** 商品单价（单位分） */
     private Long price;
 
-    /** 建议最小价格（单位分） */
-    private Long minRetailPrice;
-
-    /** 建议最大价格（单位分） */
-    private Long maxRetailPrice;
-
-    /** 商品状态#0,仓库中|warehouse;1,上架中|selling;2,已售罄|sold */
+    /** 商品状态#0,仓库中|warehouse;1,上架中|selling;2,已售罄|sold;3,已下架|already_down */
     private Integer status;
+
+    /** 默认图片 */
+    private String picUrl;
 
     /** 创建人 */
     private String createUser;
 
     /** 创建时间 */
-    private Date createDate;
+    private Date createTime;
 
     /** 修改人 */
     private String updateUser;
 
     /** 修改时间 */
-    private Date updateDate;
+    private Date updateTime;
 
     /** 销量 */
     private Long saleAmount;
@@ -64,8 +58,11 @@ public class SellerGoodsInfo implements Serializable {
     /** 点击量 */
     private Long pvValue;
 
-    /** 默认图片 */
-    private String picUrl;
+    /** 商品添加次数 */
+    private Integer addCount;
+
+    /** 是否删除#0,否|No;1,是|Yes */
+    private Integer isDelete;
 
     private static final long serialVersionUID = 1L;
 
@@ -101,20 +98,12 @@ public class SellerGoodsInfo implements Serializable {
         this.goodsId = goodsId;
     }
 
-    public String getGoodsCode() {
+    public Long getGoodsCode() {
         return goodsCode;
     }
 
-    public void setGoodsCode(String goodsCode) {
-        this.goodsCode = goodsCode == null ? null : goodsCode.trim();
-    }
-
-    public String getGoodsName() {
-        return goodsName;
-    }
-
-    public void setGoodsName(String goodsName) {
-        this.goodsName = goodsName == null ? null : goodsName.trim();
+    public void setGoodsCode(Long goodsCode) {
+        this.goodsCode = goodsCode;
     }
 
     public Integer getStock() {
@@ -125,12 +114,12 @@ public class SellerGoodsInfo implements Serializable {
         this.stock = stock;
     }
 
-    public String getSellPoint() {
-        return sellPoint;
+    public String getGoodsTitle() {
+        return goodsTitle;
     }
 
-    public void setSellPoint(String sellPoint) {
-        this.sellPoint = sellPoint == null ? null : sellPoint.trim();
+    public void setGoodsTitle(String goodsTitle) {
+        this.goodsTitle = goodsTitle == null ? null : goodsTitle.trim();
     }
 
     public String getDeliveryTemplateName() {
@@ -157,28 +146,20 @@ public class SellerGoodsInfo implements Serializable {
         this.price = price;
     }
 
-    public Long getMinRetailPrice() {
-        return minRetailPrice;
-    }
-
-    public void setMinRetailPrice(Long minRetailPrice) {
-        this.minRetailPrice = minRetailPrice;
-    }
-
-    public Long getMaxRetailPrice() {
-        return maxRetailPrice;
-    }
-
-    public void setMaxRetailPrice(Long maxRetailPrice) {
-        this.maxRetailPrice = maxRetailPrice;
-    }
-
     public Integer getStatus() {
         return status;
     }
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl == null ? null : picUrl.trim();
     }
 
     public String getCreateUser() {
@@ -189,12 +170,12 @@ public class SellerGoodsInfo implements Serializable {
         this.createUser = createUser == null ? null : createUser.trim();
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public String getUpdateUser() {
@@ -205,12 +186,12 @@ public class SellerGoodsInfo implements Serializable {
         this.updateUser = updateUser == null ? null : updateUser.trim();
     }
 
-    public Date getUpdateDate() {
-        return updateDate;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
     public Long getSaleAmount() {
@@ -229,12 +210,20 @@ public class SellerGoodsInfo implements Serializable {
         this.pvValue = pvValue;
     }
 
-    public String getPicUrl() {
-        return picUrl;
+    public Integer getAddCount() {
+        return addCount;
     }
 
-    public void setPicUrl(String picUrl) {
-        this.picUrl = picUrl == null ? null : picUrl.trim();
+    public void setAddCount(Integer addCount) {
+        this.addCount = addCount;
+    }
+
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
     }
 
     @Override
@@ -248,22 +237,21 @@ public class SellerGoodsInfo implements Serializable {
         sb.append(", categoryId=").append(categoryId);
         sb.append(", goodsId=").append(goodsId);
         sb.append(", goodsCode=").append(goodsCode);
-        sb.append(", goodsName=").append(goodsName);
         sb.append(", stock=").append(stock);
-        sb.append(", sellPoint=").append(sellPoint);
+        sb.append(", goodsTitle=").append(goodsTitle);
         sb.append(", deliveryTemplateName=").append(deliveryTemplateName);
         sb.append(", supplyPrice=").append(supplyPrice);
         sb.append(", price=").append(price);
-        sb.append(", minRetailPrice=").append(minRetailPrice);
-        sb.append(", maxRetailPrice=").append(maxRetailPrice);
         sb.append(", status=").append(status);
+        sb.append(", picUrl=").append(picUrl);
         sb.append(", createUser=").append(createUser);
-        sb.append(", createDate=").append(createDate);
+        sb.append(", createTime=").append(createTime);
         sb.append(", updateUser=").append(updateUser);
-        sb.append(", updateDate=").append(updateDate);
+        sb.append(", updateTime=").append(updateTime);
         sb.append(", saleAmount=").append(saleAmount);
         sb.append(", pvValue=").append(pvValue);
-        sb.append(", picUrl=").append(picUrl);
+        sb.append(", addCount=").append(addCount);
+        sb.append(", isDelete=").append(isDelete);
         sb.append("]");
         return sb.toString();
     }

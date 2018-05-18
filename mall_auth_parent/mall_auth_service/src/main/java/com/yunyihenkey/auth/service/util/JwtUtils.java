@@ -11,11 +11,12 @@ import java.util.UUID;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
+import com.yunyihenkey.basedao.malldb.basemapper.SellerUserBaseMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.yunyihenkey.auth.service.enums.LoginSourceEnum;
+import com.yunyihenkey.auth.service.enums.ReqSourceEnum;
 import com.yunyihenkey.auth.service.vo.authjwt.seller.AuthSellerUser;
 import com.yunyihenkey.basedao.malldb.basemapper.SellerUserTokenBaseMapper;
 import com.yunyihenkey.basedao.malldb.basevo.SellerPerm;
@@ -41,16 +42,17 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JwtUtils {
-	@Autowired
+	@Autowired(required = false)
 	private AuthSellerPermMapper authSellerPermMapper;
-	@Autowired
+	@Autowired(required = false)
 	private AuthSellerUserMapper authSellerUserMapper;
 	@Autowired
 	private SellerUserTokenBaseMapper sellerUserTokenBaseMapper;
 
 	@Autowired
 	private RedisUtil redisUtil;
-
+	@Autowired
+	private SellerUserBaseMapper sellerUserBaseMapper;
 	/**
 	 * 公钥
 	 */
@@ -98,6 +100,7 @@ public class JwtUtils {
 			throw new IllegalArgumentException("错误的系统编码！！！！");
 		}
 
+		// 将map值复制到对象中
 		AuthSellerUser authSellerUser = BeanMapUtils
 				.mapToBean((Map<String, Object>) body.get(JwtConstants.JWT_USER_INFO), new AuthSellerUser());
 
@@ -132,12 +135,12 @@ public class JwtUtils {
 
 	/**
 	 * 生成JWT token
-	 * 
-	 * @param getTokenParam
-	 *
+	 * @param userName
+	 * @param systemCodeEnum
+	 * @param loginSourceEnum
 	 * @return
 	 */
-	public String cretaJwt(String userName, SystemCodeEnum systemCodeEnum, LoginSourceEnum loginSourceEnum) {
+	public String cretaJwt(String userName, SystemCodeEnum systemCodeEnum, ReqSourceEnum loginSourceEnum) {
 
 		// 账号验证通过后发放jwt
 		String jwtId = UUID.randomUUID().toString().replace("-", "");
@@ -149,7 +152,7 @@ public class JwtUtils {
 		// map.put(Claims.SUBJECT, "");//
 		// map.put(Claims.AUDIENCE, "sdji21safio234oi12i1o2j3");//
 		map.put(Claims.NOT_BEFORE, curTimeSeconds - JwtConstants.MAX_DIFFER);// 生效当前时间，减5分钟，防止集群环境各个机器时间不同步
-		map.put(Claims.EXPIRATION, LoginSourceEnum.Web == loginSourceEnum ? curTimeSeconds + JwtConstants.EXPIRATION_WEB
+		map.put(Claims.EXPIRATION, ReqSourceEnum.WEB == loginSourceEnum ? curTimeSeconds + JwtConstants.EXPIRATION_WEB
 				: curTimeSeconds + JwtConstants.EXPIRATION_OTHERS);// jwt过期时间(单位秒)。web端1天后过期；其他端7天后过期
 		map.put(Claims.ISSUED_AT, curTimeSeconds);// 签发时间
 		map.put(Claims.ID, jwtId);// jwt的唯一身份标识 存放用户ID
@@ -191,6 +194,11 @@ public class JwtUtils {
 			SellerUserToken.setCreateTime(curTime);
 			SellerUserToken.setUpdateTime(curTime);
 			sellerUserTokenBaseMapper.insert(SellerUserToken);
+			//记录登录时间
+			SellerUser sellerUserUp= new SellerUser();
+			sellerUserUp.setLoginTime(new Date());
+			sellerUserUp.setId(sellerUser.getId());
+			sellerUserBaseMapper.updateByPrimaryKeySelective(sellerUserUp);
 
 			break;
 		default:
@@ -227,8 +235,7 @@ public class JwtUtils {
 		// 当前时间戳
 		long curTime = System.currentTimeMillis();
 
-		if (LoginSourceEnum.Web.getValue() == Integer
-				.parseInt(bodyClaims.get(JwtConstants.JWT_LOGIN_SOURCE).toString())) {
+		if (ReqSourceEnum.WEB.getValue().equals(bodyClaims.get(JwtConstants.JWT_LOGIN_SOURCE).toString())) {
 			// web端1天后过期
 			bodyClaims.setExpiration(new Date(curTime + (JwtConstants.EXPIRATION_WEB * 1000)));
 		} else {

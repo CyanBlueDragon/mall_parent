@@ -21,7 +21,7 @@
 			property="updateTime" />
 	</resultMap>
 
-	<select id="isExistCard">
+	<select id="isExistCard" resultType="java.lang.Boolean">
 		SELECT
 		count(0) > 0
 		FROM
@@ -29,5 +29,21 @@
 		WHERE
 		shop_id = #{shopId}
 		AND bank_card_number = #{bankCardNumber}
+	</select>
+
+	<select id="getBankCardList"
+		resultType="com.yunyihenkey.seller.dao.malldb.vo.param.accountController.GetBankListResult">
+		SELECT
+		bank_user_name bankUserName,
+		bank_name bankName,
+		CONCAT(
+		'**** **** **** ',
+		substring(bank_card_number, - 4)
+		)
+		bankCardNumber
+		FROM
+		seller_shop_bank_info
+		WHERE
+		shop_id = #{shopId}
 	</select>
 </mapper>

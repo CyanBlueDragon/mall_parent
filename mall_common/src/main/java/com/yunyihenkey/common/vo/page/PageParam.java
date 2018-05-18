@@ -4,6 +4,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import com.yunyihenkey.common.utils.JacksonUtils;
 import com.yunyihenkey.common.vo.base.BaseVo;
 
 public class PageParam extends BaseVo {
@@ -33,6 +34,13 @@ public class PageParam extends BaseVo {
 
 	public void setPageSize(Integer pageSize) {
 		this.pageSize = pageSize;
+	}
+
+	public static void main(String[] args) {
+		PageParam pageParam = new PageParam();
+		pageParam.setPageNum(1);
+		pageParam.setPageSize(10);
+		System.out.println(JacksonUtils.writeValueAsString(pageParam));
 	}
 
 }

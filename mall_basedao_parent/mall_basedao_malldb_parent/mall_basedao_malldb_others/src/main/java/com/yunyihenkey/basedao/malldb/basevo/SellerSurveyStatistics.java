@@ -1,8 +1,11 @@
 package com.yunyihenkey.basedao.malldb.basevo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class SellerSurveyStatistics implements Serializable {
+    private Long id;
+
     /** 当天日期 */
     private String dateOfTheDay;
 
@@ -21,7 +24,20 @@ public class SellerSurveyStatistics implements Serializable {
     /** 当天收益 */
     private Long todaysEarnings;
 
+    /** 店铺Id */
+    private Long shopId;
+
+    private Date createTime;
+
     private static final long serialVersionUID = 1L;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getDateOfTheDay() {
         return dateOfTheDay;
@@ -71,18 +87,37 @@ public class SellerSurveyStatistics implements Serializable {
         this.todaysEarnings = todaysEarnings;
     }
 
+    public Long getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Long shopId) {
+        this.shopId = shopId;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
         sb.append(", dateOfTheDay=").append(dateOfTheDay);
         sb.append(", countNewMembers=").append(countNewMembers);
         sb.append(", countOrderToday=").append(countOrderToday);
         sb.append(", orderAmountOfToday=").append(orderAmountOfToday);
         sb.append(", countRefundAfterSale=").append(countRefundAfterSale);
         sb.append(", todaysEarnings=").append(todaysEarnings);
+        sb.append(", shopId=").append(shopId);
+        sb.append(", createTime=").append(createTime);
         sb.append("]");
         return sb.toString();
     }

@@ -9,8 +9,8 @@ public class SellerUserToken implements Serializable {
     /** tokenID */
     private String tokenId;
 
-    /** 登录来源#0,Android|Android;1,IOS|IOS;2,PCClient|PCClient;3,Web|Web */
-    private Integer loginSource;
+    /** 登录来源 */
+    private String loginSource;
 
     private Date createTime;
 
@@ -34,12 +34,12 @@ public class SellerUserToken implements Serializable {
         this.tokenId = tokenId == null ? null : tokenId.trim();
     }
 
-    public Integer getLoginSource() {
+    public String getLoginSource() {
         return loginSource;
     }
 
-    public void setLoginSource(Integer loginSource) {
-        this.loginSource = loginSource;
+    public void setLoginSource(String loginSource) {
+        this.loginSource = loginSource == null ? null : loginSource.trim();
     }
 
     public Date getCreateTime() {

@@ -1,6 +1,19 @@
 package com.yunyihenkey.seller.web.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.groups.Default;
+
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yunyihenkey.basedao.malldb.basevo.ShoppingmallOrderAftersaleInfo;
 import com.yunyihenkey.common.utils.ValidatorUtils;
 import com.yunyihenkey.common.utils.excel.ExcelUtils;
@@ -9,19 +22,8 @@ import com.yunyihenkey.common.vo.resultinfo.CodeEnum;
 import com.yunyihenkey.common.vo.resultinfo.ResultInfo;
 import com.yunyihenkey.common.vo.resultinfo.SystemCodeEnum;
 import com.yunyihenkey.seller.dao.malldb.exportVo.OrderAftersaleExportVo;
+import com.yunyihenkey.seller.dao.malldb.vo.param.aftersaleController.OrderAftersaleInfoParam;
 import com.yunyihenkey.seller.service.ShoppingmallOrderAftersaleInfoService;
-import com.yunyihenkey.seller.web.vo.param.aftersaleController.OrderAftersaleInfoParam;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.groups.Default;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @Author SunQ
@@ -42,19 +44,21 @@ public class AftersaleController extends BaseController {
      * @author SunQ
      * @Date 15:16 2018/5/9 0009
      * @Param [orderAftersaleInfoParam]
-     * @return com.yunyihenkey.common.vo.resultinfo.ResultInfo
+     * @return java.lang.Object
      */
-    @RequestMapping(value = "/list", method = RequestMethod.POST)
-    public ResultInfo list(@RequestBody OrderAftersaleInfoParam orderAftersaleInfoParam) throws Exception {
+    @PostMapping("/list")
+    public Object list(@RequestBody OrderAftersaleInfoParam orderAftersaleInfoParam) throws Exception {
         // 验证必填项
         String errorInfo = validatorUtils.validateAndGetErrorInfo(orderAftersaleInfoParam, Default.class);
         if (StringUtils.isNotEmpty(errorInfo)) {
             return new ResultInfo<>(SystemCodeEnum.SELLER, CodeEnum.ERROR_PARAM, errorInfo, null);
         }
         PageHelper.startPage(orderAftersaleInfoParam.getPageNum(), orderAftersaleInfoParam.getPageSize());
-        List<Map<String, Object>> list =
+        List<ShoppingmallOrderAftersaleInfo> list =
                 shoppingmallOrderAftersaleInfoService.selectAllByPage(orderAftersaleInfoParam.getMallId(), orderAftersaleInfoParam.getOrderCode(), orderAftersaleInfoParam.getMemberAccount(), orderAftersaleInfoParam.getAftersaleStatus());
-        return new ResultInfo(SystemCodeEnum.SELLER, CodeEnum.SUCCESS, list);
+        // 使用pagehelper的分页对象进行包装
+        PageInfo<ShoppingmallOrderAftersaleInfo> pageInfo = new PageInfo<ShoppingmallOrderAftersaleInfo>(list);
+        return new ResultInfo<>(SystemCodeEnum.SELLER, CodeEnum.SUCCESS, pageInfo);
     }
 
     /**
@@ -62,15 +66,15 @@ public class AftersaleController extends BaseController {
      * @author SunQ
      * @Date 15:59 2018/5/9 0009
      * @Param [id]
-     * @return com.yunyihenkey.common.vo.resultinfo.ResultInfo
+     * @return java.lang.Object
      */
-    @RequestMapping(value = "/get/{id}", method = RequestMethod.POST)
-    public ResultInfo get(@PathVariable("id") String id) {
+    @PostMapping("/get/{id}")
+    public Object get(@PathVariable("id") String id) throws Exception {
         if(StringUtils.isBlank(id)){
             return new ResultInfo<>(SystemCodeEnum.SELLER, CodeEnum.ERROR_PARAM, "id不能为空", null);
         }
         ShoppingmallOrderAftersaleInfo shoppingmallOrderAftersaleInfo = shoppingmallOrderAftersaleInfoService.selectByPrimaryKey(Long.parseLong(id));
-        return new ResultInfo(SystemCodeEnum.SELLER, CodeEnum.SUCCESS, shoppingmallOrderAftersaleInfo);
+        return new ResultInfo<>(SystemCodeEnum.SELLER, CodeEnum.SUCCESS, shoppingmallOrderAftersaleInfo);
     }
 
     /**
@@ -80,7 +84,7 @@ public class AftersaleController extends BaseController {
      * @Param [response, orderAftersaleInfoParam]
      * @return void
      */
-    @RequestMapping(value = "/export", method = RequestMethod.POST)
+    @PostMapping("/export")
     public void export(HttpServletResponse response, @RequestBody OrderAftersaleInfoParam orderAftersaleInfoParam) throws Exception {
         response.setContentType("application/binary;charset=ISO8859_1");
         ServletOutputStream outputStream = response.getOutputStream();
@@ -99,15 +103,15 @@ public class AftersaleController extends BaseController {
      * @author SunQ
      * @Date 12:20 2018/5/11 0011
      * @Param [id]
-     * @return void
+     * @return java.lang.Object
      */
-    @RequestMapping(value = "/adopt/{id}", method = RequestMethod.POST)
-    public ResultInfo adopt(@PathVariable("id") String id) {
+    @PostMapping("/adopt/{id}")
+    public Object adopt(@PathVariable("id") String id) throws Exception {
         if(StringUtils.isBlank(id)){
             return new ResultInfo<>(SystemCodeEnum.SELLER, CodeEnum.ERROR_PARAM, "id不能为空", null);
         }
         shoppingmallOrderAftersaleInfoService.adopt(Long.parseLong(id));
-        return new ResultInfo(SystemCodeEnum.SELLER, CodeEnum.SUCCESS, null);
+        return new ResultInfo<>(SystemCodeEnum.SELLER, CodeEnum.SUCCESS);
     }
 
     /**
@@ -115,14 +119,14 @@ public class AftersaleController extends BaseController {
      * @author SunQ
      * @Date 12:20 2018/5/11 0011
      * @Param [id]
-     * @return void
+     * @return java.lang.Object
      */
-    @RequestMapping(value = "/unadopt/{id}", method = RequestMethod.POST)
-    public ResultInfo unadopt(@PathVariable("id") String id) {
+    @PostMapping("/unadopt/{id}")
+    public Object unadopt(@PathVariable("id") String id) throws Exception {
         if(StringUtils.isBlank(id)){
             return new ResultInfo<>(SystemCodeEnum.SELLER, CodeEnum.ERROR_PARAM, "id不能为空", null);
         }
         shoppingmallOrderAftersaleInfoService.unadopt(Long.parseLong(id));
-        return new ResultInfo(SystemCodeEnum.SELLER, CodeEnum.SUCCESS, null);
+        return new ResultInfo<>(SystemCodeEnum.SELLER, CodeEnum.SUCCESS);
     }
 }

@@ -5,15 +5,15 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="goods_id" jdbcType="BIGINT" property="goodsId" />
     <result column="create_user" jdbcType="VARCHAR" property="createUser" />
-    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
-    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yunyihenkey.basedao.malldb.basevo.SellerGoodsDescrip">
     <result column="description" jdbcType="LONGVARCHAR" property="description" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, goods_id, create_user, create_date, update_user, update_date
+    id, goods_id, create_user, create_time, update_user, update_time
   </sql>
   <sql id="Blob_Column_List">
     description
@@ -32,10 +32,10 @@
   </delete>
   <insert id="insert" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerGoodsDescrip">
     insert into seller_goods_descrip (id, goods_id, create_user, 
-      create_date, update_user, update_date, 
+      create_time, update_user, update_time, 
       description)
     values (#{id,jdbcType=BIGINT}, #{goodsId,jdbcType=BIGINT}, #{createUser,jdbcType=VARCHAR}, 
-      #{createDate,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{updateDate,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
       #{description,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerGoodsDescrip">
@@ -50,14 +50,14 @@
       <if test="createUser != null">
         create_user,
       </if>
-      <if test="createDate != null">
-        create_date,
+      <if test="createTime != null">
+        create_time,
       </if>
       <if test="updateUser != null">
         update_user,
       </if>
-      <if test="updateDate != null">
-        update_date,
+      <if test="updateTime != null">
+        update_time,
       </if>
       <if test="description != null">
         description,
@@ -73,14 +73,14 @@
       <if test="createUser != null">
         #{createUser,jdbcType=VARCHAR},
       </if>
-      <if test="createDate != null">
-        #{createDate,jdbcType=TIMESTAMP},
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateUser != null">
         #{updateUser,jdbcType=VARCHAR},
       </if>
-      <if test="updateDate != null">
-        #{updateDate,jdbcType=TIMESTAMP},
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="description != null">
         #{description,jdbcType=LONGVARCHAR},
@@ -96,14 +96,14 @@
       <if test="createUser != null">
         create_user = #{createUser,jdbcType=VARCHAR},
       </if>
-      <if test="createDate != null">
-        create_date = #{createDate,jdbcType=TIMESTAMP},
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateUser != null">
         update_user = #{updateUser,jdbcType=VARCHAR},
       </if>
-      <if test="updateDate != null">
-        update_date = #{updateDate,jdbcType=TIMESTAMP},
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
       <if test="description != null">
         description = #{description,jdbcType=LONGVARCHAR},
@@ -115,9 +115,9 @@
     update seller_goods_descrip
     set goods_id = #{goodsId,jdbcType=BIGINT},
       create_user = #{createUser,jdbcType=VARCHAR},
-      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
       update_user = #{updateUser,jdbcType=VARCHAR},
-      update_date = #{updateDate,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
       description = #{description,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -125,9 +125,9 @@
     update seller_goods_descrip
     set goods_id = #{goodsId,jdbcType=BIGINT},
       create_user = #{createUser,jdbcType=VARCHAR},
-      create_date = #{createDate,jdbcType=TIMESTAMP},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
       update_user = #{updateUser,jdbcType=VARCHAR},
-      update_date = #{updateDate,jdbcType=TIMESTAMP}
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

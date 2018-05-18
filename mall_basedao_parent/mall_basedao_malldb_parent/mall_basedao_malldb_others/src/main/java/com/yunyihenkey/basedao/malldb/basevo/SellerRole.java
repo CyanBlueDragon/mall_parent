@@ -7,7 +7,7 @@ public class SellerRole implements Serializable {
     private Long id;
 
     /** 角色名称 */
-    private String roleName;
+    private String name;
 
     /** 描述 */
     private String description;
@@ -26,12 +26,12 @@ public class SellerRole implements Serializable {
         this.id = id;
     }
 
-    public String getRoleName() {
-        return roleName;
+    public String getName() {
+        return name;
     }
 
-    public void setRoleName(String roleName) {
-        this.roleName = roleName == null ? null : roleName.trim();
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
     }
 
     public String getDescription() {
@@ -65,7 +65,7 @@ public class SellerRole implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", roleName=").append(roleName);
+        sb.append(", name=").append(name);
         sb.append(", description=").append(description);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);

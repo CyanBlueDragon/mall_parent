@@ -10,7 +10,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.yunyihenkey.Application;
 import com.yunyihenkey.common.utils.ValidatorUtils;
-import com.yunyihenkey.seller.web.vo.param.accountController.GetTakeCashLogListParam;
+import com.yunyihenkey.seller.dao.malldb.vo.param.accountController.GetTakeCashLogListParam;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)

@@ -1,5 +1,6 @@
 package com.yunyihenkey.common.utils;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -45,6 +46,17 @@ public class RedisUtil {
 		}
 	}
 
+	public boolean expireAt(String key, Date date) {
+		try {
+
+				redisTemplate.expireAt(key, date);
+
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
 	/**
 	 * 根据key 获取过期时间
 	 * 

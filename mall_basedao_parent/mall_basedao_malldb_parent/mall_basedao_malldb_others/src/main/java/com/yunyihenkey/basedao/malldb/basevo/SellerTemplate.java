@@ -11,14 +11,14 @@ public class SellerTemplate implements Serializable {
     /**  1简约风格 2传统电商 3电商模板 */
     private Integer type;
 
-    /** 状态#0,停用|Disable;1,启用|Enable */
-    private Integer enableFlag;
-
     /** 创建时间 */
     private Date createTime;
 
     /** 修改时间 */
     private Date updateTime;
+
+    /** 是否删除#0,否|No;1,是|Yes */
+    private Integer isDelete;
 
     private static final long serialVersionUID = 1L;
 
@@ -46,14 +46,6 @@ public class SellerTemplate implements Serializable {
         this.type = type;
     }
 
-    public Integer getEnableFlag() {
-        return enableFlag;
-    }
-
-    public void setEnableFlag(Integer enableFlag) {
-        this.enableFlag = enableFlag;
-    }
-
     public Date getCreateTime() {
         return createTime;
     }
@@ -70,6 +62,14 @@ public class SellerTemplate implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -79,9 +79,9 @@ public class SellerTemplate implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", templateUrl=").append(templateUrl);
         sb.append(", type=").append(type);
-        sb.append(", enableFlag=").append(enableFlag);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
+        sb.append(", isDelete=").append(isDelete);
         sb.append("]");
         return sb.toString();
     }

@@ -29,7 +29,20 @@
 
 	<select id="getByShopId" resultMap="BaseResultMap">
 		SELECT
-		*
+		id,
+		shop_id,
+		take_cash_money,
+		service_charge_money,
+		take_cash_status,
+		bank_user_name,
+		bank_name,
+		bank_address,
+		CONCAT(
+		'**** **** **** ',
+		substring(bank_card_number, - 4)
+		) bank_card_number,
+		create_time,
+		update_time
 		FROM
 		seller_shop_take_cash_log
 		WHERE

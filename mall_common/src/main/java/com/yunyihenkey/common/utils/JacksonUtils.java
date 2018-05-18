@@ -1,12 +1,15 @@
 package com.yunyihenkey.common.utils;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import com.yunyihenkey.common.constant.MallConstants;
 
 /**
  * 
@@ -17,7 +20,10 @@ public class JacksonUtils {
 	 * final ObjectMapper mapper = new ObjectMapper(); // can use static singleton,
 	 * inject: just make sure to reuse!
 	 */
-	public static final ObjectMapper objectMapper = new ObjectMapper();
+	public static final ObjectMapper objectMapper;
+	static {
+		objectMapper = new ObjectMapper().setDateFormat(new SimpleDateFormat(MallConstants.DATE_FORMAT_COMMON));
+	}
 
 	public static String writeValueAsString(Object obj) {
 		if (obj == null) {
@@ -47,7 +53,7 @@ public class JacksonUtils {
 	}
 
 	public static void main(String[] args) {
-		Aaa aaa = new Aaa("hello", 666);
+		Aaa aaa = new Aaa("hello", 666, new Date());
 
 		// 对象转json
 		String json = writeValueAsString(aaa);
@@ -70,6 +76,7 @@ public class JacksonUtils {
 		for (Aaa aaa2 : aaaList) {
 			System.out.println(aaa2.getA());
 			System.out.println(aaa2.getB());
+			System.out.println(aaa2.getC());
 		}
 
 	}
@@ -77,15 +84,17 @@ public class JacksonUtils {
 	public static class Aaa {
 		private String a;
 		private Integer b;
+		private Date c;
 
 		public Aaa() {
 			super();
 		}
 
-		public Aaa(String a, Integer b) {
+		public Aaa(String a, Integer b, Date c) {
 			super();
 			this.a = a;
 			this.b = b;
+			this.c = c;
 		}
 
 		public String getA() {
@@ -102,6 +111,14 @@ public class JacksonUtils {
 
 		public void setB(Integer b) {
 			this.b = b;
+		}
+
+		public Date getC() {
+			return c;
+		}
+
+		public void setC(Date c) {
+			this.c = c;
 		}
 
 	}

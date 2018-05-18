@@ -17,9 +17,6 @@ public class SellerShopRenovation implements Serializable {
     /** 配色方案 */
     private String colorScheme;
 
-    /** 状态（1启用/0停用） */
-    private Integer enableFlag;
-
     /**  1简约风格 2传统电商 3电商模板 */
     private Integer type;
 
@@ -28,6 +25,9 @@ public class SellerShopRenovation implements Serializable {
 
     /** 修改时间 */
     private Date updateTime;
+
+    /** 是否删除#0,否|No;1,是|Yes */
+    private Integer isDelete;
 
     private static final long serialVersionUID = 1L;
 
@@ -71,14 +71,6 @@ public class SellerShopRenovation implements Serializable {
         this.colorScheme = colorScheme == null ? null : colorScheme.trim();
     }
 
-    public Integer getEnableFlag() {
-        return enableFlag;
-    }
-
-    public void setEnableFlag(Integer enableFlag) {
-        this.enableFlag = enableFlag;
-    }
-
     public Integer getType() {
         return type;
     }
@@ -103,6 +95,14 @@ public class SellerShopRenovation implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -114,10 +114,10 @@ public class SellerShopRenovation implements Serializable {
         sb.append(", templateUrl=").append(templateUrl);
         sb.append(", templateId=").append(templateId);
         sb.append(", colorScheme=").append(colorScheme);
-        sb.append(", enableFlag=").append(enableFlag);
         sb.append(", type=").append(type);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
+        sb.append(", isDelete=").append(isDelete);
         sb.append("]");
         return sb.toString();
     }

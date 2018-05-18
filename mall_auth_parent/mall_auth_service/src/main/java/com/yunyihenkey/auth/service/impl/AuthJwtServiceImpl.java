@@ -5,20 +5,21 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import com.yunyihenkey.auth.service.AuthJwtService;
-import com.yunyihenkey.auth.service.enums.LoginSourceEnum;
+import com.yunyihenkey.auth.service.enums.ReqSourceEnum;
 import com.yunyihenkey.auth.service.util.JwtUtils;
+import com.yunyihenkey.auth.service.util.PasswordUtil;
 import com.yunyihenkey.auth.service.vo.authjwt.seller.AuthSellerUser;
 import com.yunyihenkey.basedao.malldb.basevo.SellerUserToken;
 import com.yunyihenkey.basedao.malldb.basevoEnum.SellerUser.SellerGradeEnum;
 import com.yunyihenkey.basedao.malldb.basevoEnum.SellerUser.UserTypeEnum;
 import com.yunyihenkey.common.constant.JwtConstants;
+import com.yunyihenkey.common.constant.MallConstants;
 import com.yunyihenkey.common.constant.RedisConstant;
 import com.yunyihenkey.common.utils.BeanMapUtils;
 import com.yunyihenkey.common.utils.RedisUtil;
@@ -47,14 +48,14 @@ public class AuthJwtServiceImpl implements AuthJwtService {
 
 	@Override
 	public ResultInfo<String> createToken(String userName, String password, SystemCodeEnum systemCodeEnum,
-			LoginSourceEnum loginSourceEnum) {
+			ReqSourceEnum loginSourceEnum) {
 
 		// 验证账号密码
 		switch (systemCodeEnum) {
 		case SELLER: // 分销平台
 
 			// 验证账号密码 md5(手机号+密码)
-			if (!authSellerUserMapper.isPasswordTrue(userName, DigestUtils.md5Hex(userName + password))) {
+			if (!authSellerUserMapper.isPasswordTrue(userName, PasswordUtil.enCode(userName, password))) {
 				return new ResultInfo<String>(SystemCodeEnum.AUTH, CodeEnum.ERROR_NOT_AUTH, "账号或密码错误", null);
 			}
 			break;
@@ -72,15 +73,15 @@ public class AuthJwtServiceImpl implements AuthJwtService {
 	@Override
 	public ResultInfo<Object> validateToken(HttpServletRequest request, SystemCodeEnum systemCodeEnum) {
 
-		String jwtStr = request.getHeader(JwtConstants.HEADER_TOKEN);
+		String jwtStr = request.getHeader(MallConstants.HEADER_TOKEN);
 
 		if (StringUtils.isEmpty(jwtStr)) {
-			return new ResultInfo<Object>(SystemCodeEnum.AUTH, CodeEnum.ERROR_NOT_AUTH);
+			return new ResultInfo<>(SystemCodeEnum.AUTH, CodeEnum.ERROR_NOT_AUTH);
 		}
 
 		Jws<Claims> jws = jwtUtils.parseJwtStr(jwtStr);
 		if (jws == null) {
-			return new ResultInfo<Object>(SystemCodeEnum.AUTH, CodeEnum.ERROR_NOT_AUTH);
+			return new ResultInfo<>(SystemCodeEnum.AUTH, CodeEnum.ERROR_NOT_AUTH);
 		}
 
 		Claims bodyClaims = jws.getBody();
@@ -89,17 +90,18 @@ public class AuthJwtServiceImpl implements AuthJwtService {
 
 		if (!systemCodeStr.equals(Integer.toString(systemCodeEnum.getValue()))) {
 			// jwt系统编码和所属系统编码不一致
-			return new ResultInfo<Object>(systemCodeEnum, CodeEnum.ERROR_NOT_AUTH, "传入系统编码和所属系统编码不一致");
+			return new ResultInfo<>(systemCodeEnum, CodeEnum.ERROR_NOT_AUTH, "传入系统编码和所属系统编码不一致");
 		}
 
 		if (jwtUtils.isInBlacklist(systemCodeStr, bodyClaims.getId())) {
 			// 命中token黑名单
-			return new ResultInfo<Object>(SystemCodeEnum.AUTH, CodeEnum.ERROR_NOT_AUTH);
+			return new ResultInfo<>(SystemCodeEnum.AUTH, CodeEnum.ERROR_NOT_AUTH);
 		}
 
 		AuthSellerUser authSellerUser = BeanMapUtils
 				.mapToBean((Map<String, Object>) bodyClaims.get(JwtConstants.JWT_USER_INFO), new AuthSellerUser());
-		String reqUrl = request.getRequestURI();
+
+		String reqUrl = request.getRequestURI();// 用户检测C级分销商权限和员工权限
 		// 验证权限
 		switch (systemCodeEnum) {
 		case SELLER: // 分销平台
@@ -123,11 +125,18 @@ public class AuthJwtServiceImpl implements AuthJwtService {
 			// break;
 		}
 		request.setAttribute(JwtConstants.JWT_USER_INFO, authSellerUser);
-		return new ResultInfo<Object>(SystemCodeEnum.AUTH, CodeEnum.SUCCESS);
+		return new ResultInfo<>(SystemCodeEnum.AUTH, CodeEnum.SUCCESS);
 	}
 
 	@Override
-	public ResultInfo<String> refreshToken(String jwtStr) {
+	public ResultInfo<String> refreshToken(HttpServletRequest request) {
+
+		String jwtStr = request.getHeader(MallConstants.HEADER_TOKEN);
+
+		if (StringUtils.isEmpty(jwtStr)) {
+			return new ResultInfo<>(SystemCodeEnum.AUTH, CodeEnum.ERROR_NOT_AUTH);
+		}
+
 		// 验证token
 		Jws<Claims> j = jwtUtils.parseJwtStr(jwtStr);
 		if (j == null) {
@@ -135,7 +144,7 @@ public class AuthJwtServiceImpl implements AuthJwtService {
 		}
 
 		Claims bodyClaims = j.getBody();
-		if (bodyClaims.getIssuedAt().getTime() + 7200000 >= System.currentTimeMillis()) {
+		if (bodyClaims.getIssuedAt().getTime() + JwtConstants.REFRESH_TOKEN_TIME >= System.currentTimeMillis()) {
 			// 2小时内不可重复续签
 			return new ResultInfo<String>(SystemCodeEnum.AUTH, CodeEnum.ERROR, "2小时内不可重复续签", null);
 		}
@@ -162,8 +171,7 @@ public class AuthJwtServiceImpl implements AuthJwtService {
 		Claims bodyClaims = jws.getBody();
 
 		// 加入黑名单
-		if (LoginSourceEnum.Web.getValue() == Integer
-				.parseInt(bodyClaims.get(JwtConstants.JWT_LOGIN_SOURCE).toString())) {
+		if (ReqSourceEnum.WEB.getValue().equals(bodyClaims.get(JwtConstants.JWT_LOGIN_SOURCE).toString())) {
 			// web端1天后过期
 			redisUtil.set(RedisConstant.getMallJwtBlackKey(bodyClaims.get(JwtConstants.JWT_SYSTEM_CODE).toString(),
 					bodyClaims.getId()), "", JwtConstants.EXPIRATION_WEB);
@@ -184,7 +192,7 @@ public class AuthJwtServiceImpl implements AuthJwtService {
 
 			if (blackList != null && !blackList.isEmpty()) {
 				for (SellerUserToken userToken : blackList) {
-					if (LoginSourceEnum.Web.getValue() == userToken.getLoginSource()) {
+					if (ReqSourceEnum.WEB.getValue() == userToken.getLoginSource()) {
 						// web端1天后过期
 						redisUtil.set(
 								RedisConstant.getMallJwtBlackKey(Integer.toString(SystemCodeEnum.SELLER.getValue()),

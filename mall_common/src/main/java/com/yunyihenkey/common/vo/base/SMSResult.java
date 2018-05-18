@@ -5,16 +5,16 @@ package com.yunyihenkey.common.vo.base;
  * @date 2018/5/7 14:27
  */
 public class SMSResult {
-    private String resulltMesseage;
+    private boolean result;
 
     private String code;
 
-    public String getResulltMesseage() {
-        return resulltMesseage;
+    public boolean isResult() {
+        return result;
     }
 
-    public void setResulltMesseage(String resulltMesseage) {
-        this.resulltMesseage = resulltMesseage;
+    public void setResult(boolean result) {
+        this.result = result;
     }
 
     public String getCode() {

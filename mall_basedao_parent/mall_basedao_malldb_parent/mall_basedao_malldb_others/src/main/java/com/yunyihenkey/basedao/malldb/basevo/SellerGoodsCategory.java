@@ -7,7 +7,7 @@ public class SellerGoodsCategory implements Serializable {
     /** 主键 */
     private Long id;
 
-    /** 店铺编号 */
+    /** 店铺id */
     private Long shopId;
 
     /** 名称 */
@@ -20,13 +20,13 @@ public class SellerGoodsCategory implements Serializable {
     private String createUser;
 
     /** 创建时间 */
-    private Date createDate;
+    private Date createTime;
 
     /** 更新人 */
     private String updateUser;
 
     /** 更新时间 */
-    private Date updateDate;
+    private Date updateTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -70,12 +70,12 @@ public class SellerGoodsCategory implements Serializable {
         this.createUser = createUser == null ? null : createUser.trim();
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public String getUpdateUser() {
@@ -86,12 +86,12 @@ public class SellerGoodsCategory implements Serializable {
         this.updateUser = updateUser == null ? null : updateUser.trim();
     }
 
-    public Date getUpdateDate() {
-        return updateDate;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 
     @Override
@@ -105,9 +105,9 @@ public class SellerGoodsCategory implements Serializable {
         sb.append(", name=").append(name);
         sb.append(", sortOrder=").append(sortOrder);
         sb.append(", createUser=").append(createUser);
-        sb.append(", createDate=").append(createDate);
+        sb.append(", createTime=").append(createTime);
         sb.append(", updateUser=").append(updateUser);
-        sb.append(", updateDate=").append(updateDate);
+        sb.append(", updateTime=").append(updateTime);
         sb.append("]");
         return sb.toString();
     }

@@ -17,23 +17,18 @@ public class SupplierGoodsCategory implements Serializable {
     private String createUser;
 
     /** 创建时间 */
-    private Date createDate;
+    private Date createTime;
 
     /** 更新人 */
     private String updateUser;
 
     /** 更新时间 */
-    private Date updateDate;
+    private Date updateTime;
 
     private Long count;
 
-    public Long getCount() {
-        return count;
-    }
-
-    public void setCount(Long count) {
-        this.count = count;
-    }
+    /** 是否删除#0,否|No;1,是|Yes */
+    private Integer isDelete;
 
     private static final long serialVersionUID = 1L;
 
@@ -44,8 +39,6 @@ public class SupplierGoodsCategory implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
-
-
 
     public String getName() {
         return name;
@@ -71,12 +64,12 @@ public class SupplierGoodsCategory implements Serializable {
         this.createUser = createUser == null ? null : createUser.trim();
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public String getUpdateUser() {
@@ -87,12 +80,28 @@ public class SupplierGoodsCategory implements Serializable {
         this.updateUser = updateUser == null ? null : updateUser.trim();
     }
 
-    public Date getUpdateDate() {
-        return updateDate;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public Long getCount() {
+        return count;
+    }
+
+    public void setCount(Long count) {
+        this.count = count;
+    }
+
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
     }
 
     @Override
@@ -105,9 +114,11 @@ public class SupplierGoodsCategory implements Serializable {
         sb.append(", name=").append(name);
         sb.append(", sortOrder=").append(sortOrder);
         sb.append(", createUser=").append(createUser);
-        sb.append(", createDate=").append(createDate);
+        sb.append(", createTime=").append(createTime);
         sb.append(", updateUser=").append(updateUser);
-        sb.append(", updateDate=").append(updateDate);
+        sb.append(", updateTime=").append(updateTime);
+        sb.append(", count=").append(count);
+        sb.append(", isDelete=").append(isDelete);
         sb.append("]");
         return sb.toString();
     }

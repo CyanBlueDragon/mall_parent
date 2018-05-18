@@ -31,7 +31,7 @@ public class SupplierGoodsInfo implements Serializable {
     /** 运费模版 */
     private String deliveryTemplateName;
 
-    /** 商品状态#0,仓库中|warehouse;1,上架中|selling;2,已售罄|sold;3,待审核|PENDING;4,审核通过|PASSED;5,审核不通过|NOT_THROUGH */
+    /** 商品状态#0,仓库中|warehouse;1,上架中|selling;2,已售罄|sold;3,已下架|already_down;4,未审核|PENDING;5,审核通过|PASSED;6,审核不通过|NOT_THROUGH */
     private Integer status;
 
     /** 供货价（单位分） */
@@ -49,14 +49,23 @@ public class SupplierGoodsInfo implements Serializable {
     /** 页面点击次数 */
     private Long pvValue;
 
+    private String minProfit;
+
+    private String maxProfit;
+
     /** 发布人 */
     private String createUser;
 
+    private String updateUser;
+
     /** 发布时间 */
-    private Date createDate;
+    private Date createTime;
 
     /** 最后修改时间 */
-    private Date updateDate;
+    private Date updateTime;
+
+    /** 是否删除#0,否|No;1,是|Yes */
+    private Integer isDelete;
 
     /** 默认图片 */
     private String picUrl;
@@ -183,6 +192,22 @@ public class SupplierGoodsInfo implements Serializable {
         this.pvValue = pvValue;
     }
 
+    public String getMinProfit() {
+        return minProfit;
+    }
+
+    public void setMinProfit(String minProfit) {
+        this.minProfit = minProfit == null ? null : minProfit.trim();
+    }
+
+    public String getMaxProfit() {
+        return maxProfit;
+    }
+
+    public void setMaxProfit(String maxProfit) {
+        this.maxProfit = maxProfit == null ? null : maxProfit.trim();
+    }
+
     public String getCreateUser() {
         return createUser;
     }
@@ -191,20 +216,36 @@ public class SupplierGoodsInfo implements Serializable {
         this.createUser = createUser == null ? null : createUser.trim();
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public String getUpdateUser() {
+        return updateUser;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setUpdateUser(String updateUser) {
+        this.updateUser = updateUser == null ? null : updateUser.trim();
     }
 
-    public Date getUpdateDate() {
-        return updateDate;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
     }
 
     public String getPicUrl() {
@@ -236,9 +277,13 @@ public class SupplierGoodsInfo implements Serializable {
         sb.append(", maxRetailPrice=").append(maxRetailPrice);
         sb.append(", saleAmount=").append(saleAmount);
         sb.append(", pvValue=").append(pvValue);
+        sb.append(", minProfit=").append(minProfit);
+        sb.append(", maxProfit=").append(maxProfit);
         sb.append(", createUser=").append(createUser);
-        sb.append(", createDate=").append(createDate);
-        sb.append(", updateDate=").append(updateDate);
+        sb.append(", updateUser=").append(updateUser);
+        sb.append(", createTime=").append(createTime);
+        sb.append(", updateTime=").append(updateTime);
+        sb.append(", isDelete=").append(isDelete);
         sb.append(", picUrl=").append(picUrl);
         sb.append("]");
         return sb.toString();

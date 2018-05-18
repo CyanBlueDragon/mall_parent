@@ -48,6 +48,9 @@ public class ShoppingmallOrderAftersaleInfo implements Serializable {
 
     private Date updateTime;
 
+    /** 是否删除#0,否|No;1,是|Yes */
+    private Integer isDelete;
+
     private static final long serialVersionUID = 1L;
 
     public Long getId() {
@@ -170,6 +173,14 @@ public class ShoppingmallOrderAftersaleInfo implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -191,6 +202,7 @@ public class ShoppingmallOrderAftersaleInfo implements Serializable {
         sb.append(", expressCode=").append(expressCode);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
+        sb.append(", isDelete=").append(isDelete);
         sb.append("]");
         return sb.toString();
     }

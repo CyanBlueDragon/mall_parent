@@ -3,7 +3,9 @@
 <mapper namespace="com.yunyihenkey.seller.dao.malldb.mapper.SellerUserMapper">
     <resultMap id="BaseResultMap" type="com.yunyihenkey.basedao.malldb.basevo.SellerUser">
         <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="shop_id" jdbcType="BIGINT" property="shopId"/>
         <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
         <result column="password" jdbcType="VARCHAR" property="password"/>
         <result column="email" jdbcType="VARCHAR" property="email"/>
         <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
@@ -14,28 +16,76 @@
         <result column="parent_user_id" jdbcType="BIGINT" property="parentUserId"/>
         <result column="register_source" jdbcType="INTEGER" property="registerSource"/>
         <result column="register_ip" jdbcType="VARCHAR" property="registerIp"/>
-        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="city_code" jdbcType="VARCHAR" property="cityCode"/>
+        <result column="seller_grade" jdbcType="INTEGER" property="sellerGrade"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="login_time" jdbcType="TIMESTAMP" property="loginTime"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+
     </resultMap>
     <sql id="Base_Column_List">
-    id, user_name, password, email, mobile, sex, logo_url, birthday, user_type, parent_user_id, 
-    register_source, register_ip, update_time, create_time, city_code
+    id, shop_id, user_name, nick_name,  email, mobile, sex, logo_url, birthday,
+    user_type, parent_user_id, register_source, register_ip, city_code, seller_grade,
+    create_time, update_time,login_time,status
   </sql>
-    <select id="selectUser">
+    <select id="queryUserList" resultMap="BaseResultMap" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerUser">
         select
         <include refid="Base_Column_List"/>
         from
         seller_user
         <where>
             1=1
-            <if test=" user_name!=null and user_name!='' ">
-                and user_name ='#{user_name}'
+            <if test=" userName!=null and userName!='' ">
+                and user_name =#{userName}
             </if>
             <if test=" password!=null and password!='' ">
-                and password ='#{password}'
+                and password =#{password}
+            </if>
+            <if test=" userType!=null ">
+                and user_type =#{userType}
+            </if>
+            <if test=" shopId!=null ">
+                and shop_id =#{shopId}
             </if>
         </where>
+    </select>
 
+    <select id="queryUserRoleList" resultMap="BaseResultMap" parameterType="com.yunyihenkey.seller.dao.malldb.vo.param.userController.QueryListParam">
+        select
+        u.id,
+        u.shop_id,
+        u.user_name,
+        u.nick_name,
+        u.email,
+        u.mobile,
+        u.sex,
+        u.logo_url,
+        u.birthday,
+        u.user_type,
+        u.parent_user_id,
+        u.register_source,
+        u.register_ip,
+        u.city_code,
+        u.seller_grade,
+        u.create_time,
+        u.update_time,
+        u.login_time,
+        u.status
+        from
+        seller_user u
+        LEFT JOIN seller_user_role r ON u.id = r.user_id
+        <where>
+            1=1
+            <if test=" userName!=null and userName!='' ">
+                and u.user_name LIKE CONCAT('%',#{userName},'%')
+            </if>
+            <if test=" roleId!=null ">
+                and  r.role_id= #{roleId}
+            </if>
+            <if test=" shopId!=null ">
+                and  u.shop_id= #{shopId}
+            </if>
+        </where>
     </select>
 </mapper>

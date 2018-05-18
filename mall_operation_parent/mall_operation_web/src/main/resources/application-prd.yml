@@ -4,7 +4,7 @@ spring:
   datasource:
     malldb:
       driverClassName: com.mysql.jdbc.Driver
-      url: jdbc:mysql://192.168.10.204:3306/DmSequenceUtil?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&useSSL=false
+      url: jdbc:mysql://192.168.1.204:3306/DmSequenceUtil?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&useSSL=false
       username: root
       password: develop321
       initialSize: 5
@@ -22,7 +22,7 @@ spring:
       connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
   redis:
     database: 0
-    host: 192.168.10.204
+    host: 192.168.1.204
     port: 6379
     password: null
     jedis:

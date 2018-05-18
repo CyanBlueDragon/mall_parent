@@ -8,4 +8,4 @@ logging:
   config: classpath:log4j2.xml
 seller:
   mvc:
-    anonymousUrl: error;anon;
+    anonymousUrl: error;anon;shopSet/query;

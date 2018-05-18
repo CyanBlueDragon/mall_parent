@@ -10,25 +10,26 @@
         <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
         <result column="update_user" jdbcType="VARCHAR" property="updateUser"/>
         <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="count" jdbcType="BIGINT" property="count" />
     </resultMap>
 
     <sql id="Base_Column_List">
-    id, name, sort_order, create_user, create_date, update_user, update_date
+    id, name, sort_order, create_user, create_date, update_user, update_date,count
   </sql>
 
-    <select id="selectAll" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from supplier_goods_category
-        where 1 = 1
-        order by sort_order desc
-    </select>
 
     <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        id,
+        name,
+        sort_order,
+        create_date,
+        count
         from supplier_goods_category
+        <if test="_parameter != null">
         where name like concat('%',#{name },'%')
+        </if>
+        order by sort_order desc
     </select>
 
 </mapper>

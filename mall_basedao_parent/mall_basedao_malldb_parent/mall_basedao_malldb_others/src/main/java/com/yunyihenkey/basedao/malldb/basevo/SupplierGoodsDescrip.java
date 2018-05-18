@@ -14,13 +14,16 @@ public class SupplierGoodsDescrip implements Serializable {
     private String createUser;
 
     /** 创建时间 */
-    private Date createDate;
+    private Date createTime;
 
     /** 修改人 */
     private String updateUser;
 
     /** 最后修改时间 */
-    private Date updateDate;
+    private Date updateTime;
+
+    /** 是否删除#0,否|No;1,是|Yes */
+    private Integer isDelete;
 
     /** 商品描述 */
     private String description;
@@ -51,12 +54,12 @@ public class SupplierGoodsDescrip implements Serializable {
         this.createUser = createUser == null ? null : createUser.trim();
     }
 
-    public Date getCreateDate() {
-        return createDate;
+    public Date getCreateTime() {
+        return createTime;
     }
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 
     public String getUpdateUser() {
@@ -67,12 +70,20 @@ public class SupplierGoodsDescrip implements Serializable {
         this.updateUser = updateUser == null ? null : updateUser.trim();
     }
 
-    public Date getUpdateDate() {
-        return updateDate;
+    public Date getUpdateTime() {
+        return updateTime;
     }
 
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public Integer getIsDelete() {
+        return isDelete;
+    }
+
+    public void setIsDelete(Integer isDelete) {
+        this.isDelete = isDelete;
     }
 
     public String getDescription() {
@@ -92,9 +103,10 @@ public class SupplierGoodsDescrip implements Serializable {
         sb.append(", id=").append(id);
         sb.append(", goodsId=").append(goodsId);
         sb.append(", createUser=").append(createUser);
-        sb.append(", createDate=").append(createDate);
+        sb.append(", createTime=").append(createTime);
         sb.append(", updateUser=").append(updateUser);
-        sb.append(", updateDate=").append(updateDate);
+        sb.append(", updateTime=").append(updateTime);
+        sb.append(", isDelete=").append(isDelete);
         sb.append(", description=").append(description);
         sb.append("]");
         return sb.toString();

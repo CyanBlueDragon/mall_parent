@@ -3,9 +3,6 @@ package com.yunyihenkey.supplier.web.Controller;
 import com.yunyihenkey.Application;
 import com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsCategory;
 import com.yunyihenkey.common.utils.ValidatorUtils;
-import com.yunyihenkey.common.vo.resultinfo.CodeEnum;
-import com.yunyihenkey.common.vo.resultinfo.ResultInfo;
-import com.yunyihenkey.common.vo.resultinfo.SystemCodeEnum;
 import com.yunyihenkey.supplier.dao.malldb.mapper.SupplierGoodsCategoryMapper;
 import com.yunyihenkey.supplier.dao.malldb.mapper.SupplierGoodsInfoMapper;
 import org.apache.commons.lang3.StringUtils;
@@ -33,13 +30,6 @@ public class CategoryControllerTest {
     @Autowired
     private ValidatorUtils validatorUtils;
 
-    @Test
-    public void list() {
-        int count = supplierGoodsInfoMapper.getCount(3L);
-        List<SupplierGoodsCategory> list = supplierGoodsCategoryMapper.selectAll();
-        System.out.println(list);
-        System.out.println(count);
-    }
 
     @Test
     public void query(){
@@ -52,14 +42,23 @@ public class CategoryControllerTest {
     public void addCategory(){
         SupplierGoodsCategory s = new SupplierGoodsCategory();
         s.setName("天下无双");
-        s.setSortOrder(20);
-        s.setCreateDate(new Date());
+
         String s1 = validatorUtils.validateAndGetErrorInfo(s, Default.class);
 
         if (StringUtils.isNotEmpty(s1)) {
             System.out.println(s1);
         }
-        supplierGoodsCategoryMapper.insertSelective(s);
+//        supplierGoodsCategoryMapper.insertSelective(s);
     }
 
+    @Test
+    public void updateCategory(){
+        SupplierGoodsCategory s = new SupplierGoodsCategory();
+        s.setId(9L);
+        s.setName("天青如水");
+        s.setSortOrder(21);
+        s.setUpdateUser("tong");
+        s.setUpdateTime(new Date());
+        supplierGoodsCategoryMapper.updateByPrimaryKeySelective(s);
+    }
 }

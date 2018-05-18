@@ -4,7 +4,7 @@ spring:
   datasource:
     malldb:
       driverClassName: com.mysql.jdbc.Driver
-      url: jdbc:mysql://192.168.10.204:3306/test?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&useSSL=false&tinyInt1isBit=false
+      url: jdbc:mysql://192.168.1.204:3306/test?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true&useSSL=false&tinyInt1isBit=false
       username: root
       password: develop321
       initialSize: 5
@@ -25,7 +25,7 @@ spring:
     ## Redis数据库索引（默认为0）
     database: 0
     ## Redis服务器地址
-    host: 192.168.10.204
+    host: 192.168.1.204
     ## Redis服务器连接端口
     port: 6379
     ## Redis服务器连接密码（默认为空）

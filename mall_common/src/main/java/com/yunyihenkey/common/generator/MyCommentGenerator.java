@@ -4,7 +4,6 @@ import org.mybatis.generator.api.IntrospectedColumn;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.dom.java.Field;
 import org.mybatis.generator.internal.DefaultCommentGenerator;
-import org.springframework.beans.factory.annotation.Value;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,8 +17,7 @@ import java.util.Map;
  */
 public class MyCommentGenerator extends DefaultCommentGenerator {
 	private static 	Map<String, String> map =  new HashMap<String, String>();
-	private static 	String pathName = "E:\\mall_parent\\mall_basedao_parent\\mall_basedao_malldb_parent\\mall_basedao_malldb_others\\src\\main\\java\\com\\yunyihenkey\\basedao\\malldb\\basevoEnum";
-	private static 	String packageName = "com.yunyihenkey.basedao.malldb.basevoEnum";
+
 	/*private static 	String allName = pathName +"\\src"+packageName.replaceAll(".","/");*/
 	@Override
 	public void addFieldComment(Field field, IntrospectedTable introspectedTable,
@@ -30,8 +28,10 @@ public class MyCommentGenerator extends DefaultCommentGenerator {
 				map.put("context",introspectedColumn.getRemarks());
 				map.put("tableName",introspectedTable.getFullyQualifiedTableNameAtRuntime());
 				map.put("columnName",introspectedColumn.getActualColumnName());
-				map.put("packageName",packageName +"."+ EnumUtil.camelName(introspectedTable.getFullyQualifiedTableNameAtRuntime()) );
-				map.put("allName",pathName +"\\"+ EnumUtil.camelName(introspectedTable.getFullyQualifiedTableNameAtRuntime()));
+				String packageName = "com.yunyihenkey.basedao.malldb.basevoEnum";
+				map.put("packageName", packageName +"."+ EnumUtil.camelName(introspectedTable.getFullyQualifiedTableNameAtRuntime()) );
+				String pathName = "E:\\mall_parent\\mall_basedao_parent\\mall_basedao_malldb_parent\\mall_basedao_malldb_others\\src\\main\\java\\com\\yunyihenkey\\basedao\\malldb\\basevoEnum";
+				map.put("allName", pathName +"\\"+ EnumUtil.camelName(introspectedTable.getFullyQualifiedTableNameAtRuntime()));
 				EnumUtil.getEnum(map);
 				EnumUtil.writeFileString(map);
 				//nihao.readFileString(map);

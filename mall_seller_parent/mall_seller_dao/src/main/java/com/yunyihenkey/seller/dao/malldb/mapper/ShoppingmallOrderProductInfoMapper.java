@@ -22,9 +22,9 @@ public interface ShoppingmallOrderProductInfoMapper extends ShoppingmallOrderPro
      * @author SunQ
      * @Date 15:59 2018/5/11 0011
      * @Param [mallId, supplierId, productName, receiverName]
-     * @return java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
+     * @return java.util.List<ShoppingmallOrderProductInfo>
      */
-    List<Map<String, Object>> selectAll(@Param("mallId") String mallId, @Param("supplierId") String supplierId, @Param("productName") String productName, @Param("receiverName") String receiverName);
+    List<ShoppingmallOrderProductInfo> selectAll(@Param("mallId") String mallId, @Param("supplierId") String supplierId, @Param("productName") String productName, @Param("receiverName") String receiverName);
 
     /**
      * 获取订单下的商品集合
@@ -43,4 +43,13 @@ public interface ShoppingmallOrderProductInfoMapper extends ShoppingmallOrderPro
      * @return java.util.List<com.yunyihenkey.seller.dao.malldb.exportVo.OrderProductExportVo>
      */
     List<OrderProductExportVo> selectExportVo(@Param("mallId") String mallId, @Param("supplierId") String supplierId, @Param("productName") String productName, @Param("receiverName") String receiverName);
+    
+    /**
+     * 获取未发货的订单数数量
+     * @author SunQ
+     * @Date 10:24 2018/5/18
+     * @Param [orderCode]
+     * @return java.lang.Integer
+     */
+    Integer countUnsendByOrderCode(@Param("orderCode") Long orderCode);
 }

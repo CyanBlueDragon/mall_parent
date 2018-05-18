@@ -8,14 +8,6 @@ import java.util.List;
 
 public interface SupplierGoodsCategoryMapper extends SupplierGoodsCategoryBaseMapper {
 
-    /*
-     *@Author: tong
-     *@Description: 供货商商品分类列表查询
-     *@Date: 10:55 2018/5/11
-     *@Param:
-     *@Return:java.util.List<com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsCategory>
-     **/
-    List<SupplierGoodsCategory> selectAll();
 
     /*
     *@Author: tong

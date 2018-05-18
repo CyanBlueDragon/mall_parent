@@ -9,12 +9,14 @@ public enum StatusEnum {
 	selling(1,"上架中"),
 	/**已售罄*/
 	sold(2,"已售罄"),
-	/**待审核*/
-	PENDING(3,"待审核"),
+	/**已下架*/
+	already_down(3,"已下架"),
+	/**未审核*/
+	PENDING(4,"未审核"),
 	/**审核通过*/
-	PASSED(4,"审核通过"),
+	PASSED(5,"审核通过"),
 	/**审核不通过*/
-	NOT_THROUGH(5,"审核不通过"),
+	NOT_THROUGH(6,"审核不通过"),
 	;
 	private int value;
 	private String text;

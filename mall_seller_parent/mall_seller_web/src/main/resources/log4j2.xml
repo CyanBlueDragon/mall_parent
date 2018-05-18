@@ -17,12 +17,14 @@ sys:user.home
 	shutdownHook="disable">
 
 	<properties>
-		<property name="LOG_HOME">${sys:user.home}</property>
+		<property name="LOG_HOME">/var/log/mall_log</property>
 		<!-- 日志切割的最小单位 -->
 		<property name="LOG_FILE_SIZE">100 MB</property>
 		<!-- 日志备份目录 -->
 		<property name="SERVER_NAME">mall-seller</property>
 		<property name="OUTPUT_LOG_LEVEL">INFO</property><!-- 日志输出级别 -->
+		<!-- 环境 -->
+		<property name="active">sit</property>
 	</properties>
 
 	<Appenders>
@@ -39,8 +41,8 @@ sys:user.home
 		<!-- 这个会打印出所有的信息，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档 -->
 		<RollingRandomAccessFile
 			name="RandomAccessFile"
-			fileName="${LOG_HOME}/applogs/${SERVER_NAME}.app.log"
-			filePattern="${LOG_HOME}/applogs/${SERVER_NAME}.$${date:yyyy-MM}/app-%d{yyyy-MM-dd}-%i.log"
+			fileName="${LOG_HOME}/${SERVER_NAME}-${active}.log"
+			filePattern="${LOG_HOME}/${SERVER_NAME}-${active}-his/${SERVER_NAME}-${active}-%d{yyyy-MM-dd}-%i.log"
 			immediateFlush="true" append="true">
 			<!-- 定义日志级别 -->
 			<Filters>
@@ -72,10 +74,15 @@ sys:user.home
 	<Loggers>
 
 		<!-- 定义单个类日志记录级别 -->
-		<logger name="org.mybatis" level="info" />
-		<logger name="org.springframework" level="ERROR" />
+		<logger name="com.apache.ibatis" level="DEBUG" />
+		<logger name="java.sql.Connection" level="DEBUG" />
+		<logger name="java.sql.Statement" level="DEBUG" />
+		<logger name="java.sql.PreparedStatement" level="DEBUG" />
+		
+		<logger name="com.yunyihenkey" level="DEBUG" />
 		<logger name="com.alibaba.druid" level="info" />
-
+		<logger name="org.springframework" level="ERROR" />
+		
 		<!-- 同步和异步混合记录 -->
 		<AsyncLogger name="manage" level="INFO"
 			includeLocation="true" additivity="false">

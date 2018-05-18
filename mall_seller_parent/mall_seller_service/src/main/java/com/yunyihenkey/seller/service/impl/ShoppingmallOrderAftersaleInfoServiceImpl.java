@@ -23,7 +23,7 @@ public class ShoppingmallOrderAftersaleInfoServiceImpl implements ShoppingmallOr
     private ShoppingmallOrderAftersaleInfoMapper shoppingmallOrderAftersaleInfoMapper;
 
     @Override
-    public List<Map<String, Object>> selectAllByPage(String mallId, String orderCode, String memberAccount, String[] aftersaleStatus) {
+    public List<ShoppingmallOrderAftersaleInfo> selectAllByPage(String mallId, String orderCode, String memberAccount, String[] aftersaleStatus) {
         return shoppingmallOrderAftersaleInfoMapper.selectAll(mallId, orderCode, memberAccount, aftersaleStatus);
     }
 
@@ -50,7 +50,7 @@ public class ShoppingmallOrderAftersaleInfoServiceImpl implements ShoppingmallOr
     public boolean unadopt(Long id) {
         ShoppingmallOrderAftersaleInfo info = shoppingmallOrderAftersaleInfoMapper.selectByPrimaryKey(id);
         if(null!=info){
-            // info.setAftersaleStatus(AftersaleStatusEnum.REFUNDING.getValue());
+            info.setAftersaleStatus(AftersaleStatusEnum.NOPASS.getValue());
             shoppingmallOrderAftersaleInfoMapper.updateByPrimaryKeySelective(info);
         }
         return true;

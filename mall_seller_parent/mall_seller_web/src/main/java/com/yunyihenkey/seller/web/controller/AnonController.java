@@ -1,5 +1,6 @@
 package com.yunyihenkey.seller.web.controller;
 
+import java.util.HashMap;
 import java.util.UUID;
 
 import javax.annotation.Resource;
@@ -16,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.yunyihenkey.auth.service.AuthJwtService;
-import com.yunyihenkey.auth.service.UserService;
-import com.yunyihenkey.auth.service.enums.LoginSourceEnum;
+import com.yunyihenkey.auth.service.enums.ReqSourceEnum;
+import com.yunyihenkey.auth.service.util.JwtUtils;
+import com.yunyihenkey.common.constant.MallConstants;
 import com.yunyihenkey.common.constant.RedisConstant;
+import com.yunyihenkey.common.constant.SMSTemplateEnum;
 import com.yunyihenkey.common.utils.LogUtils;
 import com.yunyihenkey.common.utils.RedisUtil;
 import com.yunyihenkey.common.utils.ValidatorUtils;
@@ -27,14 +30,15 @@ import com.yunyihenkey.common.vo.base.SMSResult;
 import com.yunyihenkey.common.vo.resultinfo.CodeEnum;
 import com.yunyihenkey.common.vo.resultinfo.ResultInfo;
 import com.yunyihenkey.common.vo.resultinfo.SystemCodeEnum;
-import com.yunyihenkey.seller.dao.malldb.vo.user.DistributorType;
+import com.yunyihenkey.seller.dao.malldb.vo.param.userController.ForgetPasswordParam;
+import com.yunyihenkey.seller.dao.malldb.vo.param.userController.GetVerificationCodeParam;
+import com.yunyihenkey.seller.dao.malldb.vo.param.userController.LoginParam;
+import com.yunyihenkey.seller.dao.malldb.vo.param.userController.SignParam;
+import com.yunyihenkey.seller.dao.malldb.vo.param.userController.VerificationCodeParam;
+import com.yunyihenkey.seller.dao.malldb.vo.param.userController.VerificationCodeResult;
+import com.yunyihenkey.seller.dao.malldb.vo.result.user.DistributorTypeResult;
+import com.yunyihenkey.seller.service.UserService;
 import com.yunyihenkey.seller.web.util.VerificationCodeUtils;
-import com.yunyihenkey.seller.web.vo.param.userController.ForgetPasswordParam;
-import com.yunyihenkey.seller.web.vo.param.userController.GetVerificationCodeParam;
-import com.yunyihenkey.seller.web.vo.param.userController.LoginParam;
-import com.yunyihenkey.seller.web.vo.param.userController.SignParam;
-import com.yunyihenkey.seller.web.vo.param.userController.VerificationCodeParam;
-import com.yunyihenkey.seller.web.vo.param.userController.VerificationCodeResult;
 
 /**
  * 
@@ -45,7 +49,7 @@ import com.yunyihenkey.seller.web.vo.param.userController.VerificationCodeResult
  */
 
 @RestController
-@RequestMapping("anon")
+@RequestMapping("/anon/")
 public class AnonController extends BaseController {
 
 	@Autowired
@@ -58,6 +62,8 @@ public class AnonController extends BaseController {
 	private ValidatorUtils validatorUtils;
 	@Resource
 	private UserService userService;
+	@Autowired
+	private JwtUtils jwtUtils;
 
 	/**
 	 * 分销商平台登录
@@ -66,24 +72,31 @@ public class AnonController extends BaseController {
 	 * @return
 	 */
 	@PostMapping("login")
-	public ResultInfo<String> login(@RequestBody LoginParam loginParam) throws Exception {
+	public Object login(@RequestBody LoginParam loginParam, HttpServletRequest request) throws Exception {
 
 		// 验证必填项
 		String errorInfo = validatorUtils.validateAndGetErrorInfo(loginParam, Default.class);
 		if (StringUtils.isNotEmpty(errorInfo)) {
-			return new ResultInfo<String>(SystemCodeEnum.SELLER, CodeEnum.ERROR_PARAM, errorInfo, null);
+			return new ResultInfo<>(SystemCodeEnum.SELLER, CodeEnum.ERROR_PARAM, errorInfo);
 		}
-
+		String reqSource = request.getHeader(MallConstants.HEADER_REQ_SOURCE);
+		ReqSourceEnum reqSourceEnum = ReqSourceEnum.getByValue(reqSource);
+		if (reqSourceEnum == null) {
+			return new ResultInfo<>(SystemCodeEnum.SELLER, CodeEnum.ERROR_PARAM,
+					"header中错误的" + MallConstants.HEADER_REQ_SOURCE);
+		}
 		// 验证码
 		String vCationCode = loginParam.getvCationCode();
 		String uid = loginParam.getUid();
-		if (!redisUtil.hasKey(RedisConstant.REDIS_VERTI_CODE + DigestUtils.md5Hex(uid + vCationCode))) {
-			return new ResultInfo<String>(SystemCodeEnum.SELLER, CodeEnum.LOGIN_VERI_CODE_FAIL);
+		String keyR=RedisConstant.REDIS_VERTI_CODE + DigestUtils.md5Hex(uid + vCationCode);
+		if (!redisUtil.hasKey(keyR)) {
+			return new ResultInfo<>(SystemCodeEnum.SELLER, CodeEnum.LOGIN_VERI_CODE_FAIL);
 		}
-
+		redisUtil.del(keyR);
 		// 设置生成TOKEN返回客户端
 		return authJwtService.createToken(loginParam.getUserName(), loginParam.getPassword(), SystemCodeEnum.SELLER,
-				LoginSourceEnum.getByValue(loginParam.getLoginSourceEnum()));
+				reqSourceEnum);
+
 	}
 
 	@GetMapping("veriCode")
@@ -107,31 +120,34 @@ public class AnonController extends BaseController {
 	 * @param verificationCodeParam
 	 * @return
 	 */
-	@PostMapping("/verificationCode")
-	public ResultInfo<DistributorType> verificationCode(@RequestBody VerificationCodeParam verificationCodeParam) {
+	@PostMapping("verificationCode")
+	public ResultInfo<HashMap<String, String>> verificationCode(
+			@RequestBody VerificationCodeParam verificationCodeParam) {
 		String extensionCoding = verificationCodeParam.getExtensionCoding();
-		DistributorType distributorType = new DistributorType();
-		final Integer type = 1;
-		if (extensionCoding == null) {
-			distributorType = userService.signUpV1(verificationCodeParam.getPhoneNumber(), type,
+		DistributorTypeResult distributorTypeResult = new DistributorTypeResult();
+		final Integer type = SMSTemplateEnum.UserRegistration.getValue();
+		if (extensionCoding == null || extensionCoding.equals("")) {
+			distributorTypeResult = userService.signUpV1(verificationCodeParam.getPhoneNumber(), type,
 					verificationCodeParam.getCode());
 		} else if (extensionCoding.length() == 8) {
-			distributorType = userService.signUpV2(verificationCodeParam.getPhoneNumber(), type,
+			distributorTypeResult = userService.signUpV2(verificationCodeParam.getPhoneNumber(), type,
 					verificationCodeParam.getCode(), extensionCoding);
 		} else if (extensionCoding.length() == 6) {
-			distributorType = userService.signUp(verificationCodeParam.getPhoneNumber(), type,
+			distributorTypeResult = userService.signUp(verificationCodeParam.getPhoneNumber(), type,
 					verificationCodeParam.getCode(), extensionCoding);
 		}
-		if (distributorType.getRes() == 0) {
-			return new ResultInfo<>(SystemCodeEnum.AUTH, CodeEnum.SUCCESS, distributorType.getKey());
+		if (distributorTypeResult.getRes() == 0) {
+			HashMap<String, String> map = new HashMap<>();
+			map.put("key", distributorTypeResult.getKey());
+			return new ResultInfo<>(SystemCodeEnum.AUTH, CodeEnum.SUCCESS, "操作成功", map);
 		}
-		if (distributorType.getRes() == 1) {
+		if (distributorTypeResult.getRes() == 1) {
 			return new ResultInfo<>(SystemCodeEnum.AUTH, CodeEnum.ERROR, "未获取验证码或者验证码失效!");
 		}
-		if (distributorType.getRes() == 2) {
+		if (distributorTypeResult.getRes() == 2) {
 			return new ResultInfo<>(SystemCodeEnum.AUTH, CodeEnum.ERROR, "验证码错误!");
 		}
-		if (distributorType.getRes() == 3) {
+		if (distributorTypeResult.getRes() == 3) {
 			return new ResultInfo<>(SystemCodeEnum.AUTH, CodeEnum.ERROR, "推广编码错误!");
 		}
 		return new ResultInfo<>(SystemCodeEnum.AUTH, CodeEnum.ERROR, "A级分销商注册码错误!");
@@ -140,20 +156,20 @@ public class AnonController extends BaseController {
 	/**
 	 * 获取验证码 getVerificationCodeParam
 	 */
-	@PostMapping("/getVerificationCode")
+	@PostMapping("getVerificationCode")
 	public ResultInfo getVerificationCode(@RequestBody GetVerificationCodeParam getVerificationCodeParam) {
 		int i = userService.verificationPhone(getVerificationCodeParam.getPhoneNumber());
 		if (i != 0) {
-			return new ResultInfo(SystemCodeEnum.AUTH, CodeEnum.ERROR, "该手机号码已经注册!");
+			return new ResultInfo<>(SystemCodeEnum.AUTH, CodeEnum.ERROR, "该手机号码已经注册!");
 		}
 
 		SMSResult smsResult = userService.verificationCode(getVerificationCodeParam.getPhoneNumber(),
-				getVerificationCodeParam.getType());
+				SMSTemplateEnum.UserRegistration);
 
-		if (smsResult.getResulltMesseage().equals("OK")) {
-			return new ResultInfo(SystemCodeEnum.AUTH, CodeEnum.SUCCESS);
+		if (smsResult.isResult()) {
+			return new ResultInfo<>(SystemCodeEnum.AUTH, CodeEnum.SUCCESS);
 		}
-		return new ResultInfo(SystemCodeEnum.AUTH, CodeEnum.ERROR, smsResult.getResulltMesseage());
+		return new ResultInfo<>(SystemCodeEnum.AUTH, CodeEnum.ERROR);
 	}
 
 	/**
@@ -162,25 +178,24 @@ public class AnonController extends BaseController {
 	 * @param signParam
 	 * @return
 	 */
-	@PostMapping("/signUp")
+	@PostMapping("signUp")
 	public ResultInfo signUp(@RequestBody SignParam signParam, HttpServletRequest request) {
 
 		boolean flag = userService.saveUser(signParam.getPassword(), signParam.getKey(), signParam.getCityCode(),
-				request);
+				signParam.getProvinceCode(), request);
 		if (flag) {
 			return new ResultInfo(SystemCodeEnum.AUTH, CodeEnum.SUCCESS);
 		}
-		return new ResultInfo(SystemCodeEnum.AUTH, CodeEnum.ERROR, "注册请求超时!");
+		return new ResultInfo<>(SystemCodeEnum.AUTH, CodeEnum.ERROR, "注册请求超时!");
 	}
 
 	/**
-	 * 忘记密码
+	 * 修改密码
 	 * 
 	 * @param forgetPasswordParam
 	 * @return
 	 */
-
-	@PostMapping("/forgetPassword")
+	@PostMapping("forgetPassword")
 	public ResultInfo forgetPassword(@RequestBody ForgetPasswordParam forgetPasswordParam) {
 		int i = userService.verificationPhone(forgetPasswordParam.getUserName());
 		if (i == 0) {
@@ -189,6 +204,61 @@ public class AnonController extends BaseController {
 		authJwtService.LoginoutAllUpdPwd(forgetPasswordParam.getUserName(), SystemCodeEnum.AUTH);
 		userService.forgetPassword(forgetPasswordParam.getUserName(), forgetPasswordParam.getPassword());
 
+		return new ResultInfo<>(SystemCodeEnum.AUTH, CodeEnum.SUCCESS);
+	}
+
+	/**
+	 * 忘记密码 发送短信验证码
+	 * 
+	 * @param getVerificationCodeParam
+	 * @return
+	 */
+	@PostMapping("getVerificationCodeForPassword")
+	public ResultInfo getVerificationCodeForPassword(@RequestBody GetVerificationCodeParam getVerificationCodeParam) {
+		int i = userService.verificationPhone(getVerificationCodeParam.getPhoneNumber());
+		if (i == 0) {
+			return new ResultInfo(SystemCodeEnum.AUTH, CodeEnum.ERROR, "该手机号码未注册!");
+		}
+		SMSResult smsResult = userService.verificationCode(getVerificationCodeParam.getPhoneNumber(),
+				SMSTemplateEnum.ModifyThePassword);
+
+		if (smsResult.isResult()) {
+			return new ResultInfo<>(SystemCodeEnum.AUTH, CodeEnum.SUCCESS);
+		}
+		return new ResultInfo<>(SystemCodeEnum.AUTH, CodeEnum.ERROR);
+	}
+
+	/**
+	 * 验证忘记密码短信验证码
+	 * 
+	 * @param verificationCodeParam
+	 * @return
+	 */
+	@PostMapping("verificationCodeForPassword")
+	public ResultInfo verificationCodeForPassword(@RequestBody VerificationCodeParam verificationCodeParam) {
+		int i = userService.checkoutCode(verificationCodeParam.getPhoneNumber(),
+				SMSTemplateEnum.ModifyThePassword.getValue(), verificationCodeParam.getCode());
+		switch (i) {
+		case 0:
+			return new ResultInfo<>(SystemCodeEnum.AUTH, CodeEnum.ERROR, "验证码失效,请重新获取!");
+		case 1:
+			return new ResultInfo<>(SystemCodeEnum.AUTH, CodeEnum.SUCCESS, "操作成功!");
+		case 2:
+			return new ResultInfo<>(SystemCodeEnum.AUTH, CodeEnum.ERROR, "验证码错误!");
+		}
+		return null;
+	}
+
+	/**
+	 * 续签 刷新token
+	 * @param request
+	 * @return
+	 */
+	@GetMapping("refreshToken")
+	public ResultInfo refreshToken(HttpServletRequest request){
+		if(ResultInfo.isFailed(authJwtService.refreshToken(request))){
+			return new ResultInfo(SystemCodeEnum.AUTH, CodeEnum.ERROR, "刷新token失败，请重试");
+		}
 		return new ResultInfo(SystemCodeEnum.AUTH, CodeEnum.SUCCESS);
 	}
 
