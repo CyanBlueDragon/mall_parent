@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.yunyihenkey.seller.dao.malldb.mapper.SellerShopMapper">
+	<resultMap id="BaseResultMap"
+		type="com.yunyihenkey.basedao.malldb.basevo.SellerShop">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="user_id" jdbcType="BIGINT" property="userId" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="major_business" jdbcType="VARCHAR"
+			property="majorBusiness" />
+		<result column="pay_password" jdbcType="VARCHAR"
+			property="payPassword" />
+		<result column="audit_status" jdbcType="INTEGER"
+			property="auditStatus" />
+		<result column="audit_time" jdbcType="TIMESTAMP"
+			property="auditTime" />
+		<result column="logo_url" jdbcType="VARCHAR" property="logoUrl" />
+		<result column="is_customize" jdbcType="INTEGER"
+			property="isCustomize" />
+		<result column="code" jdbcType="VARCHAR" property="code" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="operator" jdbcType="VARCHAR"
+			property="operator" />
+		<result column="email" jdbcType="VARCHAR" property="email" />
+		<result column="phone" jdbcType="VARCHAR" property="phone" />
+		<result column="tx_qq" jdbcType="VARCHAR" property="txQq" />
+		<result column="tx_wx" jdbcType="VARCHAR" property="txWx" />
+		<result column="depict" jdbcType="VARCHAR" property="depict" />
+		<result column="url" jdbcType="VARCHAR" property="url" />
+		<result column="seller_grade" jdbcType="INTEGER"
+			property="sellerGrade" />
+		<result column="parent_shop_id" jdbcType="BIGINT"
+			property="parentShopId" />
+		<result column="pay_wx" jdbcType="INTEGER" property="payWx" />
+		<result column="pay_ali" jdbcType="INTEGER" property="payAli" />
+		<result column="pay_union" jdbcType="INTEGER"
+			property="payUnion" />
+		<result column="unpaid_time" jdbcType="VARCHAR"
+			property="unpaidTime" />
+		<result column="confirm_order_time" jdbcType="INTEGER"
+			property="confirmOrderTime" />
+		<result column="refund_time" jdbcType="INTEGER"
+			property="refundTime" />
+		<result column="sell_out_time" jdbcType="INTEGER"
+			property="sellOutTime" />
+		<result column="return_order_time" jdbcType="INTEGER"
+			property="returnOrderTime" />
+		<result column="enable_flag" jdbcType="INTEGER"
+			property="enableFlag" />
+		<result column="create_time" jdbcType="TIMESTAMP"
+			property="createTime" />
+		<result column="update_time" jdbcType="TIMESTAMP"
+			property="updateTime" />
+	</resultMap>
+
+	<select id="isSetPayPwd" resultType="java.lang.Boolean">
+		SELECT
+		pay_password IS NOT
+		NULL
+		FROM
+		seller_shop
+		WHERE
+		id = #{shopId}
+	</select>
+
+	<select id="getShopInfoForAccount"
+		resultType="com.yunyihenkey.seller.dao.malldb.vo.param.accountController.GetShopInfoResult">
+		SELECT
+		id id,
+		NAME NAME,
+		logo_url logoUrl,
+		seller_grade
+		sellerGrade
+		FROM
+		seller_shop
+		WHERE
+		id = #{shopId}
+	</select>
+
+</mapper>

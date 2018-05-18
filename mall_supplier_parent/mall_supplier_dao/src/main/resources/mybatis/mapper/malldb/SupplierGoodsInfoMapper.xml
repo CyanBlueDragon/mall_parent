@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--suppress ALL-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunyihenkey.supplier.dao.malldb.mapper.SupplierGoodsInfoMapper">
+    <resultMap id="BaseResultMap" type="com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsInfo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="category_id" jdbcType="BIGINT" property="categoryId"/>
+        <result column="supplier_id" jdbcType="BIGINT" property="supplierId"/>
+        <result column="goods_code" jdbcType="VARCHAR" property="goodsCode"/>
+        <result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
+        <result column="cat_id" jdbcType="INTEGER" property="catId"/>
+        <result column="stock" jdbcType="INTEGER" property="stock"/>
+        <result column="sell_point" jdbcType="VARCHAR" property="sellPoint"/>
+        <result column="delivery_template_name" jdbcType="VARCHAR" property="deliveryTemplateName"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="supply_price" jdbcType="BIGINT" property="supplyPrice"/>
+        <result column="min_retail_price" jdbcType="BIGINT" property="minRetailPrice"/>
+        <result column="max_retail_price" jdbcType="BIGINT" property="maxRetailPrice"/>
+        <result column="sale_amount" jdbcType="BIGINT" property="saleAmount"/>
+        <result column="pv_value" jdbcType="BIGINT" property="pvValue"/>
+        <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="max_profit" jdbcType="VARCHAR" property="maxProfit"/>
+        <result column="min_profit" jdbcType="VARCHAR" property="minProfit"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsInfo">
+        <result column="pic_url" jdbcType="LONGVARCHAR" property="picUrl"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, category_id, supplier_id, goods_code, goods_name, cat_id, stock, sell_point, 
+    delivery_template_name, status, supply_price, min_retail_price, max_retail_price, 
+    sale_amount, pv_value, create_user, create_time, update_time,max_profit,min_profit
+  </sql>
+    <sql id="Blob_Column_List">
+    pic_url
+  </sql>
+    <select id="getCount" parameterType="java.lang.Long" resultType="java.lang.Integer">
+    select 
+    count(*)
+    from supplier_goods_info
+    where category_id = #{id,jdbcType=BIGINT}
+  </select>
+
+    <update id="updateCategory" parameterType="java.lang.Long">
+    update
+    supplier_goods_info
+    set
+    category_id = 1
+    where category_id = #{id,jdbcType=BIGINT}
+  </update>
+
+    <select id="selectAll" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+        select
+        id,goods_code,goods_name,category_id,stock,supply_price,delivery_template_name,min_retail_price,
+        max_retail_price,pic_url,max_profit,min_profit
+        from supplier_goods_info
+        where status = 1
+        <if test="_parameter != null">
+            AND category_id = #{_parameter}
+        </if>
+        order by create_date desc
+    </select>
+
+    <insert id="supplierInsertGoods" parameterType="com.yunyihenkey.supplier.dao.malldb.vo.param.Controller.SupplierGoodsAddParam">
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
+            select @@IDENTITY as id
+        </selectKey>
+        insert into supplier_goods_info (
+
+                category_id,supplier_id, goods_code,goods_name,cat_id,stock, sell_point,
+        delivery_template_name,status, supply_price,create_user,create_time,pic_url)
+
+        values (#{categoryId,jdbcType=BIGINT},#{supplierId,jdbcType=BIGINT},#{goodsCode,jdbcType=VARCHAR},#{goodsName,jdbcType=VARCHAR},
+                #{catId,jdbcType=INTEGER}, #{stock,jdbcType=INTEGER}, #{sellPoint,jdbcType=VARCHAR}, #{deliveryTemplateName,jdbcType=VARCHAR},
+                #{status,jdbcType=INTEGER},#{supplyPrice,jdbcType=BIGINT},#{createUser,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},
+                #{picUrl,jdbcType=LONGVARCHAR})
+    </insert>
+
+</mapper>
