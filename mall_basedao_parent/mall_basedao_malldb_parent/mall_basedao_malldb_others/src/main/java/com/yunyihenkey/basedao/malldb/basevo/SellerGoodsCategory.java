@@ -16,6 +16,11 @@ public class SellerGoodsCategory implements Serializable {
     /** 排序 */
     private Integer sortOrder;
 
+    /**
+     * 是否默认分类,1->是,0->否
+     */
+    private Integer isDefault;
+
     /** 创建人 */
     private String createUser;
 
@@ -62,6 +67,14 @@ public class SellerGoodsCategory implements Serializable {
         this.sortOrder = sortOrder;
     }
 
+    public Integer getIsDefault() {
+        return isDefault;
+    }
+
+    public void setIsDefault(Integer isDefault) {
+        this.isDefault = isDefault;
+    }
+
     public String getCreateUser() {
         return createUser;
     }
@@ -104,6 +117,7 @@ public class SellerGoodsCategory implements Serializable {
         sb.append(", shopId=").append(shopId);
         sb.append(", name=").append(name);
         sb.append(", sortOrder=").append(sortOrder);
+        sb.append(", isDefault=").append(isDefault);
         sb.append(", createUser=").append(createUser);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateUser=").append(updateUser);

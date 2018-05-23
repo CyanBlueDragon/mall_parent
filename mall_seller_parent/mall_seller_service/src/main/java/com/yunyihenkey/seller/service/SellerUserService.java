@@ -4,7 +4,8 @@ import com.yunyihenkey.basedao.malldb.basevo.SellerUser;
 import com.yunyihenkey.common.vo.base.BaseService;
 import com.yunyihenkey.common.vo.resultinfo.ResultInfo;
 import com.yunyihenkey.seller.dao.malldb.vo.param.userController.QueryListParam;
-import com.yunyihenkey.seller.dao.malldb.vo.param.userController.UpdateStatus;
+import com.yunyihenkey.seller.dao.malldb.vo.param.userController.DeleteUserParam;
+import com.yunyihenkey.seller.dao.malldb.vo.param.userController.UpdateUserParam;
 
 import java.util.List;
 
@@ -21,6 +22,7 @@ public interface SellerUserService extends BaseService<SellerUser, Long> {
 
     /**
      * 保存员工与角色关系
+     * @param pId
      * @param roleId
      * @param shopId
      * @param userName
@@ -31,15 +33,28 @@ public interface SellerUserService extends BaseService<SellerUser, Long> {
      * @return
      * @throws Exception
      */
-    ResultInfo<String> save(Long roleId,Long shopId,String userName, String password, String nickName,String code,String reqSource) throws  Exception;
+    ResultInfo<String> save(Long pId, Long roleId, Long shopId, String userName, String password, String nickName, String code, String reqSource) throws Exception;
 
     List<SellerUser> queryUserRoleList(QueryListParam queryListParam);
 
+
     /**
-     * 修改用户状态
-     * @param updateStatus
+     * 修改用户
+     * @param updateUserParam
+     * @return
      * @throws Exception
      */
-    ResultInfo updateStatus(UpdateStatus updateStatus) throws Exception;
+    ResultInfo update(UpdateUserParam updateUserParam) throws Exception;
+
+    /**
+     * 删除用户
+     *
+     * @param deleteUser
+     * @return
+     * @throws Exception
+     */
+    ResultInfo deleteUser(DeleteUserParam deleteUser) throws Exception;
+
+
 
 }

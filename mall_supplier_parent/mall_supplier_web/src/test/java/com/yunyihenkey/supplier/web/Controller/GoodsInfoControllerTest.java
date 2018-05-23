@@ -3,7 +3,7 @@ import java.util.Date;
 
 import com.yunyihenkey.Application;
 import com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsInfo;
-import com.yunyihenkey.supplier.dao.malldb.vo.param.Controller.SupplierGoodsAddParam;
+import com.yunyihenkey.supplier.dao.malldb.vo.param.GoodsInfoController.SupplierGoodsAddParam;
 import com.yunyihenkey.supplier.service.SupplierGoodsInfoService;
 import org.junit.Test;
 import org.junit.runner.RunWith;

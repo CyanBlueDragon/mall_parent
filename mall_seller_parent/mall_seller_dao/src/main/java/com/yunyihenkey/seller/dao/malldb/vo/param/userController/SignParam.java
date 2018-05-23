@@ -3,6 +3,7 @@ package com.yunyihenkey.seller.dao.malldb.vo.param.userController;
 import com.yunyihenkey.common.vo.base.BaseVo;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Pattern;
 
 /**
  * @author LiarYang
@@ -11,7 +12,9 @@ import javax.validation.constraints.NotEmpty;
 public class SignParam extends BaseVo {
     @NotEmpty
     private String key ;
-    @NotEmpty
+
+    @NotEmpty(message = "支付密码不能为空")
+    @Pattern(regexp = "^(?![^a-zA-Z]+$)(?!\\D+$).{6,20}$", message = "支付密码长度为6-20位,由数字和字母组成,至少包含数字和字母")
     private String password;
 
     private String provinceCode;

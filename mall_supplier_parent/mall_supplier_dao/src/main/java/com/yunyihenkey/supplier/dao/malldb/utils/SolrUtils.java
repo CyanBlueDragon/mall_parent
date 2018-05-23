@@ -35,6 +35,8 @@ public class SolrUtils {
      */
     public static void addData(SupplierGoodsInfo info) throws Exception {
 
+        long d = info.getSupplyPrice() / 100;
+
         SolrInputDocument doc = new SolrInputDocument();
         doc.addField("id", info.getId());
         doc.addField("goodsCode", info.getGoodsCode().toString());
@@ -60,17 +62,8 @@ public class SolrUtils {
     public static Map<String, Object> queryData(String queryString, int pageNum, int pageSize) throws Exception {
         Map<String, Object> map = new HashMap<>();
         SolrQuery query = new SolrQuery();
-        String param = null;
-        if (queryString == null) {
-            param = "*:*";
-        } else {
-            param = "goods_name:" + queryString;
-            if (queryString.matches("^[0-9]*$")) {
-                param = param + " || supplyPrice:" + queryString;
-            }
-        }
+        String param = "goods_name:" + queryString;
         query.setQuery(param);
-        if (pageNum < 1) pageNum = 1;
         query.setStart((pageNum - 1) * pageSize);
         query.setRows(pageSize);
         query.set("df", "_Atest");
@@ -80,7 +73,6 @@ public class SolrUtils {
         query.setHighlightSimplePost("</font>"); // 设置高亮显示的后缀
         QueryResponse response = server.query(query);
         SolrDocumentList solrDocumentList = response.getResults();
-        long pages = (solrDocumentList.getNumFound() + pageSize - 1) / pageSize;
         for (SolrDocument solrDocument : solrDocumentList) {
             Object itemName = null;
             // 取高亮显示
@@ -93,7 +85,9 @@ public class SolrUtils {
             }
             solrDocument.setField("goodsName", itemName);
         }
-        map.put("pages", pages);
+        map.put("pageNum", pageNum);
+        map.put("pageSize", pageSize);
+        map.put("total", solrDocumentList.getNumFound());
         map.put("list", solrDocumentList);
         return map;
     }

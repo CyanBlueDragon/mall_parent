@@ -20,5 +20,13 @@ public interface SellerPermissionService extends BaseService<SellerPerm, Long> {
      */
     List<PermissionTree> queryTreeList();
 
+    /**
+     * 生成权限树
+     *
+     * @param list
+     * @return
+     */
+    List<PermissionTree> buildPermTree(List<SellerPerm> list);
+
 
 }

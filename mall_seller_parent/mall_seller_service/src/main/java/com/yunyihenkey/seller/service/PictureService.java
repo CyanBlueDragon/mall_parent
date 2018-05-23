@@ -1,5 +1,7 @@
 package com.yunyihenkey.seller.service;
 
+import org.springframework.web.multipart.MultipartFile;
+
 /**
  * 
  * @desc: 图片上传service
@@ -13,13 +15,11 @@ public interface PictureService {
 	 * 
 	 * @desc: 上传图片
 	 * @author zhouh
-	 * @param type
-	 *            图片类型
-	 * @param data
-	 *            base64
+     * @param uploadFile
+     *            图片流
 	 * @return Object
-	 * @date: 2018年5月17日 下午6:15:45
+     * @date: 2018年5月18日 下午5:21:42
 	 */
-	Object uploadPicture(String type, String data);
+    Object uploadPic(MultipartFile uploadFile);
 
 }

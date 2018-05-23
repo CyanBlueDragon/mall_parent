@@ -15,7 +15,7 @@ import java.util.List;
 
 /**
  * @ClassName SolrTest
- * @Description TODO
+ * @Description
  * @Author LuTong
  * @Date 2018/5/15 9:28
  * @Version 1.0
@@ -65,8 +65,16 @@ public class SolrTest {
 
     @Test
     public void stringTest(){
-        String s = "19.8";
-        System.out.println(s.matches("-[0-9]+(.[0-9]+)?|[0-9]+(.[0-9]+)?"));
+//        String s = "19.8";
+//        System.out.println(s.matches("-[0-9]+(.[0-9]+)?|[0-9]+(.[0-9]+)?"));
+        long i = 5796;
+        long j = 4896;
+        double k = i / (double) j - 1;
+        int g = (int) (k * 100);
+        String s = g + "%";
+        System.out.println(k);
+        System.out.println(g);
+        System.out.println(s);
     }
 
     @Test

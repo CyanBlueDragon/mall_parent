@@ -1,29 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yunyihenkey.seller.dao.malldb.mapper.SellerGoodsDescripMapper">
-  <resultMap id="BaseResultMap" type="com.yunyihenkey.basedao.malldb.basevo.SellerGoodsDescrip">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="goods_id" jdbcType="BIGINT" property="goodsId" />
-    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
-    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
-    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yunyihenkey.basedao.malldb.basevo.SellerGoodsDescrip">
-    <result column="description" jdbcType="LONGVARCHAR" property="description" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, goods_id, create_user, create_date, update_user, update_date
-  </sql>
-  <sql id="Blob_Column_List">
-    description
-  </sql>
-  <!-- <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
-    select 
-    <include refid="Base_Column_List" />
-    ,
-    <include refid="Blob_Column_List" />
-    from seller_goods_descrip
-    where id = #{id,jdbcType=BIGINT}
-  </select> -->
+<mapper
+        namespace="com.yunyihenkey.seller.dao.malldb.mapper.SellerGoodsDescripMapper">
+    <resultMap id="BaseResultMap"
+               type="com.yunyihenkey.basedao.malldb.basevo.SellerGoodsDescrip">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="goods_id" jdbcType="BIGINT" property="goodsId"/>
+        <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="create_time"/>
+        <result column="update_user" jdbcType="VARCHAR" property="updateUser"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
+               type="com.yunyihenkey.basedao.malldb.basevo.SellerGoodsDescrip">
+        <result column="description" jdbcType="LONGVARCHAR" property="description"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+		id, goods_id, create_user, create_time, update_user,
+		update_time
+	</sql>
+    <sql id="Blob_Column_List">
+		description
+	</sql>
+
+    <!-- 删除商品描述 -->
+    <delete id="deleteByGoodsId" parameterType="java.lang.Long">
+		delete from
+		seller_goods_descrip where goods_id =#{goodsId}
+	</delete>
+
+    <!-- 修改商品 -->
+    <update id="updateByGoodsIdSelective"
+            parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerGoodsDescrip">
+        update seller_goods_descrip
+        <set>
+            <if test="updateUser != null">
+                update_user = #{updateUser,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=LONGVARCHAR},
+            </if>
+        </set>
+        where goods_id =#{goodsId}
+    </update>
 </mapper>

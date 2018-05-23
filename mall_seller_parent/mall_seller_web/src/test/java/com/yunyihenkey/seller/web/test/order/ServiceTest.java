@@ -1,18 +1,5 @@
 package com.yunyihenkey.seller.web.test.order;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.util.Date;
-import java.util.List;
-
-import com.yunyihenkey.seller.dao.malldb.vo.param.deliverGoodsController.DeliveryParam;
-import com.yunyihenkey.seller.dao.malldb.vo.param.orderController.ShoppingmallOrderInfoResult;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
-
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yunyihenkey.Application;
@@ -21,15 +8,29 @@ import com.yunyihenkey.basedao.malldb.basevo.ShoppingmallOrderInfo;
 import com.yunyihenkey.basedao.malldb.basevo.ShoppingmallOrderProductInfo;
 import com.yunyihenkey.basedao.malldb.basevoEnum.ShoppingmallOrderInfo.OrderStatusEnum;
 import com.yunyihenkey.common.idworker.IdWorker;
+import com.yunyihenkey.common.utils.JacksonUtils;
 import com.yunyihenkey.common.utils.excel.ExcelUtils;
+import com.yunyihenkey.common.utils.kdniao.KdniaoUtil;
+import com.yunyihenkey.common.utils.kdniao.result.OrderTracesResult;
 import com.yunyihenkey.seller.dao.malldb.exportVo.OrderAftersaleExportVo;
 import com.yunyihenkey.seller.dao.malldb.exportVo.OrderProductExportVo;
-import com.yunyihenkey.seller.dao.malldb.vo.param.aftersaleController.OrderAftersaleInfoParam;
-import com.yunyihenkey.seller.dao.malldb.vo.param.deliverGoodsController.OrderProductInfoParam;
-import com.yunyihenkey.seller.dao.malldb.vo.param.orderController.OrderInfoParam;
+import com.yunyihenkey.seller.dao.malldb.vo.param.aftersaleController.QueryAftersaleParam;
+import com.yunyihenkey.seller.dao.malldb.vo.param.deliverGoodsController.DeliveryParam;
+import com.yunyihenkey.seller.dao.malldb.vo.param.deliverGoodsController.QueryOrderProductParam;
+import com.yunyihenkey.seller.dao.malldb.vo.param.orderController.QueryOrderParam;
+import com.yunyihenkey.seller.dao.malldb.vo.param.orderController.OrderInfoResult;
 import com.yunyihenkey.seller.service.ShoppingmallOrderAftersaleInfoService;
 import com.yunyihenkey.seller.service.ShoppingmallOrderInfoService;
 import com.yunyihenkey.seller.service.ShoppingmallOrderProductInfoService;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.util.*;
 
 /**
  * @Author SunQ
@@ -51,15 +52,18 @@ public class ServiceTest {
     @Autowired
     private ShoppingmallOrderAftersaleInfoService shoppingmallOrderAftersaleInfoService;
 
+    @Autowired
+    private KdniaoUtil kdniaoUtil;
+
     @Test
     public void selectAllByPage() {
-        OrderInfoParam param = new OrderInfoParam();
+        QueryOrderParam param = new QueryOrderParam();
         param.setPageNum(1);
         param.setPageSize(10);
         param.setMallId("45899847553249281");
         param.setOrderStatus(new int[]{OrderStatusEnum.WAITPAY.getValue(), OrderStatusEnum.WAITSEND.getValue(), OrderStatusEnum.WAITRECEIVED.getValue()});
-        List<ShoppingmallOrderInfoResult> list = shoppingmallOrderInfoService.selectAllByPage(param.getMallId(), param.getOrderCode(), param.getMemberAccount(), param.getOrderStatus());
-        PageInfo<ShoppingmallOrderInfoResult> pageInfo = new PageInfo<ShoppingmallOrderInfoResult>(list);
+        List<OrderInfoResult> list = shoppingmallOrderInfoService.selectAllByPage(param.getMallId(), param.getOrderCode(), param.getMemberAccount(), param.getOrderStatus());
+        PageInfo<OrderInfoResult> pageInfo = new PageInfo<OrderInfoResult>(list);
         System.out.print(pageInfo);
     }
 
@@ -71,7 +75,7 @@ public class ServiceTest {
 
     @Test
     public void selectByOrderCode() {
-        ShoppingmallOrderInfoResult shoppingmallOrderInfo = shoppingmallOrderInfoService.selectByOrderCode("45899847553249282");
+        OrderInfoResult shoppingmallOrderInfo = shoppingmallOrderInfoService.selectByOrderCode("45899847553249282");
         System.out.print(shoppingmallOrderInfo);
     }
 
@@ -96,7 +100,7 @@ public class ServiceTest {
 
     @Test
     public void selectAllByPage2() {
-        OrderProductInfoParam param = new OrderProductInfoParam();
+        QueryOrderProductParam param = new QueryOrderProductParam();
         param.setPageNum(1);
         param.setPageSize(10);
         PageHelper.startPage(param.getPageNum(), param.getPageSize());
@@ -106,7 +110,7 @@ public class ServiceTest {
 
     @Test
     public void export() {
-        OrderProductInfoParam param = new OrderProductInfoParam();
+        QueryOrderProductParam param = new QueryOrderProductParam();
         List<OrderProductExportVo> list = shoppingmallOrderProductInfoService.selectExportVo(param.getMallId(), param.getSupplierId(), param.getProductName(), param.getReceiverName());
 
         FileOutputStream out = null;
@@ -132,7 +136,7 @@ public class ServiceTest {
 
     @Test
     public void selectAllByPage3() {
-        OrderAftersaleInfoParam param = new OrderAftersaleInfoParam();
+        QueryAftersaleParam param = new QueryAftersaleParam();
         param.setPageNum(1);
         param.setPageSize(10);
         PageHelper.startPage(param.getPageNum(), param.getPageSize());
@@ -142,7 +146,7 @@ public class ServiceTest {
 
     @Test
     public void export2() {
-        OrderAftersaleInfoParam param = new OrderAftersaleInfoParam();
+        QueryAftersaleParam param = new QueryAftersaleParam();
         List<OrderAftersaleExportVo> list = shoppingmallOrderAftersaleInfoService.selectExportVo(param.getMallId(), param.getOrderCode(), param.getMemberAccount(), param.getAftersaleStatus());
 
         FileOutputStream out = null;
@@ -153,5 +157,33 @@ public class ServiceTest {
         }
         ExcelUtils<OrderAftersaleExportVo> util = new ExcelUtils<OrderAftersaleExportVo>(OrderAftersaleExportVo.class);// 创建工具类.
         util.exportExcel(list, "维权信息", out);// 导出
+    }
+
+    @Test
+    public void kdniao() {
+        try {
+            String requestData = "{'OrderCode':'','ShipperCode':'" + "ZTO" + "','LogisticCode':'" + "494831475164" + "'}";
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("RequestData", kdniaoUtil.urlEncoder(requestData, "UTF-8"));
+            params.put("EBusinessID", kdniaoUtil.getBusinessID());
+            params.put("RequestType", "1002");
+            String dataSign = kdniaoUtil.encrypt(requestData, kdniaoUtil.getAppKey(), "UTF-8");
+            params.put("DataSign", kdniaoUtil.urlEncoder(dataSign, "UTF-8"));
+            params.put("DataType", "2");
+            String result = kdniaoUtil.sendPost(kdniaoUtil.getOrderTracesUrl(), params);
+            result = result.replace("ShipperCode", "shipperCode")
+                    .replace("LogisticCode", "logisticCode")
+                    .replace("EBusinessID", "eBusinessID")
+                    .replace("State", "state")
+                    .replace("Success", "success")
+                    .replace("Traces", "traces")
+                    .replaceAll("AcceptStation", "acceptStation")
+                    .replaceAll("AcceptTime", "acceptTime")
+                    .replaceAll("Remark", "remark");
+            OrderTracesResult orderTracesResult = JacksonUtils.readValue(result, OrderTracesResult.class);
+            System.out.print(orderTracesResult);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

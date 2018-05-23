@@ -19,7 +19,6 @@
     <result column="city_code" jdbcType="VARCHAR" property="cityCode" />
     <result column="province_code" jdbcType="VARCHAR" property="provinceCode" />
     <result column="seller_grade" jdbcType="INTEGER" property="sellerGrade" />
-    <result column="status" jdbcType="INTEGER" property="status" />
     <result column="login_time" jdbcType="TIMESTAMP" property="loginTime" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
@@ -28,7 +27,7 @@
   <sql id="Base_Column_List">
     id, shop_id, user_name, parent_user_id, nick_name, password, email, mobile, sex, 
     logo_url, birthday, user_type, register_source, register_ip, city_code, province_code, 
-    seller_grade, status, login_time, create_time, update_time, is_delete
+    seller_grade, login_time, create_time, update_time, is_delete
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -46,17 +45,17 @@
       email, mobile, sex, 
       logo_url, birthday, user_type, 
       register_source, register_ip, city_code, 
-      province_code, seller_grade, status, 
-      login_time, create_time, update_time, 
-      is_delete)
+      province_code, seller_grade, login_time, 
+      create_time, update_time, is_delete
+      )
     values (#{id,jdbcType=BIGINT}, #{shopId,jdbcType=BIGINT}, #{userName,jdbcType=VARCHAR}, 
       #{parentUserId,jdbcType=BIGINT}, #{nickName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER}, 
       #{logoUrl,jdbcType=VARCHAR}, #{birthday,jdbcType=TIMESTAMP}, #{userType,jdbcType=INTEGER}, 
       #{registerSource,jdbcType=VARCHAR}, #{registerIp,jdbcType=VARCHAR}, #{cityCode,jdbcType=VARCHAR}, 
-      #{provinceCode,jdbcType=VARCHAR}, #{sellerGrade,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
-      #{loginTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{isDelete,jdbcType=INTEGER})
+      #{provinceCode,jdbcType=VARCHAR}, #{sellerGrade,jdbcType=INTEGER}, #{loginTime,jdbcType=TIMESTAMP}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerUser">
     insert into seller_user
@@ -111,9 +110,6 @@
       </if>
       <if test="sellerGrade != null">
         seller_grade,
-      </if>
-      <if test="status != null">
-        status,
       </if>
       <if test="loginTime != null">
         login_time,
@@ -180,9 +176,6 @@
       <if test="sellerGrade != null">
         #{sellerGrade,jdbcType=INTEGER},
       </if>
-      <if test="status != null">
-        #{status,jdbcType=INTEGER},
-      </if>
       <if test="loginTime != null">
         #{loginTime,jdbcType=TIMESTAMP},
       </if>
@@ -248,9 +241,6 @@
       <if test="sellerGrade != null">
         seller_grade = #{sellerGrade,jdbcType=INTEGER},
       </if>
-      <if test="status != null">
-        status = #{status,jdbcType=INTEGER},
-      </if>
       <if test="loginTime != null">
         login_time = #{loginTime,jdbcType=TIMESTAMP},
       </if>
@@ -284,7 +274,6 @@
       city_code = #{cityCode,jdbcType=VARCHAR},
       province_code = #{provinceCode,jdbcType=VARCHAR},
       seller_grade = #{sellerGrade,jdbcType=INTEGER},
-      status = #{status,jdbcType=INTEGER},
       login_time = #{loginTime,jdbcType=TIMESTAMP},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},

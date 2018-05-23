@@ -12,6 +12,11 @@ public class SellerGoodsInfoResult {
 	/** 主键 */
 	private Long id;
 
+    /**
+     * 供应商商品id
+     */
+    private Long goodsId;
+
 	/** 商品标题 */
 	private String goodsTitle;
 
@@ -30,8 +35,15 @@ public class SellerGoodsInfoResult {
 	/** 分类id */
 	private Long categoryId;
 
-	/** 创建时间 */
-	private String createDate;
+    /**
+     * 分类名称
+     */
+    private String categoryName;
+
+    /**
+     * 创建时间
+     */
+    private String createTime;
 
 	/** 商品状态#0,仓库中|warehouse;1,上架中|selling;3,已售罄|sold */
 	private Integer status;
@@ -43,80 +55,96 @@ public class SellerGoodsInfoResult {
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Long getCategoryId() {
-		return categoryId;
-	}
-
-	public void setCategoryId(Long categoryId) {
-		this.categoryId = categoryId;
-	}
-
 	public String getGoodsTitle() {
-		return goodsTitle;
-	}
+        return goodsTitle;
+    }
 
-	public void setGoodsTitle(String goodsTitle) {
-		this.goodsTitle = goodsTitle;
-	}
-
-	public Integer getStock() {
-		return stock;
-	}
-
-	public void setStock(Integer stock) {
-		this.stock = stock;
-	}
-
-	public Long getSupplyPrice() {
-		return supplyPrice;
-	}
-
-	public void setSupplyPrice(Long supplyPrice) {
-		this.supplyPrice = supplyPrice;
+    public String getPicUrl() {
+        return picUrl;
 	}
 
 	public Long getPrice() {
-		return price;
-	}
+        return price;
+    }
 
-	public void setPrice(Long price) {
-		this.price = price;
+    public Long getSupplyPrice() {
+        return supplyPrice;
+    }
+
+    public Integer getStock() {
+        return stock;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public String getCreateTime() {
+        return createTime;
 	}
 
 	public Integer getStatus() {
 		return status;
 	}
 
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
+    public Integer getAddCount() {
+        return addCount;
+    }
 
-	public String getCreateDate() {
-		return createDate;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setCreateDate(String createDate) {
-		this.createDate = createDate;
-	}
+    public void setGoodsTitle(String goodsTitle) {
+        this.goodsTitle = goodsTitle;
+    }
 
-	public String getPicUrl() {
-		return picUrl;
-	}
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl;
+    }
 
-	public void setPicUrl(String picUrl) {
-		this.picUrl = picUrl;
-	}
+    public void setPrice(Long price) {
+        this.price = price;
+    }
 
-	public Integer getAddCount() {
-		return addCount;
-	}
+    public void setSupplyPrice(Long supplyPrice) {
+        this.supplyPrice = supplyPrice;
+    }
 
-	public void setAddCount(Integer addCount) {
-		this.addCount = addCount;
-	}
+    public void setStock(Integer stock) {
+        this.stock = stock;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public void setAddCount(Integer addCount) {
+        this.addCount = addCount;
+    }
+
+    public Long getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(Long goodsId) {
+        this.goodsId = goodsId;
+    }
 
 }

@@ -1,16 +1,16 @@
 package com.yunyihenkey.seller.service.impl;
 
-import java.io.InputStream;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.yunyihenkey.common.utils.DateUtil;
 import com.yunyihenkey.common.utils.FtpUtil;
-import com.yunyihenkey.common.utils.ImageUtil;
+import com.yunyihenkey.common.utils.LogUtils;
 import com.yunyihenkey.common.vo.resultinfo.CodeEnum;
 import com.yunyihenkey.common.vo.resultinfo.ResultInfo;
 import com.yunyihenkey.common.vo.resultinfo.SystemCodeEnum;
@@ -26,44 +26,75 @@ import com.yunyihenkey.seller.service.PictureService;
 @Service
 public class PictureServiceImpl implements PictureService {
 
-	private String FTP_ADDRESS = "192.168.1.204";
-	private Integer FTP_PORT = 21;
-	private String FTP_USERNAME = "ftpuser";
-	private String FTP_PASSWORD = "ftpuser";
-	private String FTP_BASE_PATH = "/home/ftpuser/images";
-	private String IMAGE_BASE_URL = "http://192.168.1.204/images";
+    // ftp地址
+    @Value("${FTP.FTP_ADDRESS}")
+    private String FTP_ADDRESS;
+    // ftp端口
+    @Value("${FTP.FTP_PORT}")
+    private Integer FTP_PORT;
+    // ftp账号
+    @Value("${FTP.FTP_USERNAME}")
+    private String FTP_USERNAME;
+    // ftp密码
+    @Value("${FTP.FTP_PASSWORD}")
+    private String FTP_PASSWORD;
+    // 图片根路径
+    @Value("${FTP.FTP_BASE_PATH}")
+    private String FTP_BASE_PATH;
+    // 图片url根地址
+    @Value("${FTP.IMAGE_BASE_URL}")
+    private String IMAGE_BASE_URL;
+    // 图片最大大小
+    @Value("${FTP.IMAGE_MAX_SIZE}")
+    private Integer maxSize;
 
 	@Override
-	public Object uploadPicture(String type, String data) {
+    public Object uploadPic(MultipartFile uploadFile) {
+        LogUtils.getLogger().info("上传图片......");
 
-		// 获取图片base64
-		String imgStr = data.split(",")[1];
+        // 上传后的图片地址
+        String result = "";
+        try {
 
-		// 获取图片输入流
-		InputStream generateImage = ImageUtil.generateImage(imgStr);
-		if (generateImage == null) {
-			return new ResultInfo<Object>(SystemCodeEnum.SELLER, CodeEnum.ERROR);
-		}
+            // 验证参数
+            if (uploadFile == null) {
+                return new ResultInfo<Object>(SystemCodeEnum.SELLER, CodeEnum.ERROR, "图片不存在！");
+            }
 
-		// 获取图片后缀
-		String fileType = type.split("/")[1];
-		String fileName = UUID.randomUUID().toString() + "." + fileType;
-		// 图片路径
-		String imagePath = DateUtil.format(new Date(), "/yyyy/MM/dd");
+            // 文件类型
+            String contentType = uploadFile.getContentType();
+            // 文件名称
+            String oldName = uploadFile.getOriginalFilename();
+            if (StringUtils.isBlank(contentType) || StringUtils.isBlank(oldName)
+                    || !"image".equals(contentType.split("/")[0])) {
+                return new ResultInfo<Object>(SystemCodeEnum.SELLER, CodeEnum.ERROR, "只能上传图片！");
+            }
+            if (uploadFile.getSize() > maxSize) {
+                return new ResultInfo<Object>(SystemCodeEnum.SELLER, CodeEnum.ERROR,
+                        LogUtils.getString("图片大小不能超过", maxSize, "M！"));
+            }
 
-		// 上传图片
-		boolean uploadFile = FtpUtil.uploadFile(FTP_ADDRESS, FTP_PORT, FTP_USERNAME, FTP_PASSWORD, FTP_BASE_PATH,
-				imagePath, fileName, generateImage);
-		if (!uploadFile) {
-			return new ResultInfo<Object>(SystemCodeEnum.SELLER, CodeEnum.ERROR);
-		}
+            // 生成图片名称
+            String newName = UUID.randomUUID().toString() + oldName.substring(oldName.lastIndexOf("."));
+            // 图片路径
+            String imagePath = DateUtil.format(new Date(), "/yyyy/MM/dd");
 
-		// 上传后的图片地址
-		String picUrl = IMAGE_BASE_URL + imagePath + "/" + fileName;
-		Map<String, Object> result = new HashMap<String, Object>();
-		result.put("url", picUrl);
+            // 上传图片
+            boolean isUpload = FtpUtil.uploadFile(FTP_ADDRESS, FTP_PORT, FTP_USERNAME, FTP_PASSWORD, FTP_BASE_PATH,
+                    imagePath, newName, uploadFile.getInputStream());
+            if (!isUpload) {
+                return new ResultInfo<Object>(SystemCodeEnum.SELLER, CodeEnum.ERROR, "上传图片失败！");
+            }
+            // 图片地址
+            result = IMAGE_BASE_URL + imagePath + "/" + newName;
+            LogUtils.getLogger().info("上传图片成功,图片地址=", result);
 
-		return new ResultInfo<Object>(SystemCodeEnum.SELLER, CodeEnum.SUCCESS, result);
+        } catch (Exception e) {
+            LogUtils.getLogger().error("上传图片失败！", e);
+            return new ResultInfo<Object>(SystemCodeEnum.SELLER, CodeEnum.ERROR, "上传图片失败！");
+        }
+
+        return new ResultInfo<Object>(SystemCodeEnum.SELLER, CodeEnum.SUCCESS, "上传成功！", result);
 	}
 
 }

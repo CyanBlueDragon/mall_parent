@@ -1,17 +1,17 @@
-//package com.yunyihenkey.utils.excel;
+//package com.yunyihenkey.common.utils.excel;
 //
 //import java.net.MalformedURLException;
 //import java.net.URL;
 //
 //import javax.servlet.http.HttpServletRequest;
 //
-//import org.apache.commons.lang.StringUtils;
+//import org.apache.commons.lang3.StringUtils;
 //
 ////必须继承HttpServlet类
 //public class WebHelper {
 //	/**
 //	 * 获得网站目录的绝对路径
-//	 * 
+//	 *
 //	 * @param request
 //	 * @return
 //	 */
@@ -23,7 +23,7 @@
 //
 //	/**
 //	 * 返回URl的域名
-//	 * 
+//	 *
 //	 * @param req
 //	 * @return
 //	 */
@@ -33,7 +33,7 @@
 //
 //	/**
 //	 * 返回URl的域名
-//	 * 
+//	 *
 //	 * @param req
 //	 * @return
 //	 */
@@ -55,7 +55,7 @@
 //
 //	/**
 //	 * 返回URl的域名
-//	 * 
+//	 *
 //	 * @param req
 //	 * @return
 //	 */
@@ -72,7 +72,7 @@
 //
 //	/**
 //	 * 获取user-agent
-//	 * 
+//	 *
 //	 * @param req 请求对象
 //	 * @return
 //	 */

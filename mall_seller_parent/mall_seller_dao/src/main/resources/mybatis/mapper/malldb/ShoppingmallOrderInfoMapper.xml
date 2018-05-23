@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yunyihenkey.seller.dao.malldb.mapper.ShoppingmallOrderInfoMapper">
 
-    <resultMap id="BaseResultMap" type="com.yunyihenkey.seller.dao.malldb.vo.param.orderController.ShoppingmallOrderInfoResult">
+    <resultMap id="BaseResultMap" type="com.yunyihenkey.seller.dao.malldb.vo.param.orderController.OrderInfoResult">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="mall_id" jdbcType="BIGINT" property="mallId"/>
         <result column="order_code" jdbcType="BIGINT" property="orderCode"/>

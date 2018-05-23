@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunyihenkey.seller.dao.malldb.mapper.SellerUserRoleMapper">
+    <resultMap id="BaseResultMap" type="com.yunyihenkey.basedao.malldb.basevo.SellerUserRole">
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="role_id" jdbcType="BIGINT" property="roleId"/>
+    </resultMap>
+    <select id="queryList" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerUserRole"
+            resultType="com.yunyihenkey.basedao.malldb.basevo.SellerUserRole">
+        SELECT
+        user_id,
+        role_id
+        FROM
+        seller_user_role
+        <where>
+            1=1
+            <if test="userId!=null">
+                and user_id =#{userId}
+            </if>
+            <if test="roleId!=null">
+                and role_id =#{roleId}
+            </if>
+        </where>
+
+    </select>
+</mapper>

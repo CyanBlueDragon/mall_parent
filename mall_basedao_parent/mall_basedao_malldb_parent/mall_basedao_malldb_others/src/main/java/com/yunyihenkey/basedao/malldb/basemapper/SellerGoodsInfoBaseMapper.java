@@ -13,5 +13,7 @@ public interface SellerGoodsInfoBaseMapper {
 
     int updateByPrimaryKeySelective(SellerGoodsInfo record);
 
+    int updateByPrimaryKeyWithBLOBs(SellerGoodsInfo record);
+
     int updateByPrimaryKey(SellerGoodsInfo record);
 }

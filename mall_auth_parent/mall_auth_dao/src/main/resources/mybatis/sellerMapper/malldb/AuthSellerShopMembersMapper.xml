@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunyihenkey.basedao.malldb.basemapper.AuthSellerShopMembersMapper">
+    <resultMap id="BaseResultMap" type="com.yunyihenkey.basedao.malldb.basevo.SellerShopMembers">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="shop_id" jdbcType="BIGINT" property="shopId"/>
+        <result column="members_account" jdbcType="VARCHAR" property="membersAccount"/>
+        <result column="phone_num" jdbcType="VARCHAR" property="phoneNum"/>
+        <result column="members_name" jdbcType="VARCHAR" property="membersName"/>
+        <result column="balance" jdbcType="BIGINT" property="balance"/>
+        <result column="state" jdbcType="INTEGER" property="state"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="is_delete" jdbcType="INTEGER" property="isDelete"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, shop_id, members_account, phone_num, members_name, balance, state, create_time, 
+    is_delete, update_time
+  </sql>
+    <select id="selectByShopId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from seller_shop_members
+        where shop_id = #{shopId,jdbcType=BIGINT}
+    </select>
+
+    <select id="getMembers" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from seller_shop_members
+        <where>
+            1 = 1
+            <if test=" shopId != null and shopId != '' ">
+                AND shop_id=#{shopId}
+            </if>
+            <if test=" membersAccount != null and membersAccount != '' ">
+                and members_account like CONCAT('%',#{membersAccount},'%')
+            </if>
+            <if test=" membersName != null and membersName != '' ">
+                and members_name like CONCAT('%',#{membersName},'%')
+            </if>
+            <if test=" state != null ">
+                and state =#{state}
+            </if>
+        </where>
+
+    </select>
+
+
+    <update id="updateBatch" parameterType="java.util.List">
+        update seller_shop_members
+        set state =
+        <foreach collection="list" item="item" index="index"
+                 separator=" " open="case ID" close="end">
+            when #{item.id} then #{item.state}
+        </foreach>
+        where id in
+        <foreach collection="list" index="index" item="item"
+                 separator="," open="(" close=")">
+            #{item.id,jdbcType=BIGINT}
+        </foreach>
+    </update>
+
+
+</mapper>

@@ -12,6 +12,16 @@ public class    ForgetPasswordParam extends BaseVo {
     private String userName;
     @NotEmpty
     private String password;
+    @NotEmpty
+    private String key;
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 
     public String getUserName() {
         return userName;

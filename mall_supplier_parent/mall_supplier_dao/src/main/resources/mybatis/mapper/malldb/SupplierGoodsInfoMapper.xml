@@ -11,31 +11,82 @@
         <result column="cat_id" jdbcType="INTEGER" property="catId"/>
         <result column="stock" jdbcType="INTEGER" property="stock"/>
         <result column="sell_point" jdbcType="VARCHAR" property="sellPoint"/>
-        <result column="delivery_template_name" jdbcType="VARCHAR" property="deliveryTemplateName"/>
+        <result column="delivery_template_name" jdbcType="INTEGER" property="deliveryTemplateName"/>
         <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="price" jdbcType="BIGINT" property="price"/>
         <result column="supply_price" jdbcType="BIGINT" property="supplyPrice"/>
         <result column="min_retail_price" jdbcType="BIGINT" property="minRetailPrice"/>
         <result column="max_retail_price" jdbcType="BIGINT" property="maxRetailPrice"/>
         <result column="sale_amount" jdbcType="BIGINT" property="saleAmount"/>
         <result column="pv_value" jdbcType="BIGINT" property="pvValue"/>
-        <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createDate"/>
-        <result column="update_time" jdbcType="TIMESTAMP" property="updateDate"/>
-        <result column="max_profit" jdbcType="VARCHAR" property="maxProfit"/>
         <result column="min_profit" jdbcType="VARCHAR" property="minProfit"/>
+        <result column="max_profit" jdbcType="VARCHAR" property="maxProfit"/>
+        <result column="create_user" jdbcType="VARCHAR" property="createUser"/>
+        <result column="update_user" jdbcType="VARCHAR" property="updateUser"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="is_delete" jdbcType="INTEGER" property="isDelete"/>
+        <result column="version" jdbcType="BIGINT" property="version"/>
+        <result column="review_user" jdbcType="VARCHAR" property="reviewUser"/>
+        <result column="total_stock" jdbcType="INTEGER" property="totalStock"/>
+        <result column="submit_user" jdbcType="VARCHAR" property="submitUser"/>
     </resultMap>
     <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs"
                type="com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsInfo">
         <result column="pic_url" jdbcType="LONGVARCHAR" property="picUrl"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, category_id, supplier_id, goods_code, goods_name, cat_id, stock, sell_point, 
-    delivery_template_name, status, supply_price, min_retail_price, max_retail_price, 
-    sale_amount, pv_value, create_user, create_time, update_time,max_profit,min_profit
+    id, category_id, supplier_id, goods_code, goods_name, cat_id, stock, sell_point,
+    delivery_template_name, status, price, supply_price, min_retail_price, max_retail_price,
+    sale_amount, pv_value, min_profit, max_profit, create_user, update_user, create_time,
+    update_time, is_delete, version, review_user, total_stock, submit_user
   </sql>
     <sql id="Blob_Column_List">
     pic_url
   </sql>
+
+    <resultMap id="qualified" type="com.yunyihenkey.supplier.dao.malldb.vo.exportVo.SupplierGoodsExportParam">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="goods_code" jdbcType="VARCHAR" property="goodsCode"/>
+        <result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
+        <result column="pic_url" jdbcType="LONGVARCHAR" property="picUrl"/>
+        <result column="price" jdbcType="BIGINT" property="price"/>
+        <result column="supply_price" jdbcType="BIGINT" property="supplyPrice"/>
+        <result column="stock" jdbcType="INTEGER" property="stock"/>
+        <result column="total_stock" jdbcType="INTEGER" property="totalStock"/>
+        <result column="submit_user" jdbcType="VARCHAR" property="submitUser"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="categoryName" jdbcType="VARCHAR" property="categoryName"/>
+        <result column="supplyName" jdbcType="VARCHAR" property="supplyName"/>
+    </resultMap>
+
+    <select id="checkAll" parameterType="java.lang.Long"
+            resultMap="qualified">
+        SELECT
+    	    a.id,
+	        a.goods_code,
+	        a.goods_name,
+            a.pic_url,
+            a.stock,
+            a.supply_price,
+            a.`status`,
+            a.submit_user,
+            a.create_time,
+            a.total_stock,
+            a.price,
+        	b.`name` AS categoryName,
+        	s.`name` AS supplyName
+        FROM
+	        supplier_goods_info a,
+	        supplier_goods_category b,
+        	supplier_user s
+        WHERE
+	        a.category_id = b.id
+        AND
+            a.supplier_id = s.id
+    </select>
+
     <select id="getCount" parameterType="java.lang.Long" resultType="java.lang.Integer">
     select 
     count(*)
@@ -56,26 +107,36 @@
         id,goods_code,goods_name,category_id,stock,supply_price,delivery_template_name,min_retail_price,
         max_retail_price,pic_url,max_profit,min_profit
         from supplier_goods_info
-        where status = 1
+        where status = 1 and is_delete =0
         <if test="_parameter != null">
             AND category_id = #{_parameter}
         </if>
-        order by create_date desc
+        order by create_time desc
     </select>
 
-    <insert id="supplierInsertGoods" parameterType="com.yunyihenkey.supplier.dao.malldb.vo.param.Controller.SupplierGoodsAddParam">
+    <insert id="supplierInsertGoods"
+            parameterType="com.yunyihenkey.supplier.dao.malldb.vo.param.GoodsInfoController.SupplierGoodsAddParam">
         <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">
             select @@IDENTITY as id
         </selectKey>
         insert into supplier_goods_info (
 
-                category_id,supplier_id, goods_code,goods_name,cat_id,stock, sell_point,
+        category_id,supplier_id, goods_code,goods_name,cat_id,stock, sell_point,
         delivery_template_name,status, supply_price,create_user,create_time,pic_url)
 
-        values (#{categoryId,jdbcType=BIGINT},#{supplierId,jdbcType=BIGINT},#{goodsCode,jdbcType=VARCHAR},#{goodsName,jdbcType=VARCHAR},
-                #{catId,jdbcType=INTEGER}, #{stock,jdbcType=INTEGER}, #{sellPoint,jdbcType=VARCHAR}, #{deliveryTemplateName,jdbcType=VARCHAR},
-                #{status,jdbcType=INTEGER},#{supplyPrice,jdbcType=BIGINT},#{createUser,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},
-                #{picUrl,jdbcType=LONGVARCHAR})
+        values
+        (#{categoryId,jdbcType=BIGINT},#{supplierId,jdbcType=BIGINT},#{goodsCode,jdbcType=VARCHAR},#{goodsName,jdbcType=VARCHAR},
+        #{catId,jdbcType=INTEGER}, #{stock,jdbcType=INTEGER}, #{sellPoint,jdbcType=VARCHAR},
+        #{deliveryTemplateName,jdbcType=VARCHAR},
+        #{status,jdbcType=INTEGER},#{supplyPrice,jdbcType=BIGINT},#{createUser,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},
+        #{picUrl,jdbcType=LONGVARCHAR})
     </insert>
+
+    <update id="addGoodsToShop" parameterType="hashmap">
+        update supplier_goods_info
+    set stock = #{param2},
+        version = #{param3}+1
+    where id = #{param1} and version = #{param3}
+    </update>
 
 </mapper>

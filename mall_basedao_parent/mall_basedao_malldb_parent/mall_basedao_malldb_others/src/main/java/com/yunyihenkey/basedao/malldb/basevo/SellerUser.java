@@ -54,9 +54,6 @@ public class SellerUser implements Serializable {
     /** 分销商级别#0,A级分销商|A;1,B级分销商|B;2,C级分销商|C */
     private Integer sellerGrade;
 
-    /** 状态#0,使用中|ENABLE;1,屏蔽|DISABLE  */
-    private Integer status;
-
     /** 最近登录时间 */
     private Date loginTime;
 
@@ -205,14 +202,6 @@ public class SellerUser implements Serializable {
         this.sellerGrade = sellerGrade;
     }
 
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
     public Date getLoginTime() {
         return loginTime;
     }
@@ -268,7 +257,6 @@ public class SellerUser implements Serializable {
         sb.append(", cityCode=").append(cityCode);
         sb.append(", provinceCode=").append(provinceCode);
         sb.append(", sellerGrade=").append(sellerGrade);
-        sb.append(", status=").append(status);
         sb.append(", loginTime=").append(loginTime);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);

@@ -41,7 +41,7 @@ public class RedisConstant {
 	/**
 	 * 昨日生产信息缓存
 	 */
-	public static String getKeyByShopId(Long shopId){
+    public static String getYesterdayCacheKeyByShopId(Long shopId) {
 		return RedisConstant.YESTERDAY_PRODUCTION + shopId;
 	}
 	private static  final String YESTERDAY_PRODUCTION = "mall:yesterday:production:";

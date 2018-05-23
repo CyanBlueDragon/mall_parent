@@ -6,11 +6,12 @@
 		type="com.yunyihenkey.seller.dao.malldb.vo.param.goodsController.SellerGoodsCategoryInfoResult">
 		<id column="id" jdbcType="BIGINT" property="id" />
 		<result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="is_default" jdbcType="INTEGER" property="isDefault"/>
 		<result column="sort_order" jdbcType="INTEGER" property="sortOrder" />
-		<result column="create_time" jdbcType="TIMESTAMP" property="createDate" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
 	</resultMap>
 	<sql id="Base_Column_List">
-		id, name, sort_order, create_time
+		id, name, is_default, sort_order, create_time
 	</sql>
 
 	<!-- 根据店铺id查询分类 -->
@@ -24,15 +25,17 @@
 	<!-- 关联查询商品分类 -->
 	<select id="selectAllWithGoodsNumByShopId" parameterType="java.lang.Long"
 		resultMap="BaseResultMap">
-		select count(b.id) as goodsNum,
-		a.id, a.name, a.sort_order,
+		select
+		count(b.id) as goodsNum,
+		a.id,
+		a.name,
+		a.sort_order,
 		a.create_time
-		from seller_goods_category a
+		from
+		seller_goods_category a
 		left join seller_goods_info b
-		on a.id =
-		b.category_id
-		where a.shop_id =
-		#{shopId}
+		on a.id = b.category_id
+		where a.shop_id = #{shopId}
 		group by a.id
 	</select>
 
@@ -40,15 +43,34 @@
 	<select id="selectByShopIdAndNameWithPage" parameterType="hashmap"
 		resultMap="BaseResultMap">
 		select
-		<include refid="Base_Column_List" />
-		from seller_goods_category where shop_id = #{shopId} and name like
+		count(b.id) as goodsNum,
+		a.id,
+		a.name,
+		a.sort_order,
+		a.create_time
+		from seller_goods_category a
+		left join seller_goods_info b
+		on a.id = b.category_id
+		where a.shop_id = #{shopId}
+		and name like
 		CONCAT('%',#{name},'%')
+		group by a.id
 	</select>
 
-	<!-- 查询分类是否存在 -->
+    <!-- 查询默认分类 -->
+    <select id="selectIsDefaultByShopId" parameterType="hashmap"
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from seller_goods_category
+        where shop_id = #{shopId} and is_default=1
+    </select>
+
+    <!-- 根据id、店铺id查询分类 -->
 	<select id="selectByIdWithShopId" parameterType="hashmap"
-		resultType="java.lang.Integer">
-		select count(0)
+            resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
 		from seller_goods_category where id = #{id}
 		and shop_id = #{shopId}
 	</select>
@@ -68,7 +90,7 @@
 		sort_order = #{sortOrder},
 		update_user = #{updateUser},
 		update_time =
-		#{updateDate}
+		#{updateTime}
 		where id =#{id} and shop_id = #{shopId}
 	</update>
 

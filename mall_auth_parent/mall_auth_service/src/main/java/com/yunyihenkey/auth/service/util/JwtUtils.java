@@ -12,11 +12,13 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 
 import com.yunyihenkey.basedao.malldb.basemapper.SellerUserBaseMapper;
+import com.yunyihenkey.common.constant.MallConstants;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.yunyihenkey.auth.service.enums.ReqSourceEnum;
+import com.yunyihenkey.auth.service.enums.RequestSourceEnum;
 import com.yunyihenkey.auth.service.vo.authjwt.seller.AuthSellerUser;
 import com.yunyihenkey.basedao.malldb.basemapper.SellerUserTokenBaseMapper;
 import com.yunyihenkey.basedao.malldb.basevo.SellerPerm;
@@ -140,7 +142,7 @@ public class JwtUtils {
 	 * @param loginSourceEnum
 	 * @return
 	 */
-	public String cretaJwt(String userName, SystemCodeEnum systemCodeEnum, ReqSourceEnum loginSourceEnum) {
+    public String cretaJwt(String userName, SystemCodeEnum systemCodeEnum, RequestSourceEnum loginSourceEnum) {
 
 		// 账号验证通过后发放jwt
 		String jwtId = UUID.randomUUID().toString().replace("-", "");
@@ -152,7 +154,7 @@ public class JwtUtils {
 		// map.put(Claims.SUBJECT, "");//
 		// map.put(Claims.AUDIENCE, "sdji21safio234oi12i1o2j3");//
 		map.put(Claims.NOT_BEFORE, curTimeSeconds - JwtConstants.MAX_DIFFER);// 生效当前时间，减5分钟，防止集群环境各个机器时间不同步
-		map.put(Claims.EXPIRATION, ReqSourceEnum.WEB == loginSourceEnum ? curTimeSeconds + JwtConstants.EXPIRATION_WEB
+        map.put(Claims.EXPIRATION, RequestSourceEnum.WEB == loginSourceEnum ? curTimeSeconds + JwtConstants.EXPIRATION_WEB
 				: curTimeSeconds + JwtConstants.EXPIRATION_OTHERS);// jwt过期时间(单位秒)。web端1天后过期；其他端7天后过期
 		map.put(Claims.ISSUED_AT, curTimeSeconds);// 签发时间
 		map.put(Claims.ID, jwtId);// jwt的唯一身份标识 存放用户ID
@@ -235,7 +237,7 @@ public class JwtUtils {
 		// 当前时间戳
 		long curTime = System.currentTimeMillis();
 
-		if (ReqSourceEnum.WEB.getValue().equals(bodyClaims.get(JwtConstants.JWT_LOGIN_SOURCE).toString())) {
+        if (RequestSourceEnum.WEB.getValue().equals(bodyClaims.get(JwtConstants.JWT_LOGIN_SOURCE).toString())) {
 			// web端1天后过期
 			bodyClaims.setExpiration(new Date(curTime + (JwtConstants.EXPIRATION_WEB * 1000)));
 		} else {
@@ -249,5 +251,28 @@ public class JwtUtils {
 				.compressWith(CompressionCodecs.GZIP).compact();
 
 	}
+
+    /**
+     * header获取客户端来源
+     *
+     * @param request
+     * @return
+     */
+    public RequestSourceEnum getHeaderReqSource(HttpServletRequest request) {
+        String reqSource = request.getHeader(MallConstants.HEADER_REQ_SOURCE);
+        return RequestSourceEnum.getByValue(reqSource);
+    }
+
+    /**
+     * header中客户端来源是否为空
+     *
+     * @param request
+     * @return true 是 false否
+     */
+    public Boolean isHeaderReqSourceBlank(HttpServletRequest request) {
+        String reqSource = request.getHeader(MallConstants.HEADER_REQ_SOURCE);
+        return StringUtils.isBlank(reqSource) ? true : false;
+    }
+
 
 }

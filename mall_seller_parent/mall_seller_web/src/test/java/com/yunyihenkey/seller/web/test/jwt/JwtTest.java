@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.yunyihenkey.Application;
-import com.yunyihenkey.auth.service.enums.ReqSourceEnum;
+import com.yunyihenkey.auth.service.enums.RequestSourceEnum;
 import com.yunyihenkey.auth.service.util.JwtUtils;
 import com.yunyihenkey.auth.service.vo.authjwt.seller.AuthSellerUser;
 import com.yunyihenkey.common.constant.JwtConstants;
@@ -58,7 +58,7 @@ public class JwtTest {
 		System.out.println("privatekey！！！！" + jwtUtils.getPrivateKey());
 		System.out.println("publickey！！！！" + jwtUtils.getPublicKey());
 
-		String compactJws = jwtUtils.cretaJwt("13265602329", SystemCodeEnum.SELLER, ReqSourceEnum.WEB);
+        String compactJws = jwtUtils.cretaJwt("13265602329", SystemCodeEnum.SELLER, RequestSourceEnum.WEB);
 		System.out.println("length::::" + compactJws.length() + "jwtstr::::::::::::::" + compactJws);
 
 		try {

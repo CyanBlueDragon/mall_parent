@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -17,6 +18,7 @@ import com.yunyihenkey.common.vo.resultinfo.CodeEnum;
 import com.yunyihenkey.common.vo.resultinfo.ResultInfo;
 import com.yunyihenkey.common.vo.resultinfo.SystemCodeEnum;
 import com.yunyihenkey.seller.dao.malldb.mapper.SellerGoodsCategoryMapper;
+import com.yunyihenkey.seller.dao.malldb.mapper.SellerGoodsInfoMapper;
 import com.yunyihenkey.seller.dao.malldb.vo.param.goodsController.SellerGoodsCategoryInfoResult;
 import com.yunyihenkey.seller.service.SellerGoodsCategoryService;
 
@@ -36,6 +38,9 @@ public class SellerGoodsCategoryServiceImpl implements SellerGoodsCategoryServic
 	@Autowired
 	private SellerGoodsCategoryMapper sellerGoodsCategoryMapper;
 
+    @Autowired
+    private SellerGoodsInfoMapper sellerGoodsInfoMapper;
+
 	@Override
 	public int deleteByPrimaryKey(Long id) {
 		return sellerGoodsCategoryBaseMapper.deleteByPrimaryKey(id);
@@ -48,7 +53,7 @@ public class SellerGoodsCategoryServiceImpl implements SellerGoodsCategoryServic
 
 	@Override
 	public int insertSelective(SellerGoodsCategory record) {
-		LogUtils.getLogger().info("新增商品分类.....");
+        LogUtils.getLogger().info("新增商品分类service.....");
 		return sellerGoodsCategoryBaseMapper.insertSelective(record);
 	}
 
@@ -69,34 +74,62 @@ public class SellerGoodsCategoryServiceImpl implements SellerGoodsCategoryServic
 
 	@Override
 	public List<SellerGoodsCategoryInfoResult> selectAllByShopId(Long shopId) {
-		LogUtils.getLogger().info("查询商品分类.....");
+        LogUtils.getLogger().info("查询商品分类service.....");
 		return sellerGoodsCategoryMapper.selectAllByShopId(shopId);
 	}
 
 	@Override
 	public List<SellerGoodsCategoryInfoResult> selectByShopIdAndNameWithPage(int pageNum, int pageSize, Long shopId,
 			String name) {
-		LogUtils.getLogger().info("查询商品分类名称.....");
+        LogUtils.getLogger().info("查询商品分类名称service.....");
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("shopId", shopId);
 		map.put("name", name);
 		return sellerGoodsCategoryMapper.selectByShopIdAndNameWithPage(map);
 	}
 
-	@Override
-	public ResultInfo<Object> deleteByPrimaryKeyWithShopId(Long id, Long shopId) {
-		LogUtils.getLogger().info("删除商品分类......");
-		Map<String, Long> map = new HashMap<String, Long>();
-		map.put("id", id);
-		map.put("shopId", shopId);
-		sellerGoodsCategoryMapper.deleteByPrimaryKeyWithShopId(map);
-		return new ResultInfo<Object>(SystemCodeEnum.SELLER, CodeEnum.SUCCESS);
-	}
+    @Transactional
+    @Override
+    public ResultInfo<Object> deleteByPrimaryKeyWithShopId(Long id, Long shopId) {
+        LogUtils.getLogger().info("删除商品分类service......");
+
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("id", id);
+        map.put("categoryId", id);
+        map.put("shopId", shopId);
+
+        // 验证商品分类是否存在
+        LogUtils.getLogger().info("查询分类信息......");
+        SellerGoodsCategoryInfoResult categoryInfo = sellerGoodsCategoryMapper.selectByIdWithShopId(map);
+        if (categoryInfo == null) {
+            return new ResultInfo<Object>(SystemCodeEnum.SELLER, CodeEnum.ERROR, "该分类不存在！");
+        }
+        if (categoryInfo.getIsDefault() == 1) {
+            return new ResultInfo<Object>(SystemCodeEnum.SELLER, CodeEnum.ERROR, "默认分类不能删除！");
+        }
+
+        // 查询默认分类
+        LogUtils.getLogger().info("查询默认分类......");
+        SellerGoodsCategoryInfoResult other = sellerGoodsCategoryMapper.selectIsDefaultByShopId(map);
+        if (other == null) {
+            return new ResultInfo<Object>(SystemCodeEnum.SELLER, CodeEnum.ERROR, "没有默认分类，不能删除！");
+        }
+
+        // 将该分类下所有商品移至默认分类
+        LogUtils.getLogger().info("将该分类下所有商品移至默认分类......");
+        map.put("otherCategoryId", other.getId());
+        sellerGoodsInfoMapper.updateByCategoryId(map);
+
+        // 删除商品分类
+        LogUtils.getLogger().info("删除商品分类......");
+        sellerGoodsCategoryMapper.deleteByPrimaryKeyWithShopId(map);
+        return new ResultInfo<Object>(SystemCodeEnum.SELLER, CodeEnum.SUCCESS);
+    }
 
 	@Override
 	public ResultInfo<Object> updateByPrimaryKeyWithShopId(Long id, Long shopId, String userName, String name,
 			Integer sortOrder) {
-		LogUtils.getLogger().info("修改商品分类......");
+        LogUtils.getLogger().info("修改商品分类service......");
 
 		SellerGoodsCategory sellerGoodsCategory = new SellerGoodsCategory();
 		sellerGoodsCategory.setId(id);
@@ -112,8 +145,8 @@ public class SellerGoodsCategoryServiceImpl implements SellerGoodsCategoryServic
 	@Override
 	public Object selectAllWithGoodsNumByShopId(Integer pageNum, Integer pageSize, Long shopId) {
 
-		LogUtils.getLogger().info("关联查询商品分类......");
-		
+        LogUtils.getLogger().info("关联查询商品分类service......");
+
 		PageHelper.startPage(pageNum, pageSize);
 		List<SellerGoodsCategoryInfoResult> categoryList = sellerGoodsCategoryMapper
 				.selectAllWithGoodsNumByShopId(shopId);

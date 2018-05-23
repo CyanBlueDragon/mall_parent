@@ -2,7 +2,7 @@ package com.yunyihenkey.auth.service;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.yunyihenkey.auth.service.enums.ReqSourceEnum;
+import com.yunyihenkey.auth.service.enums.RequestSourceEnum;
 import com.yunyihenkey.common.vo.resultinfo.ResultInfo;
 import com.yunyihenkey.common.vo.resultinfo.SystemCodeEnum;
 
@@ -30,12 +30,12 @@ public interface AuthJwtService {
 	 * @return
 	 */
 	ResultInfo<String> createToken(String userName, String password, SystemCodeEnum systemCodeEnum,
-			ReqSourceEnum loginSourceEnum);
+                                   RequestSourceEnum loginSourceEnum);
 
 	/**
 	 * 
 	 * @desc 认证token,
-	 * @param request TODO
+     * @param request
 	 * @param authenticationTokenParam
 	 * @return
 	 */

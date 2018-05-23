@@ -5,13 +5,14 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="category_id" jdbcType="BIGINT" property="categoryId" />
     <result column="supplier_id" jdbcType="BIGINT" property="supplierId" />
-    <result column="goods_code" jdbcType="VARCHAR" property="goodsCode" />
+      <result column="goods_code" jdbcType="BIGINT" property="goodsCode"/>
     <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
     <result column="cat_id" jdbcType="INTEGER" property="catId" />
     <result column="stock" jdbcType="INTEGER" property="stock" />
     <result column="sell_point" jdbcType="VARCHAR" property="sellPoint" />
-    <result column="delivery_template_name" jdbcType="VARCHAR" property="deliveryTemplateName" />
+      <result column="delivery_template_name" jdbcType="INTEGER" property="deliveryTemplateName"/>
     <result column="status" jdbcType="INTEGER" property="status" />
+      <result column="price" jdbcType="BIGINT" property="price"/>
     <result column="supply_price" jdbcType="BIGINT" property="supplyPrice" />
     <result column="min_retail_price" jdbcType="BIGINT" property="minRetailPrice" />
     <result column="max_retail_price" jdbcType="BIGINT" property="maxRetailPrice" />
@@ -24,15 +25,19 @@
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+      <result column="version" jdbcType="BIGINT" property="version"/>
+      <result column="review_user" jdbcType="VARCHAR" property="reviewUser"/>
+      <result column="total_stock" jdbcType="INTEGER" property="totalStock"/>
+      <result column="submit_user" jdbcType="VARCHAR" property="submitUser"/>
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsInfo">
     <result column="pic_url" jdbcType="LONGVARCHAR" property="picUrl" />
   </resultMap>
   <sql id="Base_Column_List">
     id, category_id, supplier_id, goods_code, goods_name, cat_id, stock, sell_point, 
-    delivery_template_name, status, supply_price, min_retail_price, max_retail_price, 
+    delivery_template_name, status, price, supply_price, min_retail_price, max_retail_price, 
     sale_amount, pv_value, min_profit, max_profit, create_user, update_user, create_time, 
-    update_time, is_delete
+    update_time, is_delete, version, review_user, total_stock, submit_user
   </sql>
   <sql id="Blob_Column_List">
     pic_url
@@ -53,19 +58,23 @@
     insert into supplier_goods_info (id, category_id, supplier_id, 
       goods_code, goods_name, cat_id, 
       stock, sell_point, delivery_template_name, 
-      status, supply_price, min_retail_price, 
-      max_retail_price, sale_amount, pv_value, 
-      min_profit, max_profit, create_user, 
-      update_user, create_time, update_time, 
-      is_delete, pic_url)
+      status, price, supply_price, 
+      min_retail_price, max_retail_price, sale_amount, 
+      pv_value, min_profit, max_profit, 
+      create_user, update_user, create_time, 
+      update_time, is_delete, version, 
+      review_user, total_stock, submit_user, 
+      pic_url)
     values (#{id,jdbcType=BIGINT}, #{categoryId,jdbcType=BIGINT}, #{supplierId,jdbcType=BIGINT}, 
-      #{goodsCode,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, #{catId,jdbcType=INTEGER}, 
-      #{stock,jdbcType=INTEGER}, #{sellPoint,jdbcType=VARCHAR}, #{deliveryTemplateName,jdbcType=VARCHAR}, 
-      #{status,jdbcType=INTEGER}, #{supplyPrice,jdbcType=BIGINT}, #{minRetailPrice,jdbcType=BIGINT}, 
-      #{maxRetailPrice,jdbcType=BIGINT}, #{saleAmount,jdbcType=BIGINT}, #{pvValue,jdbcType=BIGINT}, 
-      #{minProfit,jdbcType=VARCHAR}, #{maxProfit,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
-      #{updateUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{isDelete,jdbcType=INTEGER}, #{picUrl,jdbcType=LONGVARCHAR})
+      #{goodsCode,jdbcType=BIGINT}, #{goodsName,jdbcType=VARCHAR}, #{catId,jdbcType=INTEGER}, 
+      #{stock,jdbcType=INTEGER}, #{sellPoint,jdbcType=VARCHAR}, #{deliveryTemplateName,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER}, #{price,jdbcType=BIGINT}, #{supplyPrice,jdbcType=BIGINT}, 
+      #{minRetailPrice,jdbcType=BIGINT}, #{maxRetailPrice,jdbcType=BIGINT}, #{saleAmount,jdbcType=BIGINT}, 
+      #{pvValue,jdbcType=BIGINT}, #{minProfit,jdbcType=VARCHAR}, #{maxProfit,jdbcType=VARCHAR}, 
+      #{createUser,jdbcType=VARCHAR}, #{updateUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER}, #{version,jdbcType=BIGINT}, 
+      #{reviewUser,jdbcType=VARCHAR}, #{totalStock,jdbcType=INTEGER}, #{submitUser,jdbcType=VARCHAR}, 
+      #{picUrl,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsInfo">
     insert into supplier_goods_info
@@ -100,6 +109,9 @@
       <if test="status != null">
         status,
       </if>
+        <if test="price != null">
+            price,
+        </if>
       <if test="supplyPrice != null">
         supply_price,
       </if>
@@ -136,6 +148,18 @@
       <if test="isDelete != null">
         is_delete,
       </if>
+        <if test="version != null">
+            version,
+        </if>
+        <if test="reviewUser != null">
+            review_user,
+        </if>
+        <if test="totalStock != null">
+            total_stock,
+        </if>
+        <if test="submitUser != null">
+            submit_user,
+        </if>
       <if test="picUrl != null">
         pic_url,
       </if>
@@ -151,7 +175,7 @@
         #{supplierId,jdbcType=BIGINT},
       </if>
       <if test="goodsCode != null">
-        #{goodsCode,jdbcType=VARCHAR},
+          #{goodsCode,jdbcType=BIGINT},
       </if>
       <if test="goodsName != null">
         #{goodsName,jdbcType=VARCHAR},
@@ -166,11 +190,14 @@
         #{sellPoint,jdbcType=VARCHAR},
       </if>
       <if test="deliveryTemplateName != null">
-        #{deliveryTemplateName,jdbcType=VARCHAR},
+          #{deliveryTemplateName,jdbcType=INTEGER},
       </if>
       <if test="status != null">
         #{status,jdbcType=INTEGER},
       </if>
+        <if test="price != null">
+            #{price,jdbcType=BIGINT},
+        </if>
       <if test="supplyPrice != null">
         #{supplyPrice,jdbcType=BIGINT},
       </if>
@@ -207,6 +234,18 @@
       <if test="isDelete != null">
         #{isDelete,jdbcType=INTEGER},
       </if>
+        <if test="version != null">
+            #{version,jdbcType=BIGINT},
+        </if>
+        <if test="reviewUser != null">
+            #{reviewUser,jdbcType=VARCHAR},
+        </if>
+        <if test="totalStock != null">
+            #{totalStock,jdbcType=INTEGER},
+        </if>
+        <if test="submitUser != null">
+            #{submitUser,jdbcType=VARCHAR},
+        </if>
       <if test="picUrl != null">
         #{picUrl,jdbcType=LONGVARCHAR},
       </if>
@@ -222,7 +261,7 @@
         supplier_id = #{supplierId,jdbcType=BIGINT},
       </if>
       <if test="goodsCode != null">
-        goods_code = #{goodsCode,jdbcType=VARCHAR},
+          goods_code = #{goodsCode,jdbcType=BIGINT},
       </if>
       <if test="goodsName != null">
         goods_name = #{goodsName,jdbcType=VARCHAR},
@@ -237,11 +276,14 @@
         sell_point = #{sellPoint,jdbcType=VARCHAR},
       </if>
       <if test="deliveryTemplateName != null">
-        delivery_template_name = #{deliveryTemplateName,jdbcType=VARCHAR},
+          delivery_template_name = #{deliveryTemplateName,jdbcType=INTEGER},
       </if>
       <if test="status != null">
         status = #{status,jdbcType=INTEGER},
       </if>
+        <if test="price != null">
+            price = #{price,jdbcType=BIGINT},
+        </if>
       <if test="supplyPrice != null">
         supply_price = #{supplyPrice,jdbcType=BIGINT},
       </if>
@@ -278,6 +320,18 @@
       <if test="isDelete != null">
         is_delete = #{isDelete,jdbcType=INTEGER},
       </if>
+        <if test="version != null">
+            version = #{version,jdbcType=BIGINT},
+        </if>
+        <if test="reviewUser != null">
+            review_user = #{reviewUser,jdbcType=VARCHAR},
+        </if>
+        <if test="totalStock != null">
+            total_stock = #{totalStock,jdbcType=INTEGER},
+        </if>
+        <if test="submitUser != null">
+            submit_user = #{submitUser,jdbcType=VARCHAR},
+        </if>
       <if test="picUrl != null">
         pic_url = #{picUrl,jdbcType=LONGVARCHAR},
       </if>
@@ -288,13 +342,14 @@
     update supplier_goods_info
     set category_id = #{categoryId,jdbcType=BIGINT},
       supplier_id = #{supplierId,jdbcType=BIGINT},
-      goods_code = #{goodsCode,jdbcType=VARCHAR},
+      goods_code = #{goodsCode,jdbcType=BIGINT},
       goods_name = #{goodsName,jdbcType=VARCHAR},
       cat_id = #{catId,jdbcType=INTEGER},
       stock = #{stock,jdbcType=INTEGER},
       sell_point = #{sellPoint,jdbcType=VARCHAR},
-      delivery_template_name = #{deliveryTemplateName,jdbcType=VARCHAR},
+      delivery_template_name = #{deliveryTemplateName,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
+      price = #{price,jdbcType=BIGINT},
       supply_price = #{supplyPrice,jdbcType=BIGINT},
       min_retail_price = #{minRetailPrice,jdbcType=BIGINT},
       max_retail_price = #{maxRetailPrice,jdbcType=BIGINT},
@@ -307,6 +362,10 @@
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       is_delete = #{isDelete,jdbcType=INTEGER},
+      version = #{version,jdbcType=BIGINT},
+      review_user = #{reviewUser,jdbcType=VARCHAR},
+      total_stock = #{totalStock,jdbcType=INTEGER},
+      submit_user = #{submitUser,jdbcType=VARCHAR},
       pic_url = #{picUrl,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -314,13 +373,14 @@
     update supplier_goods_info
     set category_id = #{categoryId,jdbcType=BIGINT},
       supplier_id = #{supplierId,jdbcType=BIGINT},
-      goods_code = #{goodsCode,jdbcType=VARCHAR},
+      goods_code = #{goodsCode,jdbcType=BIGINT},
       goods_name = #{goodsName,jdbcType=VARCHAR},
       cat_id = #{catId,jdbcType=INTEGER},
       stock = #{stock,jdbcType=INTEGER},
       sell_point = #{sellPoint,jdbcType=VARCHAR},
-      delivery_template_name = #{deliveryTemplateName,jdbcType=VARCHAR},
+      delivery_template_name = #{deliveryTemplateName,jdbcType=INTEGER},
       status = #{status,jdbcType=INTEGER},
+      price = #{price,jdbcType=BIGINT},
       supply_price = #{supplyPrice,jdbcType=BIGINT},
       min_retail_price = #{minRetailPrice,jdbcType=BIGINT},
       max_retail_price = #{maxRetailPrice,jdbcType=BIGINT},
@@ -332,7 +392,11 @@
       update_user = #{updateUser,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
-      is_delete = #{isDelete,jdbcType=INTEGER}
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      version = #{version,jdbcType=BIGINT},
+      review_user = #{reviewUser,jdbcType=VARCHAR},
+      total_stock = #{totalStock,jdbcType=INTEGER},
+      submit_user = #{submitUser,jdbcType=VARCHAR}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

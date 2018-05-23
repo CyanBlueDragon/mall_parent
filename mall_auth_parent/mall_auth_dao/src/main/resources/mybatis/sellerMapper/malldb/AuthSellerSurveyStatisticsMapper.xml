@@ -25,7 +25,7 @@
 	</select>
 
 
-	<select id="getAllShopId" parameterType="java.lang.String" resultType="java.util.List">
+    <select id="getAllShopId" resultType="java.util.List">
 		select id from seller_shop
 	</select>
 
@@ -45,4 +45,6 @@
 			,#{list.shopId})
 		</foreach>
 	</insert>
+
+
 </mapper>

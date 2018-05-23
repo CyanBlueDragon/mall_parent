@@ -30,7 +30,7 @@ public interface SellerGoodsCategoryService extends BaseService<SellerGoodsCateg
 	 * @date: 2018年5月11日 下午6:08:15
 	 */
 	List<SellerGoodsCategoryInfoResult> selectAllByShopId(Long shopId);
-	
+
 	/**
 	 * 
 	 * @desc: 关联查询商品分类
@@ -56,7 +56,8 @@ public interface SellerGoodsCategoryService extends BaseService<SellerGoodsCateg
 	 * @return List<SellerGoodsCategoryInfoVo>
 	 * @date: 2018年5月14日 下午3:12:56
 	 */
-	List<SellerGoodsCategoryInfoResult> selectByShopIdAndNameWithPage(int pageNum, int pageSize, Long shopId, String name);
+    List<SellerGoodsCategoryInfoResult> selectByShopIdAndNameWithPage(int pageNum, int pageSize, Long shopId,
+                                                                      String name);
 
 	/**
 	 * 
@@ -75,10 +76,13 @@ public interface SellerGoodsCategoryService extends BaseService<SellerGoodsCateg
 	 * 
 	 * @desc: 修改商品分类
 	 * @author zhouh
-	 * @param name
+     * @param id
+     * @param shopId
+     * @param userName
+     * @param name
 	 * @param sortOrder
 	 * @return ResultInfo<Object>
-	 * @date: 2018年5月14日 下午4:30:52
+     * @date: 2018年5月21日 上午10:04:51
 	 */
 	ResultInfo<Object> updateByPrimaryKeyWithShopId(Long id, Long shopId, String userName, String name,
 			Integer sortOrder);

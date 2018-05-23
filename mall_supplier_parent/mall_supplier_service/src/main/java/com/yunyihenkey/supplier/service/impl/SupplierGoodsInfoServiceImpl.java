@@ -4,7 +4,7 @@ import com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsInfo;
 import com.yunyihenkey.common.utils.LogUtils;
 import com.yunyihenkey.supplier.dao.malldb.mapper.SupplierGoodsDescripMapper;
 import com.yunyihenkey.supplier.dao.malldb.mapper.SupplierGoodsInfoMapper;
-import com.yunyihenkey.supplier.dao.malldb.vo.param.Controller.SupplierGoodsAddParam;
+import com.yunyihenkey.supplier.dao.malldb.vo.param.GoodsInfoController.SupplierGoodsAddParam;
 import com.yunyihenkey.supplier.service.SupplierGoodsInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,6 +40,13 @@ public class SupplierGoodsInfoServiceImpl implements SupplierGoodsInfoService {
         return supplierGoodsInfoMapper.selectAll(id);
     }
 
+    /**
+     * TODO
+     * 存入商品描述信息
+     *
+     * @param id
+     * @return
+     */
     @Override
     public List selectByGoodsId(Long id) {
         LogUtils.getLogger().info("根据商品id查询商品详情......");
@@ -54,6 +61,16 @@ public class SupplierGoodsInfoServiceImpl implements SupplierGoodsInfoService {
         LogUtils.getLogger().info("供货商进行商品信息上传......");
         supplierGoodsInfoMapper.supplierInsertGoods(goodsAddParam);
         return goodsAddParam.getId();
+    }
+
+    @Override
+    public int addGoodsToShop(Long id, Integer stock, Long version) {
+        int i = supplierGoodsInfoMapper.addGoodsToShop(id, stock, version);
+
+        if (i != 1) {
+            return 0;
+        }
+        return 1;
     }
 
 

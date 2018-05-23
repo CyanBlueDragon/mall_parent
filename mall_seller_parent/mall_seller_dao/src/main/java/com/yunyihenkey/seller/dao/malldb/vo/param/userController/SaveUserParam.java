@@ -17,6 +17,7 @@ public class SaveUserParam extends BaseVo {
     private String code;
     @NotEmpty(message = "密码不能为空")
     private String password;
+    @NotEmpty(message = "使用人不能为空")
     private String nickName;
     @NotNull(message = "角色ID不能为空")
     private Long roleId;

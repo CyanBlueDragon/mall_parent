@@ -39,11 +39,40 @@ public class ServiceTest {
 	@Autowired
 	private SellerGoodsDescripService sellerGoodsDescripService;
 
-	@Autowired
-	private PictureService pictureService;
+//	@Autowired
+//	private PictureService pictureService;
+
+    @Value("${FTP.FTP_ADDRESS}")
+    private String FTP_ADDRESS;
+    @Value("${FTP.FTP_PORT}")
+    private Integer FTP_PORT;
+    @Value("${FTP.FTP_USERNAME}")
+    private String FTP_USERNAME;
+    @Value("${FTP.FTP_PASSWORD}")
+    private String FTP_PASSWORD;
+    @Value("${FTP.FTP_BASE_PATH}")
+    private String FTP_BASE_PATH;
+    @Value("${FTP.IMAGE_BASE_URL}")
+    private String IMAGE_BASE_URL;
+    @Value("${spring.servlet.multipart.max-file-size}")
+    private String txt;
+    @Value("${FTP.IMAGE_MAX_SIZE}")
+    private int size;
+    @Value("${url.inventory_reduction_url}")
+    private String inventory_reduction_url;
+	
 	
 	@Test
 	public void testImg() {
+
+        System.out.println("FTP_ADDRESS=" + FTP_ADDRESS);
+        System.out.println("FTP_PORT=" + FTP_PORT);
+        System.out.println("FTP_USERNAME=" + FTP_USERNAME);
+        System.out.println("FTP_PASSWORD=" + FTP_PASSWORD);
+        System.out.println("FTP_BASE_PATH=" + FTP_BASE_PATH);
+        System.out.println("IMAGE_BASE_URL=" + IMAGE_BASE_URL);
+        System.out.println("spring.servlet.multipart.max-file-size=" + txt);
+        System.out.println("FTP.IMAGE_MAX_SIZE=" + size);
 		
 	}
 

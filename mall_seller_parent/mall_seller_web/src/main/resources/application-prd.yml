@@ -31,7 +31,27 @@ spring:
         max-idle: 100
         min-idle: 0
     timeout: 10000
+  servlet:
+    multipart:
+      max-file-size: 2Mb
 jwt:
   rsa:
     publicKey: jwt/rsa/prd/yunyihenkeyJwt-prd.cer
     privateKey: jwt/rsa/prd/yunyihenkeyJwt-prd.pfx
+kuaidiniao:
+  businessID: 1340674
+  appKey: d57b33ff-1ca9-4442-b291-b3b05bb2a4e3
+  url:
+    # 物流轨迹查询接口
+    orderTracesUrl: http://api.kdniao.cc/Ebusiness/EbusinessOrderHandle.aspx
+FTP: 
+  FTP_ADDRESS: 192.168.1.204
+  FTP_PORT: 21
+  FTP_USERNAME: ftpuser
+  FTP_PASSWORD: ftpuser
+  FTP_BASE_PATH: /home/ftpuser/images
+  IMAGE_BASE_URL: http://192.168.1.204/images
+  IMAGE_MAX_SIZE: 2097152
+url: 
+  # 减供应商库存接口
+  inventory_reduction_url: http://192.168.0.196:8089/supplier/goods/addtoshop

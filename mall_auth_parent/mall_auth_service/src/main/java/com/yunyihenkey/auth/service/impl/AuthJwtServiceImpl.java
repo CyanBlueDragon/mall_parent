@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import com.yunyihenkey.auth.service.AuthJwtService;
-import com.yunyihenkey.auth.service.enums.ReqSourceEnum;
+import com.yunyihenkey.auth.service.enums.RequestSourceEnum;
 import com.yunyihenkey.auth.service.util.JwtUtils;
 import com.yunyihenkey.auth.service.util.PasswordUtil;
 import com.yunyihenkey.auth.service.vo.authjwt.seller.AuthSellerUser;
@@ -48,7 +48,7 @@ public class AuthJwtServiceImpl implements AuthJwtService {
 
 	@Override
 	public ResultInfo<String> createToken(String userName, String password, SystemCodeEnum systemCodeEnum,
-			ReqSourceEnum loginSourceEnum) {
+                                          RequestSourceEnum loginSourceEnum) {
 
 		// 验证账号密码
 		switch (systemCodeEnum) {
@@ -171,7 +171,7 @@ public class AuthJwtServiceImpl implements AuthJwtService {
 		Claims bodyClaims = jws.getBody();
 
 		// 加入黑名单
-		if (ReqSourceEnum.WEB.getValue().equals(bodyClaims.get(JwtConstants.JWT_LOGIN_SOURCE).toString())) {
+        if (RequestSourceEnum.WEB.getValue().equals(bodyClaims.get(JwtConstants.JWT_LOGIN_SOURCE).toString())) {
 			// web端1天后过期
 			redisUtil.set(RedisConstant.getMallJwtBlackKey(bodyClaims.get(JwtConstants.JWT_SYSTEM_CODE).toString(),
 					bodyClaims.getId()), "", JwtConstants.EXPIRATION_WEB);
@@ -192,7 +192,7 @@ public class AuthJwtServiceImpl implements AuthJwtService {
 
 			if (blackList != null && !blackList.isEmpty()) {
 				for (SellerUserToken userToken : blackList) {
-					if (ReqSourceEnum.WEB.getValue() == userToken.getLoginSource()) {
+                    if (RequestSourceEnum.WEB.getValue() == userToken.getLoginSource()) {
 						// web端1天后过期
 						redisUtil.set(
 								RedisConstant.getMallJwtBlackKey(Integer.toString(SystemCodeEnum.SELLER.getValue()),

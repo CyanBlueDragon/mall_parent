@@ -6,54 +6,74 @@
 		type="com.yunyihenkey.seller.dao.malldb.vo.param.goodsController.SellerGoodsInfoResult">
 		<id column="id" jdbcType="BIGINT" property="id" />
 		<result column="category_id" jdbcType="BIGINT" property="categoryId" />
+        <result column="goods_id" jdbcType="BIGINT" property="goodsId"/>
 		<result column="goods_title" jdbcType="VARCHAR" property="goodsTitle" />
 		<result column="stock" jdbcType="INTEGER" property="stock" />
 		<result column="supply_price" jdbcType="BIGINT" property="supplyPrice" />
 		<result column="price" jdbcType="BIGINT" property="price" />
 		<result column="status" jdbcType="INTEGER" property="status" />
-		<result column="create_time" jdbcType="TIMESTAMP" property="createDate" />
-		<result column="pic_url" jdbcType="VARCHAR" property="picUrl" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
 		<result column="add_count" jdbcType="INTEGER" property="addCount" />
 	</resultMap>
+    <resultMap extends="GoodsInfoResultMap" id="ResultMapWithBLOBs"
+               type="com.yunyihenkey.seller.dao.malldb.vo.param.goodsController.SellerGoodsInfoResult">
+        <result column="pic_url" jdbcType="LONGVARCHAR" property="picUrl"/>
+    </resultMap>
 
 	<sql id="Goods_Info_Column_List">
-		id, category_id, goods_title,
+		id, goods_id, category_id, goods_title,
 		stock,
 		supply_price,
 		price,status,
-		create_time,
+		create_time
+	</sql>
+    <sql id="Blob_Column_List">
 		pic_url
 	</sql>
 
-	<sql id="selectBySupplierGoodsIdWithShopIdSql">
-		id, add_count, stock
+    <sql id="Goods_Info_Part">
+		id, goods_id, add_count, stock
 	</sql>
 
 	<!-- 根据店铺id查询 -->
 	<select id="selectByShopIdWithPage" parameterType="java.lang.Long"
-		resultMap="GoodsInfoResultMap">
+            resultMap="ResultMapWithBLOBs">
 		select
 		<include refid="Goods_Info_Column_List" />
+        ,
+        <include refid="Blob_Column_List"/>
 		from seller_goods_info where shop_id = #{shopId}
 		order by status
 	</select>
 
-	<!-- 根据分销商商品id和店铺id查询 -->
+    <!-- 根据供应商商品id和店铺id查询 -->
 	<select id="selectBySupplierGoodsIdWithShopId" parameterType="hashmap"
 		resultMap="GoodsInfoResultMap">
 		select
-		<include refid="selectBySupplierGoodsIdWithShopIdSql" />
-		from seller_goods_info where goods_id =
-		#{goodsId}
+        <include refid="Goods_Info_Part"/>
+        from seller_goods_info
+        where goods_id = #{goodsId}
 		and shop_id =
 		#{shopId}
 	</select>
 
+    <!-- 根据商品id和店铺id查询 -->
+    <select id="selectByPrimaryKeyWithShopId" parameterType="hashmap"
+            resultMap="GoodsInfoResultMap">
+        select
+        <include refid="Goods_Info_Part"/>
+        from seller_goods_info
+        where id = #{id}
+        and shop_id = #{shopId}
+    </select>
+
 	<!-- 条件查询 -->
 	<select id="selectByCondition" parameterType="hashmap"
-		resultMap="GoodsInfoResultMap">
+            resultMap="ResultMapWithBLOBs">
 		select
 		<include refid="Goods_Info_Column_List" />
+        ,
+        <include refid="Blob_Column_List"/>
 		from seller_goods_info
 		<trim prefix="where" suffix="order by status" suffixOverrides="and">
 			<if test="shopId != null">
@@ -101,6 +121,16 @@
 			separator="," close=")">
 			#{item}
 		</foreach>
+	</update>
+
+    <!-- 将商品移至默认分类 -->
+    <update id="updateByCategoryId" parameterType="hashmap">
+		update
+		seller_goods_info set category_id = #{otherCategoryId}
+		where shop_id =
+		#{shopId}
+		and category_id =
+		#{categoryId}
 	</update>
 
 	<!-- 删除商品 -->
@@ -154,13 +184,13 @@
 			<if test="createUser != null">
 				create_user,
 			</if>
-			<if test="createDate != null">
+            <if test="createTime != null">
 				create_time,
 			</if>
 			<if test="updateUser != null">
 				update_user,
 			</if>
-			<if test="updateDate != null">
+            <if test="updateTime != null">
 				update_time,
 			</if>
 			<if test="saleAmount != null">
@@ -213,14 +243,14 @@
 			<if test="createUser != null">
 				#{createUser,jdbcType=VARCHAR},
 			</if>
-			<if test="createDate != null">
-				#{createDate,jdbcType=TIMESTAMP},
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
 			</if>
 			<if test="updateUser != null">
 				#{updateUser,jdbcType=VARCHAR},
 			</if>
-			<if test="updateDate != null">
-				#{updateDate,jdbcType=TIMESTAMP},
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
 			</if>
 			<if test="saleAmount != null">
 				#{saleAmount,jdbcType=BIGINT},
@@ -240,12 +270,6 @@
 		<set>
 			<if test="categoryId != null">
 				category_id = #{categoryId,jdbcType=BIGINT},
-			</if>
-			<if test="goodsId != null">
-				goods_id = #{goodsId,jdbcType=BIGINT},
-			</if>
-			<if test="goodsCode != null">
-				goods_code = #{goodsCode,jdbcType=BIGINT},
 			</if>
 			<if test="stock != null">
 				stock = #{stock,jdbcType=INTEGER},
@@ -272,14 +296,14 @@
 			<if test="createUser != null">
 				create_user = #{createUser,jdbcType=VARCHAR},
 			</if>
-			<if test="createDate != null">
-				create_time = #{createDate,jdbcType=TIMESTAMP},
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
 			</if>
 			<if test="updateUser != null">
 				update_user = #{updateUser,jdbcType=VARCHAR},
 			</if>
-			<if test="updateDate != null">
-				update_time = #{updateDate,jdbcType=TIMESTAMP},
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=TIMESTAMP},
 			</if>
 			<if test="saleAmount != null">
 				sale_amount = #{saleAmount,jdbcType=BIGINT},

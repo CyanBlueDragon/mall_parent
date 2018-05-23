@@ -37,9 +37,6 @@ public class SellerGoodsInfo implements Serializable {
     /** 商品状态#0,仓库中|warehouse;1,上架中|selling;2,已售罄|sold;3,已下架|already_down */
     private Integer status;
 
-    /** 默认图片 */
-    private String picUrl;
-
     /** 创建人 */
     private String createUser;
 
@@ -63,6 +60,11 @@ public class SellerGoodsInfo implements Serializable {
 
     /** 是否删除#0,否|No;1,是|Yes */
     private Integer isDelete;
+
+    /**
+     * 商品图片
+     */
+    private String picUrl;
 
     private static final long serialVersionUID = 1L;
 
@@ -154,14 +156,6 @@ public class SellerGoodsInfo implements Serializable {
         this.status = status;
     }
 
-    public String getPicUrl() {
-        return picUrl;
-    }
-
-    public void setPicUrl(String picUrl) {
-        this.picUrl = picUrl == null ? null : picUrl.trim();
-    }
-
     public String getCreateUser() {
         return createUser;
     }
@@ -226,6 +220,14 @@ public class SellerGoodsInfo implements Serializable {
         this.isDelete = isDelete;
     }
 
+    public String getPicUrl() {
+        return picUrl;
+    }
+
+    public void setPicUrl(String picUrl) {
+        this.picUrl = picUrl == null ? null : picUrl.trim();
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -243,7 +245,6 @@ public class SellerGoodsInfo implements Serializable {
         sb.append(", supplyPrice=").append(supplyPrice);
         sb.append(", price=").append(price);
         sb.append(", status=").append(status);
-        sb.append(", picUrl=").append(picUrl);
         sb.append(", createUser=").append(createUser);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateUser=").append(updateUser);
@@ -252,6 +253,7 @@ public class SellerGoodsInfo implements Serializable {
         sb.append(", pvValue=").append(pvValue);
         sb.append(", addCount=").append(addCount);
         sb.append(", isDelete=").append(isDelete);
+        sb.append(", picUrl=").append(picUrl);
         sb.append("]");
         return sb.toString();
     }

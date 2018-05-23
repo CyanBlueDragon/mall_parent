@@ -7,6 +7,7 @@ import com.yunyihenkey.common.vo.base.BaseService;
 import com.yunyihenkey.common.vo.resultinfo.ResultInfo;
 import com.yunyihenkey.seller.dao.malldb.vo.param.goodsController.AddGoodsParam;
 import com.yunyihenkey.seller.dao.malldb.vo.param.goodsController.SellerGoodsInfoResult;
+import com.yunyihenkey.seller.dao.malldb.vo.param.goodsController.UpdGoodsParam;
 
 /**
  * 
@@ -98,14 +99,28 @@ public interface SellerGoodsInfoService extends BaseService<SellerGoodsInfo, Lon
 	ResultInfo<Object> deleteByPrimaryKeyWithShopId(Long id, Long shopId);
 
 	/**
-	 * 
-	 * @desc: 新增商品（选择新增）
+     *
+     * @desc:
 	 * @author zhouh
-	 * @param sellerUser
+     * @param userName
+     *            操作人
+     * @param shopId
+     *            店铺id
 	 * @param record
 	 * @return Object
-	 * @date: 2018年5月17日 上午11:36:03
+     * @date: 2018年5月22日 下午12:21:28
 	 */
 	Object insertSelective(String userName, Long shopId, AddGoodsParam record);
+
+    /**
+     * @param userName 操作人
+     * @param shopId   店铺id
+     * @param record
+     * @return Object
+     * @desc: 修改商品（选择修改）
+     * @author zhouh
+     * @date: 2018年5月22日 下午12:20:51
+     */
+    Object updateByPrimaryKeyWithShopIdSelective(String userName, Long shopId, UpdGoodsParam record);
 
 }

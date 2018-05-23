@@ -14,7 +14,7 @@ public class SupplierGoodsInfo implements Serializable {
     private Long supplierId;
 
     /** 商品编码 */
-    private String goodsCode;
+    private Long goodsCode;
 
     /** 商品名称 */
     private String goodsName;
@@ -22,19 +22,30 @@ public class SupplierGoodsInfo implements Serializable {
     /** 商品类型#1,实物|material_object;2,虚拟|fictitious */
     private Integer catId;
 
-    /** 库存数量 */
+    /**
+     * 实时库存数量
+     */
     private Integer stock;
 
     /** 卖点 */
     private String sellPoint;
 
-    /** 运费模版 */
-    private String deliveryTemplateName;
+    /**
+     * 运费模版#0,包邮|Shipping;1,免邮|Freepost;2,按件计费|Piece_Billing;3,按斤计费|Kilos_Billing
+     */
+    private Integer deliveryTemplateName;
 
     /** 商品状态#0,仓库中|warehouse;1,上架中|selling;2,已售罄|sold;3,已下架|already_down;4,未审核|PENDING;5,审核通过|PASSED;6,审核不通过|NOT_THROUGH */
     private Integer status;
 
-    /** 供货价（单位分） */
+    /**
+     * 供货商供货原价（单位分）
+     */
+    private Long price;
+
+    /**
+     * 分销商城销售价（单位分）
+     */
     private Long supplyPrice;
 
     /** 建议最小价格（单位分） */
@@ -49,8 +60,14 @@ public class SupplierGoodsInfo implements Serializable {
     /** 页面点击次数 */
     private Long pvValue;
 
+    /**
+     * 最小利润比
+     */
     private String minProfit;
 
+    /**
+     * 最大利润比
+     */
     private String maxProfit;
 
     /** 发布人 */
@@ -67,8 +84,26 @@ public class SupplierGoodsInfo implements Serializable {
     /** 是否删除#0,否|No;1,是|Yes */
     private Integer isDelete;
 
+    /**
+     * version控制
+     */
+    private Long version;
+
+    private String reviewUser;
+
+    /**
+     * 供货商提供的总库存
+     */
+    private Integer totalStock;
+
+    /**
+     * 该商品的提交人
+     */
+    private String submitUser;
+
     /** 默认图片 */
     private String picUrl;
+
 
     private static final long serialVersionUID = 1L;
 
@@ -96,12 +131,12 @@ public class SupplierGoodsInfo implements Serializable {
         this.supplierId = supplierId;
     }
 
-    public String getGoodsCode() {
+    public Long getGoodsCode() {
         return goodsCode;
     }
 
-    public void setGoodsCode(String goodsCode) {
-        this.goodsCode = goodsCode == null ? null : goodsCode.trim();
+    public void setGoodsCode(Long goodsCode) {
+        this.goodsCode = goodsCode;
     }
 
     public String getGoodsName() {
@@ -136,12 +171,12 @@ public class SupplierGoodsInfo implements Serializable {
         this.sellPoint = sellPoint == null ? null : sellPoint.trim();
     }
 
-    public String getDeliveryTemplateName() {
+    public Integer getDeliveryTemplateName() {
         return deliveryTemplateName;
     }
 
-    public void setDeliveryTemplateName(String deliveryTemplateName) {
-        this.deliveryTemplateName = deliveryTemplateName == null ? null : deliveryTemplateName.trim();
+    public void setDeliveryTemplateName(Integer deliveryTemplateName) {
+        this.deliveryTemplateName = deliveryTemplateName;
     }
 
     public Integer getStatus() {
@@ -150,6 +185,14 @@ public class SupplierGoodsInfo implements Serializable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public Long getPrice() {
+        return price;
+    }
+
+    public void setPrice(Long price) {
+        this.price = price;
     }
 
     public Long getSupplyPrice() {
@@ -248,6 +291,38 @@ public class SupplierGoodsInfo implements Serializable {
         this.isDelete = isDelete;
     }
 
+    public Long getVersion() {
+        return version;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+    public String getReviewUser() {
+        return reviewUser;
+    }
+
+    public void setReviewUser(String reviewUser) {
+        this.reviewUser = reviewUser == null ? null : reviewUser.trim();
+    }
+
+    public Integer getTotalStock() {
+        return totalStock;
+    }
+
+    public void setTotalStock(Integer totalStock) {
+        this.totalStock = totalStock;
+    }
+
+    public String getSubmitUser() {
+        return submitUser;
+    }
+
+    public void setSubmitUser(String submitUser) {
+        this.submitUser = submitUser == null ? null : submitUser.trim();
+    }
+
     public String getPicUrl() {
         return picUrl;
     }
@@ -272,6 +347,7 @@ public class SupplierGoodsInfo implements Serializable {
         sb.append(", sellPoint=").append(sellPoint);
         sb.append(", deliveryTemplateName=").append(deliveryTemplateName);
         sb.append(", status=").append(status);
+        sb.append(", price=").append(price);
         sb.append(", supplyPrice=").append(supplyPrice);
         sb.append(", minRetailPrice=").append(minRetailPrice);
         sb.append(", maxRetailPrice=").append(maxRetailPrice);
@@ -284,6 +360,10 @@ public class SupplierGoodsInfo implements Serializable {
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
         sb.append(", isDelete=").append(isDelete);
+        sb.append(", version=").append(version);
+        sb.append(", reviewUser=").append(reviewUser);
+        sb.append(", totalStock=").append(totalStock);
+        sb.append(", submitUser=").append(submitUser);
         sb.append(", picUrl=").append(picUrl);
         sb.append("]");
         return sb.toString();

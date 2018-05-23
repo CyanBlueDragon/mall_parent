@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yunyihenkey.seller.dao.malldb.mapper.SellerRolePermMapper">
+    <resultMap id="BaseResultMap" type="com.yunyihenkey.basedao.malldb.basevo.SellerRolePerm">
+        <result column="role_id" jdbcType="BIGINT" property="roleId"/>
+        <result column="permission_id" jdbcType="BIGINT" property="permissionId"/>
+    </resultMap>
+    <delete id="deleteByRoleId" parameterType="Long">
+    DELETE  FROM
+      seller_role_perm
+    WHERE
+      role_id =#{roleId}
+  </delete>
+    <select id="queryList" resultType="com.yunyihenkey.basedao.malldb.basevo.SellerRolePerm"
+            parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerRolePerm">
+        SELECT
+        role_id,
+        permission_id
+        FROM
+        seller_role_perm
+        <where>
+            1=1
+            <if test="roleId != null">
+                AND role_id = #{roleId}
+            </if>
+            <if test="permissionId != null">
+                AND permission_id=#{permissionId}
+            </if>
+        </where>
+    </select>
+    <select id="queryRolePermList" resultType="com.yunyihenkey.basedao.malldb.basevo.SellerPerm"
+            parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerRolePerm">
+        SELECT
+        p.id,
+        p.pid,
+        p.permission_code,
+        p.permission_name permissionName,
+        p.description,
+        p.url,
+        p.type,
+        p.create_time createTime,
+        p.icon
+        FROM
+        seller_perm p
+        LEFT JOIN
+        seller_role_perm r
+        ON p.id= r.permission_id
+
+        <where>
+            1=1
+            <if test="roleId != null">
+                AND r.role_id = #{roleId}
+            </if>
+            <if test="permissionId != null">
+                AND p.id=#{permissionId}
+            </if>
+        </where>
+    </select>
+</mapper>

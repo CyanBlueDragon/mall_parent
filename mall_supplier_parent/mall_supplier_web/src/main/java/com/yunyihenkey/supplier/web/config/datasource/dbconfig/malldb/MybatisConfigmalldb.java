@@ -36,9 +36,6 @@ public class MybatisConfigmalldb {
 	@Primary
 	public SqlSessionFactory testSqlSessionFactory(@Qualifier("malldbDataSource") DataSource dataSource)
 			throws Exception {
-		Logger logger = LogUtils.getLogger();
-		logger.info(
-				"testsadf!!!!!!testsadf!!!!!!testsadf!!!!!!testsadf!!!!!!testsadf!!!!!!testsadf!!!!!!testsadf!!!!!!testsadf!!!!!!testsadf!!!!!!");
 
 		SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
 		bean.setDataSource(dataSource);

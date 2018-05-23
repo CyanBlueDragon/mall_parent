@@ -47,7 +47,7 @@ public class SurveyServiceImpl implements SurveyService {
     @Override
     public void SaveSurveyInformation() {
 
-        List<Long> allShopId = authSellerSurveyStatisticsMapper.getAllShopId();
+        List<Long> allShopId = authSellerShopMapper.getAllShopId();
         if (allShopId.size() != 0) {
             List<SellerSurveyStatistics> list = new ArrayList<>();
             for (Long anAllShopId : allShopId) {
@@ -55,22 +55,22 @@ public class SurveyServiceImpl implements SurveyService {
                 sellerSurveyStatistics.setId(idWorker.nextId());
                 sellerSurveyStatistics.setShopId(anAllShopId);
                 sellerSurveyStatistics.setDateOfTheDay(getYesterdayDate());
-                sellerSurveyStatistics.setCountNewMembers((Integer) redisUtil.get(RedisConstant.getKeyByShopId(anAllShopId) + Increment.CountNewMembers.getText()));
-                sellerSurveyStatistics.setCountOrderToday((Integer) redisUtil.get(RedisConstant.getKeyByShopId(anAllShopId) + Increment.CountOrderYesterday.getText()));
-                sellerSurveyStatistics.setCountRefundAfterSale((Integer) redisUtil.get(RedisConstant.getKeyByShopId(anAllShopId) + Increment.CountRefundAfterSale.getText()));
-                sellerSurveyStatistics.setOrderAmountOfToday((Long) redisUtil.get(RedisConstant.getKeyByShopId(anAllShopId) + Increment.OrderAmountOfYesterday.getText()));
-                sellerSurveyStatistics.setTodaysEarnings((Long) redisUtil.get(RedisConstant.getKeyByShopId(anAllShopId) + Increment.YesterdaysEarnings.getText()));
+                sellerSurveyStatistics.setCountNewMembers((Integer) redisUtil.get(RedisConstant.getYesterdayCacheKeyByShopId(anAllShopId) + Increment.CountNewMembers.getText()));
+                sellerSurveyStatistics.setCountOrderToday((Integer) redisUtil.get(RedisConstant.getYesterdayCacheKeyByShopId(anAllShopId) + Increment.CountOrderYesterday.getText()));
+                sellerSurveyStatistics.setCountRefundAfterSale((Integer) redisUtil.get(RedisConstant.getYesterdayCacheKeyByShopId(anAllShopId) + Increment.CountRefundAfterSale.getText()));
+                sellerSurveyStatistics.setOrderAmountOfToday((Long) redisUtil.get(RedisConstant.getYesterdayCacheKeyByShopId(anAllShopId) + Increment.OrderAmountOfYesterday.getText()));
+                sellerSurveyStatistics.setTodaysEarnings((Long) redisUtil.get(RedisConstant.getYesterdayCacheKeyByShopId(anAllShopId) + Increment.YesterdaysEarnings.getText()));
                 list.add(sellerSurveyStatistics);
             }
 
             authSellerSurveyStatisticsMapper.insertBatch(list);
 
             for (Long anAllShopId : allShopId) {
-                redisUtil.set(RedisConstant.getKeyByShopId(anAllShopId) + Increment.CountNewMembers.getText(), 0);
-                redisUtil.set(RedisConstant.getKeyByShopId(anAllShopId) + Increment.CountOrderYesterday.getText(), 0);
-                redisUtil.set(RedisConstant.getKeyByShopId(anAllShopId) + Increment.CountRefundAfterSale.getText(), 0);
-                redisUtil.set(RedisConstant.getKeyByShopId(anAllShopId) + Increment.OrderAmountOfYesterday.getText(), 0);
-                redisUtil.set(RedisConstant.getKeyByShopId(anAllShopId) + Increment.YesterdaysEarnings.getText(), 0);
+                redisUtil.set(RedisConstant.getYesterdayCacheKeyByShopId(anAllShopId) + Increment.CountNewMembers.getText(), 0);
+                redisUtil.set(RedisConstant.getYesterdayCacheKeyByShopId(anAllShopId) + Increment.CountOrderYesterday.getText(), 0);
+                redisUtil.set(RedisConstant.getYesterdayCacheKeyByShopId(anAllShopId) + Increment.CountRefundAfterSale.getText(), 0);
+                redisUtil.set(RedisConstant.getYesterdayCacheKeyByShopId(anAllShopId) + Increment.OrderAmountOfYesterday.getText(), 0);
+                redisUtil.set(RedisConstant.getYesterdayCacheKeyByShopId(anAllShopId) + Increment.YesterdaysEarnings.getText(), 0);
             }
         }
 

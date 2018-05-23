@@ -27,6 +27,5 @@ public class UserPermissionTest {
         permissionTreeList.forEach(permissionTree ->
                 System.out.println(permissionTree.getPermissionName()));
 
-
     }
 }

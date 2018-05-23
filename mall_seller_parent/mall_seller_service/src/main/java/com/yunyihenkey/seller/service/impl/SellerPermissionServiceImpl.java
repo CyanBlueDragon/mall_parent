@@ -1,6 +1,5 @@
 package com.yunyihenkey.seller.service.impl;
 
-import com.yunyihenkey.auth.service.enums.PermissionTypeEnum;
 import com.yunyihenkey.auth.service.util.TreeUtil;
 import com.yunyihenkey.auth.service.vo.authjwt.seller.PermissionTree;
 import com.yunyihenkey.basedao.malldb.basemapper.SellerPermBaseMapper;
@@ -58,8 +57,13 @@ public class SellerPermissionServiceImpl implements SellerPermissionService {
     @Override
     public List<PermissionTree> queryTreeList() {
         List<SellerPerm> sellerPermsList = sellerPermMapper.queryList();
+        return buildPermTree(sellerPermsList);
+    }
+
+    @Override
+    public List<PermissionTree> buildPermTree(List<SellerPerm> list) {
         List<PermissionTree> permissionTreeList = new ArrayList<>();
-        for (SellerPerm sellerPerm : sellerPermsList) {
+        for (SellerPerm sellerPerm : list) {
             PermissionTree permissionTree = new PermissionTree();
             permissionTree.setId(sellerPerm.getId());
             permissionTree.setPid(sellerPerm.getPid());

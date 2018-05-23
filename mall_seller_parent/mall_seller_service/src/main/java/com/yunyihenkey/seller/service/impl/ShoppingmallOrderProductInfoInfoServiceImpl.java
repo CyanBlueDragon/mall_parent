@@ -10,15 +10,12 @@ import com.yunyihenkey.seller.dao.malldb.exportVo.OrderProductExportVo;
 import com.yunyihenkey.seller.dao.malldb.mapper.ShoppingmallOrderInfoMapper;
 import com.yunyihenkey.seller.dao.malldb.mapper.ShoppingmallOrderProductInfoMapper;
 import com.yunyihenkey.seller.dao.malldb.vo.param.deliverGoodsController.DeliveryParam;
-import com.yunyihenkey.seller.dao.malldb.vo.param.orderController.ShoppingmallOrderInfoResult;
 import com.yunyihenkey.seller.service.ShoppingmallOrderProductInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author SunQ

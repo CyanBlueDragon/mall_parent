@@ -7,6 +7,7 @@ import com.yunyihenkey.basedao.malldb.basemapper.SellerUserRoleBaseMapper;
 import com.yunyihenkey.basedao.malldb.basevo.SellerRole;
 import com.yunyihenkey.basedao.malldb.basevo.SellerUser;
 import com.yunyihenkey.basedao.malldb.basevo.SellerUserRole;
+import com.yunyihenkey.basedao.malldb.basevoEnum.SellerUser.UserTypeEnum;
 import com.yunyihenkey.common.constant.RedisConstant;
 import com.yunyihenkey.common.idworker.SnowflakeIdWorker;
 import com.yunyihenkey.common.utils.DateUtil;
@@ -17,7 +18,9 @@ import com.yunyihenkey.common.vo.resultinfo.ResultInfo;
 import com.yunyihenkey.common.vo.resultinfo.SystemCodeEnum;
 import com.yunyihenkey.seller.dao.malldb.mapper.SellerUserMapper;
 import com.yunyihenkey.seller.dao.malldb.vo.param.userController.QueryListParam;
-import com.yunyihenkey.seller.dao.malldb.vo.param.userController.UpdateStatus;
+import com.yunyihenkey.seller.dao.malldb.vo.param.userController.DeleteUserParam;
+import com.yunyihenkey.seller.dao.malldb.vo.param.userController.UpdateUserParam;
+import com.yunyihenkey.seller.service.SellerUserBakService;
 import com.yunyihenkey.seller.service.SellerUserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +28,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,7 +48,8 @@ public class SellerUserServiceImpl implements SellerUserService {
     private SellerUserRoleBaseMapper sellerUserRoleBaseMapper;
     @Autowired
     private SnowflakeIdWorker snowflakeIdWorker;
-
+    @Autowired
+    private SellerUserBakService sellerUserBakService;
     @Override
     public int deleteByPrimaryKey(Long id) {
         return sellerUserBaseMapper.deleteByPrimaryKey(id);
@@ -87,7 +90,7 @@ public class SellerUserServiceImpl implements SellerUserService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public ResultInfo<String> save(Long roleId, Long shopId, String userName, String password, String nickName, String code, String reqSource) throws Exception {
+    public ResultInfo<String> save(Long pId, Long roleId, Long shopId, String userName, String password, String nickName, String code, String reqSource) throws Exception {
         String key = RedisConstant.REDIS_REGISTER_STAFF_CODE + userName;
         String rCode = (String) redisUtil.get(key);
         if (StringUtils.isBlank(rCode)) {
@@ -116,6 +119,8 @@ public class SellerUserServiceImpl implements SellerUserService {
         sellerUser.setMobile(userName);
         sellerUser.setRegisterSource(reqSource);
         sellerUser.setCreateTime(DateUtil.getCurrentDate());
+        sellerUser.setParentUserId(pId);
+        sellerUser.setUserType(UserTypeEnum.STAFF.getValue()); //员工
         sellerUserBaseMapper.insertSelective(sellerUser);
 
         SellerUserRole sellerUserRole = new SellerUserRole();
@@ -148,8 +153,8 @@ public class SellerUserServiceImpl implements SellerUserService {
         return query(sellerUser);
     }
 
-    @Override
-    public ResultInfo updateStatus(UpdateStatus updateStatus) throws Exception {
+   /* @Override
+    public ResultInfo updateStatus(Updatestat updateStatus) throws Exception {
         Integer status = updateStatus.getStatus();
         Long id = updateStatus.getId();
         SellerUser sellerUser = sellerUserBaseMapper.selectByPrimaryKey(id);
@@ -165,5 +170,37 @@ public class SellerUserServiceImpl implements SellerUserService {
         sellerUserUp.setStatus(status);
         sellerUserBaseMapper.updateByPrimaryKeySelective(sellerUserUp);
         return new ResultInfo(SystemCodeEnum.SELLER, CodeEnum.SUCCESS);
+    }*/
+
+    @Override
+    public ResultInfo update(UpdateUserParam updateUserParam) throws Exception {
+        Long id = updateUserParam.getId();
+        SellerUser sellerUser = sellerUserBaseMapper.selectByPrimaryKey(id);
+        if (sellerUser == null) {
+            LogUtils.getLogger().info("用户的id不存在");
+            return new ResultInfo(SystemCodeEnum.SELLER, CodeEnum.ERROR, "用户的id不存在");
+        }
+        SellerUser sellerUserUp = new SellerUser();
+        sellerUserUp.setId(id);
+        sellerUserUp.setNickName(updateUserParam.getNickName());
+        sellerUserUp.setPassword(PasswordUtil.enCode(sellerUser.getUserName(), updateUserParam.getPassword()));
+        sellerUserUp.setUpdateTime(DateUtil.getCurrentDate());
+        sellerUserBaseMapper.updateByPrimaryKeySelective(sellerUserUp);
+        return new ResultInfo(SystemCodeEnum.SELLER, CodeEnum.SUCCESS, "修改成功");
+    }
+
+    @Transactional
+    @Override
+    public ResultInfo deleteUser(DeleteUserParam deleteUserParam) throws Exception {
+        Long id = deleteUserParam.getId();
+        if (selectByPrimaryKey(id) == null) {
+            LogUtils.getLogger().info("用户的id不存在");
+            return new ResultInfo(SystemCodeEnum.SELLER, CodeEnum.ERROR, "用户不存在");
+        }
+        //备份数据
+        sellerUserBakService.save(id);
+        //删除数据
+        deleteByPrimaryKey(id);
+        return new ResultInfo(SystemCodeEnum.SELLER, CodeEnum.SUCCESS, "注销成功");
     }
 }

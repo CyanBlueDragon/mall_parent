@@ -2,7 +2,7 @@ package com.yunyihenkey.seller.service.impl;
 
 import com.yunyihenkey.basedao.malldb.basevo.ShoppingmallOrderInfo;
 import com.yunyihenkey.seller.dao.malldb.mapper.ShoppingmallOrderInfoMapper;
-import com.yunyihenkey.seller.dao.malldb.vo.param.orderController.ShoppingmallOrderInfoResult;
+import com.yunyihenkey.seller.dao.malldb.vo.param.orderController.OrderInfoResult;
 import com.yunyihenkey.seller.service.ShoppingmallOrderInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,12 +20,12 @@ public class ShoppingmallOrderInfoServiceImpl implements ShoppingmallOrderInfoSe
     private ShoppingmallOrderInfoMapper shoppingmallOrderInfoMapper;
 
     @Override
-    public List<ShoppingmallOrderInfoResult> selectAllByPage(String mallId, String orderCode, String memberAccount, int[] orderStatus) {
+    public List<OrderInfoResult> selectAllByPage(String mallId, String orderCode, String memberAccount, int[] orderStatus) {
         return shoppingmallOrderInfoMapper.selectAll(mallId, orderCode, memberAccount, orderStatus);
     }
 
     @Override
-    public ShoppingmallOrderInfoResult selectByOrderCode(String orderCode) {
+    public OrderInfoResult selectByOrderCode(String orderCode) {
         return shoppingmallOrderInfoMapper.selectByOrderCode(orderCode);
     }
 

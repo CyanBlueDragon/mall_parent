@@ -21,7 +21,13 @@
 	</resultMap>
 
 
-	<insert id="insertSelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerShop" useGeneratedKeys="true" keyProperty="id">
+    <resultMap id="IdResultMap" type="com.yunyihenkey.seller.dao.malldb.vo.result.user.IdResult">
+        <result column="id" jdbcType="BIGINT" property="id"/>
+    </resultMap>
+
+
+    <insert id="insertSelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerShop"
+            useGeneratedKeys="true" keyProperty="id">
 		insert into seller_shop
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="id != null">
@@ -166,18 +172,95 @@
 			</if>
 		</trim>
 	</insert>
-	
-	
-	<select id="selectParentIdByShopId" parameterType="java.lang.Long" resultType="java.util.List">
-		select
-		t1.id,t2.id,t3.id
-		from seller_shop as t1 left join seller_shop as t2 on t2.parent_shop_id = t1.id
-		left join seller_shop as t3 on t3.parent_shop_id = t2.id
-		where t1.id = 3;
+    <resultMap id="ChildrenIdResultMap" type="com.yunyihenkey.seller.dao.malldb.vo.result.user.ChildrenIdResult">
+        <result column="id" jdbcType="BIGINT" property="id"/>
+        <result column="name" jdbcType="BIGINT" property="name"/>
+        <result column="status" jdbcType="BIGINT" property="status"/>
+        <result column="seller_grade" jdbcType="BIGINT" property="sellerGrade"/>
+        <result column="shop_turnover" jdbcType="BIGINT" property="shopTurnover"/>
+        <result column="total_sales" jdbcType="BIGINT" property="totalSales"/>
+        <result column="refund_amount" jdbcType="BIGINT" property="refundAmount"/>
+        <result column="refund_count" jdbcType="BIGINT" property="refundCount"/>
+        <result column="store_quantity" jdbcType="BIGINT" property="storeQuantity"/>
+        <result column="create_time" jdbcType="BIGINT" property="createTime"/>
+        <result column="members_count" jdbcType="BIGINT" property="membersCount"/>
+    </resultMap>
+
+    <select id="selectParentIdByShopId" parameterType="java.util.Map" resultMap="ChildrenIdResultMap">
+        SELECT t1.id,t1.name,t1.status,t1.seller_grade,
+        t1.shop_turnover,t1.total_sales,t1.refund_amount,
+        t1.refund_count,t1.store_quantity,t1.create_time,COUNT(t2.id) members_count
+        FROM seller_shop t1
+        left join seller_shop_members t2
+        on t1.id = t2.shop_id
+        <where>
+            1 = 1
+            <if test=" shopId!=null and shopId!='' ">
+                AND t1.parent_shop_id=#{shopId}
+            </if>
+            <if test=" id!=null and id!='' ">
+                and id =#{id}
+            </if>
+            <if test=" ShopName!=null and ShopName!='' ">
+                and like CONCAT('%',#{ShopName},'%')
+            </if>
+            <if test=" status!=null ">
+                and status =#{status}
+            </if>
+        </where>
+        group by
+        t1.id
+        UNION ALL
+        SELECT t4.id,t4.name,t4.status,t4.seller_grade,
+        t4.shop_turnover,t4.total_sales,t4.refund_amount,
+        t4.refund_count,t4.store_quantity,t4.create_time,COUNT(t5.id) members_count
+        FROM seller_shop t3
+        inner JOIN seller_shop t4
+        ON t3.id=t4.parent_shop_id
+        left join seller_shop_members t5
+        on t4.id = t5.shop_id
+        <where>
+            1 = 1
+            <if test=" shopId!=null and shopId!='' ">
+                AND t1.parent_shop_id=#{shopId}
+            </if>
+            <if test=" id!=null and id!='' ">
+                and id =#{id}
+            </if>
+            <if test=" ShopName!=null and ShopName!='' ">
+                and name like CONCAT('%',#{ShopName},'%')
+            </if>
+            <if test=" status!=null ">
+                and status =#{status}
+            </if>
+        </where>
+        group by t4.id
+    </select>
+
+    <select id="getCByShopId" parameterType="java.util.Map" resultMap="ChildrenIdResultMap">
+        select t1.id,t1.name,t1.status,t1.seller_grade,
+        t1.shop_turnover,t1.total_sales,t1.refund_amount,
+        t1.refund_count,t1.store_quantity,t1.create_time,COUNT(t2.id) members_count
+        from seller_shop t1 LEFT JOIN seller_shop_members t2 on t1.parent_shop_id = t2.shop_id
+        <where>
+            1 = 1
+            <if test=" shopId!=null and shopId!='' ">
+                AND t1.parent_shop_id=#{shopId}
+            </if>
+            <if test=" id!=null and id!='' ">
+                and id =#{id}
+            </if>
+            <if test=" ShopName!=null and ShopName!='' ">
+                and name like CONCAT('%',#{ShopName},'%')
+            </if>
+            <if test=" status!=null ">
+                and status =#{status}
+            </if>
+        </where>
+        group by t1.id
 	</select>
 
-
-	<select id="getAllShopId" parameterType="java.lang.String" resultType="java.util.List">
+    <select id="getAllShopId" resultMap="IdResultMap">
 		select id from seller_shop
 	</select>
 
