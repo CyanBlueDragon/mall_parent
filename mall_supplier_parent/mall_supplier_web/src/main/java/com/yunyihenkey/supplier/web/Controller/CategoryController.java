@@ -7,7 +7,7 @@ import com.yunyihenkey.common.vo.resultinfo.CodeEnum;
 import com.yunyihenkey.common.vo.resultinfo.ResultInfo;
 import com.yunyihenkey.common.vo.resultinfo.SystemCodeEnum;
 import com.yunyihenkey.supplier.service.SupplierGoodsCategoryService;
-import com.yunyihenkey.supplier.dao.malldb.vo.param.Controller.SupplierGoodsCategoryParam;
+import com.yunyihenkey.supplier.dao.malldb.vo.param.CategoryController.SupplierGoodsCategoryParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -54,13 +54,18 @@ public class CategoryController extends BaseController {
         }
         String errorInfo = validatorUtils.validateAndGetErrorInfo(supplierGoodsCategory, Default.class);
         if(StringUtils.isNotEmpty(errorInfo)){
-            return new ResultInfo<>(SystemCodeEnum.SUPPLIER, CodeEnum.ERROR_PARAM, errorInfo, null);
+            return new ResultInfo<>(SystemCodeEnum.SUPPLIER, CodeEnum.ERROR_PARAM, errorInfo);
         }
         SupplierGoodsCategory category = new SupplierGoodsCategory();
         category.setId(null);
         category.setName(supplierGoodsCategory.getName());
         category.setSortOrder(supplierGoodsCategory.getSortOrder());
-        supplierGoodsCategoryService.insertSelective(category);
+        category.setCreateTime(new Date());
+        category.setCreateUser("admin");
+        int i = supplierGoodsCategoryService.insertSelective(category);
+        if (i != 1) {
+            return new ResultInfo<>(SystemCodeEnum.SUPPLIER, CodeEnum.ERROR, "添加失败");
+        }
         return new ResultInfo<>(SystemCodeEnum.SUPPLIER, CodeEnum.SUCCESS, "添加成功");
     }
 
@@ -77,7 +82,7 @@ public class CategoryController extends BaseController {
             return new ResultInfo<>(SystemCodeEnum.SUPPLIER,CodeEnum.ERROR,"此分类不可删除!");
         }
         int i = supplierGoodsCategoryService.deleteByPrimaryKey(id);
-        if(i == 0){
+        if (i != 1) {
             return new ResultInfo<>(SystemCodeEnum.SUPPLIER,CodeEnum.ERROR,"并无此分类!");
         }
         return new ResultInfo<>(SystemCodeEnum.SUPPLIER,CodeEnum.SUCCESS,"删除成功!");
@@ -105,7 +110,10 @@ public class CategoryController extends BaseController {
         category.setSortOrder(supplierGoodsCategoryParam.getSortOrder());
         category.setUpdateUser(null);
         category.setUpdateTime(new Date());
-        supplierGoodsCategoryService.updateByPrimaryKeySelective(category);
+        int i = supplierGoodsCategoryService.updateByPrimaryKeySelective(category);
+        if (i != 1) {
+            return new ResultInfo<>(SystemCodeEnum.SUPPLIER, CodeEnum.ERROR, "修改失败!");
+        }
         return new ResultInfo<>(SystemCodeEnum.SUPPLIER,CodeEnum.SUCCESS,"修改成功!");
     }
 }
