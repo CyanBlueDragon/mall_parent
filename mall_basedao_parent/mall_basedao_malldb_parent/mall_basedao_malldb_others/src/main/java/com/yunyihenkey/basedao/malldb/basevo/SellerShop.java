@@ -104,6 +104,21 @@ public class SellerShop implements Serializable {
     /** 店铺商品数量 */
     private Integer storeQuantity;
 
+    /**  1简约风格 2传统电商 3电商模板 */
+    private Integer templateType;
+
+    /** 自定义模板Id */
+    private Long templateId;
+
+    /** 退换货地址-收货人 */
+    private String consignee;
+
+    /** 退换货地址-联系方式 */
+    private String returnedContactWay;
+
+    /** 退换货地址-收货地址 */
+    private String returnedAddress;
+
     /** 创建时间 */
     private Date createTime;
 
@@ -387,6 +402,46 @@ public class SellerShop implements Serializable {
         this.storeQuantity = storeQuantity;
     }
 
+    public Integer getTemplateType() {
+        return templateType;
+    }
+
+    public void setTemplateType(Integer templateType) {
+        this.templateType = templateType;
+    }
+
+    public Long getTemplateId() {
+        return templateId;
+    }
+
+    public void setTemplateId(Long templateId) {
+        this.templateId = templateId;
+    }
+
+    public String getConsignee() {
+        return consignee;
+    }
+
+    public void setConsignee(String consignee) {
+        this.consignee = consignee == null ? null : consignee.trim();
+    }
+
+    public String getReturnedContactWay() {
+        return returnedContactWay;
+    }
+
+    public void setReturnedContactWay(String returnedContactWay) {
+        this.returnedContactWay = returnedContactWay == null ? null : returnedContactWay.trim();
+    }
+
+    public String getReturnedAddress() {
+        return returnedAddress;
+    }
+
+    public void setReturnedAddress(String returnedAddress) {
+        this.returnedAddress = returnedAddress == null ? null : returnedAddress.trim();
+    }
+
     public Date getCreateTime() {
         return createTime;
     }
@@ -451,6 +506,11 @@ public class SellerShop implements Serializable {
         sb.append(", refundAmount=").append(refundAmount);
         sb.append(", refundCount=").append(refundCount);
         sb.append(", storeQuantity=").append(storeQuantity);
+        sb.append(", templateType=").append(templateType);
+        sb.append(", templateId=").append(templateId);
+        sb.append(", consignee=").append(consignee);
+        sb.append(", returnedContactWay=").append(returnedContactWay);
+        sb.append(", returnedAddress=").append(returnedAddress);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
         sb.append(", isDelete=").append(isDelete);

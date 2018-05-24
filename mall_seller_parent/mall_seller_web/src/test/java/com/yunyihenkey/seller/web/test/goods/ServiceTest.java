@@ -3,6 +3,7 @@ package com.yunyihenkey.seller.web.test.goods;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,9 +16,13 @@ import com.yunyihenkey.Application;
 import com.yunyihenkey.basedao.malldb.basevo.SellerGoodsCategory;
 import com.yunyihenkey.basedao.malldb.basevo.SellerGoodsDescrip;
 import com.yunyihenkey.basedao.malldb.basevo.SellerGoodsInfo;
+import com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsDescrip;
+import com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsInfo;
 import com.yunyihenkey.basedao.malldb.basevoEnum.SellerGoodsInfo.StatusEnum;
+import com.yunyihenkey.common.utils.JacksonUtils;
+import com.yunyihenkey.common.utils.LogUtils;
+import com.yunyihenkey.common.utils.httpclient.invoke.HttpClientUtil;
 import com.yunyihenkey.common.vo.page.PageParam;
-import com.yunyihenkey.seller.service.PictureService;
 import com.yunyihenkey.seller.service.SellerGoodsCategoryService;
 import com.yunyihenkey.seller.service.SellerGoodsDescripService;
 import com.yunyihenkey.seller.service.SellerGoodsInfoService;
@@ -39,41 +44,112 @@ public class ServiceTest {
 	@Autowired
 	private SellerGoodsDescripService sellerGoodsDescripService;
 
-//	@Autowired
-//	private PictureService pictureService;
+	// @Autowired
+	// private PictureService pictureService;
 
-    @Value("${FTP.FTP_ADDRESS}")
-    private String FTP_ADDRESS;
-    @Value("${FTP.FTP_PORT}")
-    private Integer FTP_PORT;
-    @Value("${FTP.FTP_USERNAME}")
-    private String FTP_USERNAME;
-    @Value("${FTP.FTP_PASSWORD}")
-    private String FTP_PASSWORD;
-    @Value("${FTP.FTP_BASE_PATH}")
-    private String FTP_BASE_PATH;
-    @Value("${FTP.IMAGE_BASE_URL}")
-    private String IMAGE_BASE_URL;
-    @Value("${spring.servlet.multipart.max-file-size}")
-    private String txt;
-    @Value("${FTP.IMAGE_MAX_SIZE}")
-    private int size;
-    @Value("${url.inventory_reduction_url}")
-    private String inventory_reduction_url;
-	
-	
+	@Value("${FTP.FTP_ADDRESS}")
+	private String FTP_ADDRESS;
+	@Value("${FTP.FTP_PORT}")
+	private Integer FTP_PORT;
+	@Value("${FTP.FTP_USERNAME}")
+	private String FTP_USERNAME;
+	@Value("${FTP.FTP_PASSWORD}")
+	private String FTP_PASSWORD;
+	@Value("${FTP.FTP_BASE_PATH}")
+	private String FTP_BASE_PATH;
+	@Value("${FTP.IMAGE_BASE_URL}")
+	private String IMAGE_BASE_URL;
+	@Value("${spring.servlet.multipart.max-file-size}")
+	private String txt;
+	@Value("${FTP.IMAGE_MAX_SIZE}")
+	private int size;
+	@Value("${url.supplier_inventory_reduction_url}")
+	private String supplier_inventory_reduction_url;
+	@Value("${url.supplier_goods_desc_url}")
+	private String supplier_goods_desc_url;
+
+	@Test
+	public void testUrl2() {
+
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		try {
+
+			LogUtils.getLogger().info("调用供应商查询商品信息接口......");
+			String supplierGoodsInfoReturn = HttpClientUtil.getInstance()
+					.sendHttpPost(LogUtils.getString(supplier_goods_desc_url, "2"));
+
+			// 解析数据
+			Map supplierGoodsInfoMap = JacksonUtils.readValue(supplierGoodsInfoReturn, Map.class);
+			Map data = (Map) supplierGoodsInfoMap.get("data");
+			SupplierGoodsInfo SupplierGoodsInfo = JacksonUtils
+					.readValue(JacksonUtils.writeValueAsString(data.get("supplierGoodsInfo")), SupplierGoodsInfo.class);
+			SupplierGoodsDescrip supplierGoodsDescrip = JacksonUtils
+					.readValue(JacksonUtils.writeValueAsString(data.get("supplierGoodsDescrip")), SupplierGoodsDescrip.class);
+			
+			System.out.println(SupplierGoodsInfo.toString());
+			System.out.println(supplierGoodsDescrip.toString());
+			
+			
+			// System.out.println("supplierGoodsInfoMap=" +
+			// supplierGoodsInfoMap);
+
+			// // 商品详情
+			// SupplierGoodsInfo supplierGoodsInfo =
+			// JacksonUtils.readValue(data.get("supplierGoodsInfo") + "",
+			// SupplierGoodsInfo.class);
+			// // 商品描述
+			// SupplierGoodsDescrip supplierGoodsDescrip = JacksonUtils
+			// .readValue(data.get("supplierGoodsDescrip") + "",
+			// SupplierGoodsDescrip.class);
+			//
+			// // 返回数据
+			// map.put("supplierGoodsInfo", supplierGoodsInfo);
+			// map.put("supplierGoodsDescrip", supplierGoodsDescrip);
+			//
+			// System.out.println(supplierGoodsDescrip.toString());
+			// System.out.println(supplierGoodsInfo.toString());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			LogUtils.getLogger().error("调用供应商查询商品信息接口异常......");
+		}
+
+	}
+
+	@Test
+	public void testUrl() {
+
+		String goodsDesc = HttpClientUtil.getInstance().sendHttpPost(LogUtils.getString(supplier_goods_desc_url, "2"));
+		System.out.println(goodsDesc);
+		Map readValue = JacksonUtils.readValue(goodsDesc, Map.class);
+		Map data = (Map) readValue.get("data");
+		Map supplierGoodsInfo = (Map) data.get("supplierGoodsInfo");
+		Map supplierGoodsDescrip = (Map) data.get("supplierGoodsDescrip");
+
+		System.out.println("object=" + data);
+		System.out.println("supplierGoodsInfo=" + supplierGoodsInfo.get("id"));
+		System.out.println("supplierGoodsDescrip=" + supplierGoodsDescrip.get("id") + " "
+				+ supplierGoodsDescrip.get("description"));
+
+		// ResultInfo readValue = JacksonUtils.readValue(goodsDesc,
+		// ResultInfo.class);
+		// System.out.println("readValue=\n" + readValue);
+
+	}
+
 	@Test
 	public void testImg() {
 
-        System.out.println("FTP_ADDRESS=" + FTP_ADDRESS);
-        System.out.println("FTP_PORT=" + FTP_PORT);
-        System.out.println("FTP_USERNAME=" + FTP_USERNAME);
-        System.out.println("FTP_PASSWORD=" + FTP_PASSWORD);
-        System.out.println("FTP_BASE_PATH=" + FTP_BASE_PATH);
-        System.out.println("IMAGE_BASE_URL=" + IMAGE_BASE_URL);
-        System.out.println("spring.servlet.multipart.max-file-size=" + txt);
-        System.out.println("FTP.IMAGE_MAX_SIZE=" + size);
-		
+		System.out.println("FTP_ADDRESS=" + FTP_ADDRESS);
+		System.out.println("FTP_PORT=" + FTP_PORT);
+		System.out.println("FTP_USERNAME=" + FTP_USERNAME);
+		System.out.println("FTP_PASSWORD=" + FTP_PASSWORD);
+		System.out.println("FTP_BASE_PATH=" + FTP_BASE_PATH);
+		System.out.println("IMAGE_BASE_URL=" + IMAGE_BASE_URL);
+		System.out.println("spring.servlet.multipart.max-file-size=" + txt);
+		System.out.println("FTP.IMAGE_MAX_SIZE=" + size);
+
 	}
 
 	@Test

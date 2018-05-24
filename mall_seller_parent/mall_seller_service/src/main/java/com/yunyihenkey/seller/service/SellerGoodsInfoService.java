@@ -87,7 +87,7 @@ public interface SellerGoodsInfoService extends BaseService<SellerGoodsInfo, Lon
 
 	/**
 	 * 
-	 * @desc:
+	 * @desc:删除商品
 	 * @author zhouh
 	 * @param id
 	 *            主键
@@ -99,28 +99,31 @@ public interface SellerGoodsInfoService extends BaseService<SellerGoodsInfo, Lon
 	ResultInfo<Object> deleteByPrimaryKeyWithShopId(Long id, Long shopId);
 
 	/**
-     *
-     * @desc:
+	 * 
+	 * @desc: 新增商品
 	 * @author zhouh
-     * @param userName
-     *            操作人
-     * @param shopId
-     *            店铺id
+	 * @param userName
+	 *            操作人
+	 * @param shopId
+	 *            店铺id
 	 * @param record
 	 * @return Object
-     * @date: 2018年5月22日 下午12:21:28
+	 * @date: 2018年5月22日 下午12:21:28
 	 */
 	Object insertSelective(String userName, Long shopId, AddGoodsParam record);
 
-    /**
-     * @param userName 操作人
-     * @param shopId   店铺id
-     * @param record
-     * @return Object
-     * @desc: 修改商品（选择修改）
-     * @author zhouh
-     * @date: 2018年5月22日 下午12:20:51
-     */
-    Object updateByPrimaryKeyWithShopIdSelective(String userName, Long shopId, UpdGoodsParam record);
+	/**
+	 * 
+	 * @desc: 修改商品（选择修改）
+	 * @author zhouh
+	 * @param userName
+	 *            操作人
+	 * @param shopId
+	 *            店铺id
+	 * @param record
+	 * @return Object
+	 * @date: 2018年5月22日 下午12:20:51
+	 */
+	Object updateByPrimaryKeyWithShopIdSelective(String userName, Long shopId, UpdGoodsParam record);
 
 }

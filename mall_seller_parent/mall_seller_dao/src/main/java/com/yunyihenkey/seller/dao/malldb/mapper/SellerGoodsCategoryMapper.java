@@ -35,19 +35,19 @@ public interface SellerGoodsCategoryMapper {
 	List<SellerGoodsCategoryInfoResult> selectAllWithGoodsNumByShopId(Long shopId);
 
 	/**
-     *
-     * @desc: 根据分类id和店铺id查询商品分类
+	 * 
+	 * @desc: 根据分类id和店铺id查询商品分类
 	 * @author zhouh
 	 * @param map
 	 *            传入分类id、店铺id
-     * @return
+	 * @return
 	 * @date: 2018年5月12日 下午3:53:39
 	 */
-    SellerGoodsCategoryInfoResult selectByIdWithShopId(Map<String, Object> map);
+	SellerGoodsCategoryInfoResult selectByIdWithShopId(Map<String, Object> map);
 
 	/**
-     *
-     * @desc:查询分类名称（模糊查询）
+	 * 
+	 * @desc:查询分类名称（模糊查询）
 	 * @author zhouh
 	 * @param map
 	 *            传入分类名称、店铺id
@@ -56,14 +56,16 @@ public interface SellerGoodsCategoryMapper {
 	 */
 	List<SellerGoodsCategoryInfoResult> selectByShopIdAndNameWithPage(Map<String, Object> map);
 
-    /**
-     * @param map 店铺id
-     * @return SellerGoodsCategoryInfoResult
-     * @desc: 查询分类默认分类
-     * @author zhouh
-     * @date: 2018年5月22日 下午2:41:37
-     */
-    SellerGoodsCategoryInfoResult selectIsDefaultByShopId(Map<String, Object> map);
+	/**
+	 * 
+	 * @desc: 查询分类默认分类
+	 * @author zhouh
+	 * @param shopId
+	 *            店铺id
+	 * @return SellerGoodsCategoryInfoResult
+	 * @date: 2018年5月22日 下午2:41:37
+	 */
+	SellerGoodsCategoryInfoResult selectIsDefaultByShopId(Long shopId);
 
 	/**
 	 * 
@@ -74,9 +76,9 @@ public interface SellerGoodsCategoryMapper {
 	 * @return int
 	 * @date: 2018年5月14日 下午3:37:25
 	 */
-    int deleteByPrimaryKeyWithShopId(Map<String, Object> map);
+	int deleteByPrimaryKeyWithShopId(Map<String, Object> map);
 
-    /**
+	/**
 	 * 
 	 * @desc: 修改商品分类
 	 * @author zhouh

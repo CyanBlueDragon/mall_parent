@@ -32,6 +32,11 @@ public class GoodsControllerTest {
         for (SupplierGoodsExportParam supplierGoodsExportParam : list) {
             System.out.println(supplierGoodsExportParam);
         }
+    }
 
+    @Test
+    public void array(){
+        String[] strArr = {"https://img.yzcdn.cn/upload_files/2018/03/30/FgkZtP9-N7GD3PZRoBfTnndJ2Mkh.jpg"};
+        System.out.println(strArr[0]);
     }
 }

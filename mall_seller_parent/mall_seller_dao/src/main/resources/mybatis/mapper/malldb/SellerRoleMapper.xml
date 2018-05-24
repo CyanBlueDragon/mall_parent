@@ -2,19 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
         namespace="com.yunyihenkey.seller.dao.malldb.mapper.SellerRoleMapper">
-    <resultMap id="BaseResultMap"
-               type="com.yunyihenkey.basedao.malldb.basevo.SellerRole">
-        <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="name" jdbcType="VARCHAR"
-                property="name"/>
-        <result column="description" jdbcType="VARCHAR"
-                property="description"/>
+    <resultMap id="BaseResultMap" type="com.yunyihenkey.basedao.malldb.basevo.SellerRole">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="shop_id" jdbcType="BIGINT" property="shopId" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     </resultMap>
     <sql id="Base_Column_List">
-        id, name, description, create_time, update_time
+        id, name, description, create_time, update_time,shop_id
     </sql>
-    <select id="queryRoleList"
-            resultType="com.yunyihenkey.seller.dao.malldb.vo.param.userController.QueryRoleListResult">
+    <select id="queryLikeRoleList"
+            resultType="com.yunyihenkey.seller.dao.malldb.vo.param.userController.QueryRoleListResult" >
         SELECT
         r.id,
         r.name,
@@ -25,12 +25,16 @@
         LEFT JOIN seller_user_role ur ON r.id = ur.role_id
         <where>
             1=1
+            <if test="shopId!=null ">
+                AND shop_id=#{shopId}
+            </if>
             <if test="name != null and name != ''">
                 AND r.name LIKE CONCAT('%',#{name},'%')
             </if>
+
         </where>
         GROUP BY
-        ur.role_id
+        r.id
         ORDER BY
         r.create_time DESC
     </select>
@@ -42,6 +46,9 @@
         seller_role
         <where>
             1=1
+            <if test="shopId!=null ">
+                and shop_id=#{shopId}
+            </if>
             <if test="name!=null and name!=''">
                 and name=#{name}
             </if>

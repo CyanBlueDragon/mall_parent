@@ -33,7 +33,7 @@ public interface SellerUserService extends BaseService<SellerUser, Long> {
      * @return
      * @throws Exception
      */
-    ResultInfo<String> save(Long pId, Long roleId, Long shopId, String userName, String password, String nickName, String code, String reqSource) throws Exception;
+    ResultInfo<String> save(String mobile ,Long pId,Long roleId,Long shopId,String userName, String password, String nickName,String code,String reqSource) throws  Exception;
 
     List<SellerUser> queryUserRoleList(QueryListParam queryListParam);
 
@@ -48,7 +48,6 @@ public interface SellerUserService extends BaseService<SellerUser, Long> {
 
     /**
      * 删除用户
-     *
      * @param deleteUser
      * @return
      * @throws Exception

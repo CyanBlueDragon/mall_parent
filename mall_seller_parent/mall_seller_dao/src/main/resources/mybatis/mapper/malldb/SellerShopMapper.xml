@@ -78,4 +78,19 @@
 		id = #{shopId}
 	</select>
 
+
+	<select id="getShopTemplate"
+			resultType="com.yunyihenkey.seller.dao.malldb.vo.param.decorationShopController.GetShopTemplateResult">
+		SELECT
+		id id,
+		template_type templateType,
+		template_id templateId
+		FROM
+		seller_shop
+		WHERE
+		id = #{shopId}
+	</select>
+
+
+
 </mapper>

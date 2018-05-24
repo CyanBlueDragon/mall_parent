@@ -54,4 +54,4 @@ FTP:
   IMAGE_MAX_SIZE: 2097152
 url: 
   # 减供应商库存接口
-  inventory_reduction_url: http://192.168.0.196:8089/supplier/goods/addtoshop
+  supplier_inventory_reduction_url: http://192.168.0.196:8089/supplier/goods/addtoshop

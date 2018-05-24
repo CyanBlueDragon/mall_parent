@@ -1,5 +1,6 @@
 package com.yunyihenkey.seller.dao.malldb.vo.param.userController;
 
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 /**
@@ -9,6 +10,7 @@ import java.io.Serializable;
  */
 public class PermissionVO implements Serializable{
     private static final long serialVersionUID = 1L;
+    @NotEmpty(message = "ID不能为空")
     private Long id;
 
     public PermissionVO() {

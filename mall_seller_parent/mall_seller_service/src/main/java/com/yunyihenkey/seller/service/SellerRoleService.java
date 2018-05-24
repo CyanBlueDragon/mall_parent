@@ -20,9 +20,10 @@ public interface SellerRoleService extends BaseService<SellerRole, Long> {
      * 查询角色列表
      *
      * @param name
+     * @param shopId
      * @return
      */
-    List<QueryRoleListResult> queryRoleList(String name);
+    List<QueryRoleListResult> queryRoleList(String name,Long shopId);
 
     /**
      * 保存角色
@@ -44,7 +45,7 @@ public interface SellerRoleService extends BaseService<SellerRole, Long> {
      * @param name 角色 名
      * @return
      */
-    SellerRole query(String name);
+    SellerRole query(String name,Long shopId);
 
     /**
      * 模糊查询名称

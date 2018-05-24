@@ -36,6 +36,11 @@
     <result column="refund_amount" jdbcType="BIGINT" property="refundAmount" />
     <result column="refund_count" jdbcType="INTEGER" property="refundCount" />
     <result column="store_quantity" jdbcType="INTEGER" property="storeQuantity" />
+    <result column="template_type" jdbcType="INTEGER" property="templateType" />
+    <result column="template_id" jdbcType="BIGINT" property="templateId" />
+    <result column="consignee" jdbcType="VARCHAR" property="consignee" />
+    <result column="returned_contact_way" jdbcType="VARCHAR" property="returnedContactWay" />
+    <result column="returned_address" jdbcType="VARCHAR" property="returnedAddress" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
@@ -45,8 +50,8 @@
     audit_time, logo_url, is_customize, code, status, operator, email, phone, tx_qq, 
     tx_wx, depict, url, seller_grade, parent_shop_id, pay_wx, pay_ali, pay_union, unpaid_time, 
     confirm_order_time, refund_time, sell_out_time, return_order_time, shop_turnover, 
-    total_sales, refund_amount, refund_count, store_quantity, create_time, update_time, 
-    is_delete
+    total_sales, refund_amount, refund_count, store_quantity, template_type, template_id, 
+    consignee, returned_contact_way, returned_address, create_time, update_time, is_delete
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -70,8 +75,10 @@
       unpaid_time, confirm_order_time, refund_time, 
       sell_out_time, return_order_time, shop_turnover, 
       total_sales, refund_amount, refund_count, 
-      store_quantity, create_time, update_time, 
-      is_delete)
+      store_quantity, template_type, template_id, 
+      consignee, returned_contact_way, returned_address, 
+      create_time, update_time, is_delete
+      )
     values (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
       #{majorBusiness,jdbcType=VARCHAR}, #{payPassword,jdbcType=VARCHAR}, #{payPasswordMobile,jdbcType=VARCHAR}, 
       #{auditStatus,jdbcType=INTEGER}, #{auditTime,jdbcType=TIMESTAMP}, #{logoUrl,jdbcType=VARCHAR}, 
@@ -83,8 +90,10 @@
       #{unpaidTime,jdbcType=BIGINT}, #{confirmOrderTime,jdbcType=INTEGER}, #{refundTime,jdbcType=INTEGER}, 
       #{sellOutTime,jdbcType=INTEGER}, #{returnOrderTime,jdbcType=INTEGER}, #{shopTurnover,jdbcType=BIGINT}, 
       #{totalSales,jdbcType=INTEGER}, #{refundAmount,jdbcType=BIGINT}, #{refundCount,jdbcType=INTEGER}, 
-      #{storeQuantity,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{isDelete,jdbcType=INTEGER})
+      #{storeQuantity,jdbcType=INTEGER}, #{templateType,jdbcType=INTEGER}, #{templateId,jdbcType=BIGINT}, 
+      #{consignee,jdbcType=VARCHAR}, #{returnedContactWay,jdbcType=VARCHAR}, #{returnedAddress,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerShop">
     insert into seller_shop
@@ -190,6 +199,21 @@
       </if>
       <if test="storeQuantity != null">
         store_quantity,
+      </if>
+      <if test="templateType != null">
+        template_type,
+      </if>
+      <if test="templateId != null">
+        template_id,
+      </if>
+      <if test="consignee != null">
+        consignee,
+      </if>
+      <if test="returnedContactWay != null">
+        returned_contact_way,
+      </if>
+      <if test="returnedAddress != null">
+        returned_address,
       </if>
       <if test="createTime != null">
         create_time,
@@ -304,6 +328,21 @@
       <if test="storeQuantity != null">
         #{storeQuantity,jdbcType=INTEGER},
       </if>
+      <if test="templateType != null">
+        #{templateType,jdbcType=INTEGER},
+      </if>
+      <if test="templateId != null">
+        #{templateId,jdbcType=BIGINT},
+      </if>
+      <if test="consignee != null">
+        #{consignee,jdbcType=VARCHAR},
+      </if>
+      <if test="returnedContactWay != null">
+        #{returnedContactWay,jdbcType=VARCHAR},
+      </if>
+      <if test="returnedAddress != null">
+        #{returnedAddress,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -417,6 +456,21 @@
       <if test="storeQuantity != null">
         store_quantity = #{storeQuantity,jdbcType=INTEGER},
       </if>
+      <if test="templateType != null">
+        template_type = #{templateType,jdbcType=INTEGER},
+      </if>
+      <if test="templateId != null">
+        template_id = #{templateId,jdbcType=BIGINT},
+      </if>
+      <if test="consignee != null">
+        consignee = #{consignee,jdbcType=VARCHAR},
+      </if>
+      <if test="returnedContactWay != null">
+        returned_contact_way = #{returnedContactWay,jdbcType=VARCHAR},
+      </if>
+      <if test="returnedAddress != null">
+        returned_address = #{returnedAddress,jdbcType=VARCHAR},
+      </if>
       <if test="createTime != null">
         create_time = #{createTime,jdbcType=TIMESTAMP},
       </if>
@@ -464,6 +518,11 @@
       refund_amount = #{refundAmount,jdbcType=BIGINT},
       refund_count = #{refundCount,jdbcType=INTEGER},
       store_quantity = #{storeQuantity,jdbcType=INTEGER},
+      template_type = #{templateType,jdbcType=INTEGER},
+      template_id = #{templateId,jdbcType=BIGINT},
+      consignee = #{consignee,jdbcType=VARCHAR},
+      returned_contact_way = #{returnedContactWay,jdbcType=VARCHAR},
+      returned_address = #{returnedAddress,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       is_delete = #{isDelete,jdbcType=INTEGER}

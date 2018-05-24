@@ -1,32 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yunyihenkey.supplier.dao.malldb.mapper.SupplierGoodsDescripMapper">
-  <resultMap id="BaseResultMap" type="com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsDescrip">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="goods_id" jdbcType="BIGINT" property="goodsId" />
-    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
-    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
-    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
-  </resultMap>
-  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsDescrip">
-    <result column="description" jdbcType="LONGVARCHAR" property="description" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    id, goods_id, create_user, create_date, update_user, update_date
+    <resultMap id="BaseResultMap" type="com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsDescrip">
+        <id column="goods_id" jdbcType="BIGINT" property="goodsId" />
+        <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+        <result column="create__time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+        <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    </resultMap>
+    <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsDescrip">
+        <result column="description" jdbcType="LONGVARCHAR" property="description" />
+    </resultMap>
+    <sql id="Base_Column_List">
+    goods_id, create_user, create__time, update_user, update_time, is_delete
   </sql>
-  <sql id="Blob_Column_List">
+    <sql id="Blob_Column_List">
     description
   </sql>
-  <select id="selectByGoodsId" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
-    select
-    id,
-    goods_id,
-    description
-    from supplier_goods_descrip
-    where goods_id = #{id,jdbcType=BIGINT}
-    limit 1
-  </select>
 
 
 </mapper>

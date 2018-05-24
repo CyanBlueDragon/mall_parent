@@ -49,6 +49,8 @@ public class SellerShopMoneyCash implements Serializable {
      */
     private String bankCardNumber;
 
+    private String remarks;
+
     private Date createTime;
 
     private Date updateTime;
@@ -127,6 +129,14 @@ public class SellerShopMoneyCash implements Serializable {
         this.bankCardNumber = bankCardNumber == null ? null : bankCardNumber.trim();
     }
 
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks == null ? null : remarks.trim();
+    }
+
     public Date getCreateTime() {
         return createTime;
     }
@@ -158,6 +168,7 @@ public class SellerShopMoneyCash implements Serializable {
         sb.append(", bankName=").append(bankName);
         sb.append(", bankAddress=").append(bankAddress);
         sb.append(", bankCardNumber=").append(bankCardNumber);
+        sb.append(", remarks=").append(remarks);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
         sb.append("]");

@@ -4,6 +4,7 @@ import com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsInfo;
 import com.yunyihenkey.common.utils.LogUtils;
 import com.yunyihenkey.supplier.dao.malldb.mapper.SupplierGoodsDescripMapper;
 import com.yunyihenkey.supplier.dao.malldb.mapper.SupplierGoodsInfoMapper;
+import com.yunyihenkey.supplier.dao.malldb.vo.param.GoodsInfoController.MSupplierGoodsParam;
 import com.yunyihenkey.supplier.dao.malldb.vo.param.GoodsInfoController.SupplierGoodsAddParam;
 import com.yunyihenkey.supplier.service.SupplierGoodsInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,7 @@ public class SupplierGoodsInfoServiceImpl implements SupplierGoodsInfoService {
         LogUtils.getLogger().info("根据商品id查询商品详情......");
         List<Object> list = new ArrayList<>();
         list.add(0, supplierGoodsInfoMapper.selectByPrimaryKey(id));
-        list.add(1, supplierGoodsDescripMapper.selectByGoodsId(id));
+        list.add(1, supplierGoodsDescripMapper.selectByPrimaryKey(id));
         return list;
     }
 
@@ -66,11 +67,15 @@ public class SupplierGoodsInfoServiceImpl implements SupplierGoodsInfoService {
     @Override
     public int addGoodsToShop(Long id, Integer stock, Long version) {
         int i = supplierGoodsInfoMapper.addGoodsToShop(id, stock, version);
-
         if (i != 1) {
             return 0;
         }
         return 1;
+    }
+
+    @Override
+    public MSupplierGoodsParam selectWithDesc(Long id) {
+        return  supplierGoodsInfoMapper.selectWithDesc(id);
     }
 
 

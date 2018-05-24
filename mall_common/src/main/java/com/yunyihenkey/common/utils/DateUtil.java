@@ -79,12 +79,12 @@ public class DateUtil {
 
 	/**
 	 * 福享定期给小孩投保时小孩最小投保年龄大于60天；(生效日减去60天的日期)
-     *
+	 * 
 	 * @param startDate
 	 * @return
 	 * @throws ParseException
 	 */
-    public static String getLimitDate(String startDate) throws ParseException {
+	public static String getLimitDate(String startDate) throws ParseException {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date da = sdf.parse(startDate);
@@ -778,164 +778,6 @@ public class DateUtil {
 			return false;
 		}
 	}
-
-    public static interface GetDateStr<E> {
-        String callback(E e);
-    }
-
-    public static interface SetZeroValue<E> {
-        void callback(E e, String newDateStr);
-    }
-
-	/**
-     *
-     * @desc 填充0数据，用于树状图、折线图等
-     * @auth wulm
-     * @date 2018年5月21日 上午11:13:12
-	 * @param list
-     *            数据列表（必须是时间升序排序）
-	 * @param startDate
-	 *            开始时间
-	 * @param endDate
-	 *            结束时间
-     * @param df
-     *            时间格式
-     * @param dateTypeField
-     *            时间单位 例如：Calendar.HOUR_OF_DAY
-     * @param getDateStr
-     *            回调，获取当前对象的时间字符串
-     * @param setZeroValue
-     *            回调，设置0数据
-	 */
-    public static <E> void fillZero(List<E> list, Date startDate, Date endDate, DateFormat df, int dateTypeField,
-                                    GetDateStr<E> getDateStr, SetZeroValue<E> setZeroValue)
-            throws ParseException, InstantiationException, IllegalAccessException {
-
-		if (list == null || list.isEmpty()
-				|| (startDate != null && endDate != null && startDate.getTime() > endDate.getTime())) {
-			return;
-		}
-
-		// 设置开始时间
-		Calendar startCalendar = Calendar.getInstance();
-		if (startDate != null) {
-			startCalendar.setTime(startDate);
-		} else {
-            startCalendar.setTime(df.parse(getDateStr.callback(list.get(0))));
-		}
-
-		// 设置循环结束时间
-		if (endDate == null) {
-			endDate = new Date();
-		}
-
-        ListIterator<E> listIterator = list.listIterator();
-
-		while (listIterator.hasNext()) {
-            // list中下一个对象，迭代器不走到下一个对象
-            E next = list.get(listIterator.nextIndex());
-
-			// 时间字符串
-            String nextDateStr = getDateStr.callback(next);
-
-			// 下一个日期不为空才对下一个日期之前的时间进行填充
-            if (StringUtils.isNotEmpty(nextDateStr)) {
-                String newDateStr;
-
-                while (df.parse(nextDateStr).getTime() >= startCalendar.getTime().getTime()
-                        && !nextDateStr.equals(newDateStr = df.format(startCalendar.getTime()))) {
-					// 进行0填充
-                    E nE = (E) next.getClass().newInstance();
-
-                    setZeroValue.callback(nE, newDateStr);
-
-                    listIterator.add(nE);
-					// 时间加一个单位
-					startCalendar.add(dateTypeField, 1);
-				}
-			}
-
-            // 迭代器走到下一个对象
-            listIterator.next();
-			// 时间加一个单位
-			startCalendar.add(dateTypeField, 1);
-		}
-
-		// 当前calendar的时间和list最后一个的时间是一样的了
-		// 对list集合最后的进行填充
-		Date calendarDate;
-
-		while ((calendarDate = startCalendar.getTime()).getTime() < endDate.getTime()) {
-			// 进行0填充
-            E nE = (E) list.get(0).getClass().newInstance();
-
-            setZeroValue.callback(nE, df.format(calendarDate));
-
-            list.add(nE);
-			// 时间加一个单位
-			startCalendar.add(dateTypeField, 1);
-		}
-	}
-
-    // public static class Apb {
-    // private String time;
-    // private Integer value;
-    //
-    // public String getTime() {
-    // return time;
-    // }
-    //
-    // public void setTime(String time) {
-    // this.time = time;
-    // }
-    //
-    // public Integer getValue() {
-    // return value;
-    // }
-    //
-    // public void setValue(Integer value) {
-    // this.value = value;
-    // }
-    //
-    // }
-    //
-    // public static void main(String[] args) throws InstantiationException,
-    // IllegalAccessException, ParseException {
-    //
-    // ArrayList<Apb> list = new ArrayList<>();
-    // Apb apb = new Apb();
-    // apb.setTime("2018-05-01");
-    // apb.setValue(589);
-    //
-    // Apb apb2 = new Apb();
-    // apb2.setTime("2018-05-10");
-    // apb2.setValue(666);
-    //
-    // Apb apb3 = new Apb();
-    // apb3.setTime("2018-05-15");
-    // apb3.setValue(666);
-    // list.add(apb);
-    // list.add(apb2);
-    // list.add(apb3);
-    //
-    // fillZero(list, null, null, new SimpleDateFormat("yyyy-MM-dd"),
-    // Calendar.DAY_OF_MONTH, new GetDateStr<Apb>() {
-    // @Override
-    // public String callback(Apb e) {
-    // return e.getTime();
-    // }
-    // }, new SetZeroValue<Apb>() {
-    // @Override
-    // public void callback(Apb e, String newDateStr) {
-    // e.setTime(newDateStr);
-    // e.setValue(0);
-    // }
-    // });
-    //
-    // for (Apb a : list) {
-    // System.out.println(a.time + "::::" + a.value);
-    // }
-    // }
 
 	/**
 	 * 计算两个日期之间相差的天数

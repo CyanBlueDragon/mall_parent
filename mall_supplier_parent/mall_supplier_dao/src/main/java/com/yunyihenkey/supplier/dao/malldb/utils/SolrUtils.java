@@ -35,8 +35,6 @@ public class SolrUtils {
      */
     public static void addData(SupplierGoodsInfo info) throws Exception {
 
-        long d = info.getSupplyPrice() / 100;
-
         SolrInputDocument doc = new SolrInputDocument();
         doc.addField("id", info.getId());
         doc.addField("goodsCode", info.getGoodsCode().toString());

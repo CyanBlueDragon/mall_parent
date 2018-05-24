@@ -63,6 +63,22 @@
 		AND take_cash_status = '6'
 		GROUP BY
 		time
+		ORDER BY time ASC
 	</select>
 
+	<select id="getMoneyBusinessChart"
+		resultType="com.yunyihenkey.seller.dao.malldb.vo.param.accountController.GetMoneyBusinessChartResult">
+		SELECT
+		DATE_FORMAT(create_time, #{mysqlDateFormet}) time,
+		SUM(revenue_money) money
+		FROM
+		seller_shop_money_business
+		WHERE
+		shop_id =
+		#{shopId}
+		AND create_time > #{startDate}
+		GROUP BY
+		time
+		ORDER BY time ASC
+	</select>
 </mapper>

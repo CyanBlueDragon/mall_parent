@@ -2,6 +2,7 @@ package com.yunyihenkey.supplier.service;
 
 import com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsInfo;
 import com.yunyihenkey.common.vo.base.BaseService;
+import com.yunyihenkey.supplier.dao.malldb.vo.param.GoodsInfoController.MSupplierGoodsParam;
 import com.yunyihenkey.supplier.dao.malldb.vo.param.GoodsInfoController.SupplierGoodsAddParam;
 
 import java.util.List;
@@ -17,5 +18,7 @@ public interface SupplierGoodsInfoService extends BaseService<SupplierGoodsInfo,
     Long supplierInsertGoods(SupplierGoodsAddParam goodsAddParam);
 
     int addGoodsToShop(Long id, Integer stock, Long version);
+
+    MSupplierGoodsParam selectWithDesc(Long id);
 
 }

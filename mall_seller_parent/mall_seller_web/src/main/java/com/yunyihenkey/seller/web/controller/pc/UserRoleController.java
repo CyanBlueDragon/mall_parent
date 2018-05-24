@@ -2,6 +2,8 @@ package com.yunyihenkey.seller.web.controller.pc;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yunyihenkey.auth.service.util.JwtUtils;
+import com.yunyihenkey.auth.service.vo.authjwt.seller.AuthSellerUser;
 import com.yunyihenkey.common.utils.ValidatorUtils;
 import com.yunyihenkey.common.vo.base.BaseController;
 import com.yunyihenkey.common.vo.resultinfo.CodeEnum;
@@ -32,7 +34,8 @@ public class UserRoleController extends BaseController {
     private SellerRoleService sellerRoleService;
     @Autowired
     private ValidatorUtils validatorUtils;
-
+    @Autowired
+    private JwtUtils jwtUtils;
     /**
      * 角色列表
      *
@@ -46,8 +49,9 @@ public class UserRoleController extends BaseController {
         if (StringUtils.isNotBlank(validateAndGetErrorInfo)) {
             return new ResultInfo<Object>(SystemCodeEnum.SELLER, CodeEnum.ERROR, validateAndGetErrorInfo);
         }
+        AuthSellerUser jwtSellerUser = jwtUtils.getSellerUser(request);
         PageHelper.startPage(queryRoleListParam.getPageNum(), queryRoleListParam.getPageSize());
-        List<QueryRoleListResult> roleListResults = sellerRoleService.queryRoleList(queryRoleListParam.getName());
+        List<QueryRoleListResult> roleListResults = sellerRoleService.queryRoleList(queryRoleListParam.getName(),Long.parseLong(jwtSellerUser.getShopId()));
         PageInfo<QueryRoleListResult> pageInfo = new PageInfo<QueryRoleListResult>(roleListResults);
         return new ResultInfo<>(SystemCodeEnum.SELLER, CodeEnum.SUCCESS, pageInfo);
     }
@@ -59,11 +63,13 @@ public class UserRoleController extends BaseController {
      * @return
      */
     @PostMapping("save")
-    public Object save(@RequestBody SaveRoleParam saveRoleParam) throws Exception {
+    public Object save(@RequestBody SaveRoleParam saveRoleParam,HttpServletRequest request) throws Exception {
         String validateAndGetErrorInfo = validatorUtils.validateAndGetErrorInfo(saveRoleParam, Default.class);
         if (StringUtils.isNotBlank(validateAndGetErrorInfo)) {
             return new ResultInfo<Object>(SystemCodeEnum.SELLER, CodeEnum.ERROR, validateAndGetErrorInfo);
         }
+        AuthSellerUser jwtSellerUser = jwtUtils.getSellerUser(request);
+        saveRoleParam.setShopId(Long.parseLong(jwtSellerUser.getShopId()));
         return sellerRoleService.save(saveRoleParam);
     }
 
@@ -91,11 +97,13 @@ public class UserRoleController extends BaseController {
      * @throws Exception
      */
     @PostMapping("update")
-    public Object update(@RequestBody UpdateRoleParam updateRoleParam) throws Exception {
+    public Object update(@RequestBody UpdateRoleParam updateRoleParam,HttpServletRequest request) throws Exception {
         String validateAndGetErrorInfo = validatorUtils.validateAndGetErrorInfo(updateRoleParam, Default.class);
         if (StringUtils.isNotBlank(validateAndGetErrorInfo)) {
             return new ResultInfo<Object>(SystemCodeEnum.SELLER, CodeEnum.ERROR, validateAndGetErrorInfo);
         }
+        AuthSellerUser jwtSellerUser = jwtUtils.getSellerUser(request);
+        updateRoleParam.setShopId(Long.parseLong(jwtSellerUser.getShopId()));
         return sellerRoleService.updateBatch(updateRoleParam);
     }
 

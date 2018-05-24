@@ -4,11 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class SellerGoodsDescrip implements Serializable {
-    /** 主键id */
+    /** 主键id（商品id） */
     private Long id;
-
-    /** 商品id */
-    private Long goodsId;
 
     /** 创建人 */
     private String createUser;
@@ -33,14 +30,6 @@ public class SellerGoodsDescrip implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getGoodsId() {
-        return goodsId;
-    }
-
-    public void setGoodsId(Long goodsId) {
-        this.goodsId = goodsId;
     }
 
     public String getCreateUser() {
@@ -90,7 +79,6 @@ public class SellerGoodsDescrip implements Serializable {
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
         sb.append(", id=").append(id);
-        sb.append(", goodsId=").append(goodsId);
         sb.append(", createUser=").append(createUser);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateUser=").append(updateUser);

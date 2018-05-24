@@ -64,6 +64,18 @@ public class SellerUser implements Serializable {
     /** 是否删除#0,否|No;1,是|Yes */
     private Integer isDelete;
 
+    /** 新订单提醒#0,关|off;1,开|on */
+    private Integer newOrderRemind;
+
+    /** 新订单提醒声音#0,无声音提醒|no_voice;1,人工语音|artificial_speech;2,系统提醒|system_remind */
+    private Integer newOrderRemindVoice;
+
+    /** 店铺收款提醒#0,关|off;1,开|on */
+    private Integer storeRemind;
+
+    /** 店铺提醒声音#0,无声音提醒|no_voice;1,人工语音|artificial_speech;2,系统提醒|system_remind */
+    private Integer storeRemindVoice;
+
     private static final long serialVersionUID = 1L;
 
     public Long getId() {
@@ -234,6 +246,38 @@ public class SellerUser implements Serializable {
         this.isDelete = isDelete;
     }
 
+    public Integer getNewOrderRemind() {
+        return newOrderRemind;
+    }
+
+    public void setNewOrderRemind(Integer newOrderRemind) {
+        this.newOrderRemind = newOrderRemind;
+    }
+
+    public Integer getNewOrderRemindVoice() {
+        return newOrderRemindVoice;
+    }
+
+    public void setNewOrderRemindVoice(Integer newOrderRemindVoice) {
+        this.newOrderRemindVoice = newOrderRemindVoice;
+    }
+
+    public Integer getStoreRemind() {
+        return storeRemind;
+    }
+
+    public void setStoreRemind(Integer storeRemind) {
+        this.storeRemind = storeRemind;
+    }
+
+    public Integer getStoreRemindVoice() {
+        return storeRemindVoice;
+    }
+
+    public void setStoreRemindVoice(Integer storeRemindVoice) {
+        this.storeRemindVoice = storeRemindVoice;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -261,6 +305,10 @@ public class SellerUser implements Serializable {
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
         sb.append(", isDelete=").append(isDelete);
+        sb.append(", newOrderRemind=").append(newOrderRemind);
+        sb.append(", newOrderRemindVoice=").append(newOrderRemindVoice);
+        sb.append(", storeRemind=").append(storeRemind);
+        sb.append(", storeRemindVoice=").append(storeRemindVoice);
         sb.append("]");
         return sb.toString();
     }

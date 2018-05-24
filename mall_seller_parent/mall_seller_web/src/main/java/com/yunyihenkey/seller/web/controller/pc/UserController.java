@@ -86,7 +86,7 @@ public class UserController extends BaseController {
         }
         AuthSellerUser jwtSellerUser = jwtUtils.getSellerUser(request);
         String reqSource = request.getHeader(MallConstants.HEADER_REQ_SOURCE);
-        return sellerUserService.save(Long.parseLong(jwtSellerUser.getId()), saveParam.getRoleId(), Long.parseLong(jwtSellerUser.getShopId()), saveParam.getPhone(), saveParam.getPassword(), saveParam.getNickName(), saveParam.getCode(), reqSource);
+        return sellerUserService.save( saveParam.getMobile(),Long.parseLong(jwtSellerUser.getId()),saveParam.getRoleId(), Long.parseLong(jwtSellerUser.getShopId()), saveParam.getPhone(), saveParam.getPassword(), saveParam.getNickName(), saveParam.getCode(), reqSource);
 
     }
 
@@ -115,7 +115,6 @@ public class UserController extends BaseController {
 
     /**
      * 注销用户
-     *
      * @param deleteUser
      * @return
      * @throws Exception
@@ -154,8 +153,8 @@ public class UserController extends BaseController {
         SellerUser sellerUser = sellerUserService.selectByPrimaryKey(queryUser.getId());
         if (sellerUser != null) {
             sellerUser.setPassword(null);
-            Map<String, Object> resultMap = new HashMap<>();
-            resultMap.put("data", sellerUser);
+            Map<String,Object> resultMap =new HashMap<>();
+            resultMap.put("data",sellerUser);
             return new ResultInfo(SystemCodeEnum.SELLER, CodeEnum.SUCCESS, resultMap);
         }
         return new ResultInfo(SystemCodeEnum.SELLER, CodeEnum.ERROR);

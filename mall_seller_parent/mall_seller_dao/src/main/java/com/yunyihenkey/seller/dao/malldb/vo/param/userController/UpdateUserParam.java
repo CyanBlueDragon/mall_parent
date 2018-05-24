@@ -17,6 +17,16 @@ public class UpdateUserParam extends BaseVo {
     private String nickName;
     @NotNull(message = "用户ID不能为空")
     private Long id;
+    @NotEmpty(message = "联系方式不能为空")
+    private String mobile;
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
 
     public String getPassword() {
         return password;

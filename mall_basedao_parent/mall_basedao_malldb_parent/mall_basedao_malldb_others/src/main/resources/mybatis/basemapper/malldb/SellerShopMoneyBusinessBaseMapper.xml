@@ -1,118 +1,117 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yunyihenkey.basedao.malldb.basemapper.SellerShopMoneyBusinessBaseMapper">
-    <resultMap id="BaseResultMap" type="com.yunyihenkey.basedao.malldb.basevo.SellerShopMoneyBusiness">
-        <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="shop_id" jdbcType="BIGINT" property="shopId"/>
-        <result column="business_money" jdbcType="BIGINT" property="businessMoney"/>
-        <result column="revenue_money" jdbcType="BIGINT" property="revenueMoney"/>
-        <result column="business_type" jdbcType="INTEGER" property="businessType"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
-        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
-    </resultMap>
-    <sql id="Base_Column_List">
-    id, shop_id, business_money, revenue_money, business_type, create_time, update_time
+  <resultMap id="BaseResultMap" type="com.yunyihenkey.basedao.malldb.basevo.SellerShopMoneyBusiness">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="shop_id" jdbcType="BIGINT" property="shopId" />
+    <result column="business_money" jdbcType="BIGINT" property="businessMoney" />
+    <result column="revenue_money" jdbcType="BIGINT" property="revenueMoney" />
+    <result column="business_type" jdbcType="INTEGER" property="businessType" />
+    <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, shop_id, business_money, revenue_money, business_type, remarks, create_time
   </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from seller_shop_money_business
-        where id = #{id,jdbcType=BIGINT}
-    </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from seller_shop_money_business
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from seller_shop_money_business
     where id = #{id,jdbcType=BIGINT}
   </delete>
-    <insert id="insert" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerShopMoneyBusiness">
+  <insert id="insert" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerShopMoneyBusiness">
     insert into seller_shop_money_business (id, shop_id, business_money, 
-      revenue_money, business_type, create_time, 
-      update_time)
+      revenue_money, business_type, remarks, 
+      create_time)
     values (#{id,jdbcType=BIGINT}, #{shopId,jdbcType=BIGINT}, #{businessMoney,jdbcType=BIGINT}, 
-      #{revenueMoney,jdbcType=BIGINT}, #{businessType,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{updateTime,jdbcType=TIMESTAMP})
+      #{revenueMoney,jdbcType=BIGINT}, #{businessType,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=TIMESTAMP})
   </insert>
-    <insert id="insertSelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerShopMoneyBusiness">
-        insert into seller_shop_money_business
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                id,
-            </if>
-            <if test="shopId != null">
-                shop_id,
-            </if>
-            <if test="businessMoney != null">
-                business_money,
-            </if>
-            <if test="revenueMoney != null">
-                revenue_money,
-            </if>
-            <if test="businessType != null">
-                business_type,
-            </if>
-            <if test="createTime != null">
-                create_time,
-            </if>
-            <if test="updateTime != null">
-                update_time,
-            </if>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="id != null">
-                #{id,jdbcType=BIGINT},
-            </if>
-            <if test="shopId != null">
-                #{shopId,jdbcType=BIGINT},
-            </if>
-            <if test="businessMoney != null">
-                #{businessMoney,jdbcType=BIGINT},
-            </if>
-            <if test="revenueMoney != null">
-                #{revenueMoney,jdbcType=BIGINT},
-            </if>
-            <if test="businessType != null">
-                #{businessType,jdbcType=INTEGER},
-            </if>
-            <if test="createTime != null">
-                #{createTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="updateTime != null">
-                #{updateTime,jdbcType=TIMESTAMP},
-            </if>
-        </trim>
-    </insert>
-    <update id="updateByPrimaryKeySelective"
-            parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerShopMoneyBusiness">
-        update seller_shop_money_business
-        <set>
-            <if test="shopId != null">
-                shop_id = #{shopId,jdbcType=BIGINT},
-            </if>
-            <if test="businessMoney != null">
-                business_money = #{businessMoney,jdbcType=BIGINT},
-            </if>
-            <if test="revenueMoney != null">
-                revenue_money = #{revenueMoney,jdbcType=BIGINT},
-            </if>
-            <if test="businessType != null">
-                business_type = #{businessType,jdbcType=INTEGER},
-            </if>
-            <if test="createTime != null">
-                create_time = #{createTime,jdbcType=TIMESTAMP},
-            </if>
-            <if test="updateTime != null">
-                update_time = #{updateTime,jdbcType=TIMESTAMP},
-            </if>
-        </set>
-        where id = #{id,jdbcType=BIGINT}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerShopMoneyBusiness">
+  <insert id="insertSelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerShopMoneyBusiness">
+    insert into seller_shop_money_business
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="shopId != null">
+        shop_id,
+      </if>
+      <if test="businessMoney != null">
+        business_money,
+      </if>
+      <if test="revenueMoney != null">
+        revenue_money,
+      </if>
+      <if test="businessType != null">
+        business_type,
+      </if>
+      <if test="remarks != null">
+        remarks,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="shopId != null">
+        #{shopId,jdbcType=BIGINT},
+      </if>
+      <if test="businessMoney != null">
+        #{businessMoney,jdbcType=BIGINT},
+      </if>
+      <if test="revenueMoney != null">
+        #{revenueMoney,jdbcType=BIGINT},
+      </if>
+      <if test="businessType != null">
+        #{businessType,jdbcType=INTEGER},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerShopMoneyBusiness">
+    update seller_shop_money_business
+    <set>
+      <if test="shopId != null">
+        shop_id = #{shopId,jdbcType=BIGINT},
+      </if>
+      <if test="businessMoney != null">
+        business_money = #{businessMoney,jdbcType=BIGINT},
+      </if>
+      <if test="revenueMoney != null">
+        revenue_money = #{revenueMoney,jdbcType=BIGINT},
+      </if>
+      <if test="businessType != null">
+        business_type = #{businessType,jdbcType=INTEGER},
+      </if>
+      <if test="remarks != null">
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerShopMoneyBusiness">
     update seller_shop_money_business
     set shop_id = #{shopId,jdbcType=BIGINT},
       business_money = #{businessMoney,jdbcType=BIGINT},
       revenue_money = #{revenueMoney,jdbcType=BIGINT},
       business_type = #{businessType,jdbcType=INTEGER},
-      create_time = #{createTime,jdbcType=TIMESTAMP},
-      update_time = #{updateTime,jdbcType=TIMESTAMP}
+      remarks = #{remarks,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>

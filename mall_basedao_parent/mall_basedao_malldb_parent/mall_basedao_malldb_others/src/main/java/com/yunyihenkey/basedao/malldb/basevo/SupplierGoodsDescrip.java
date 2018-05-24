@@ -4,9 +4,6 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class SupplierGoodsDescrip implements Serializable {
-    /** 主键id */
-    private Long id;
-
     /** 商品id */
     private Long goodsId;
 
@@ -29,14 +26,6 @@ public class SupplierGoodsDescrip implements Serializable {
     private String description;
 
     private static final long serialVersionUID = 1L;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Long getGoodsId() {
         return goodsId;
@@ -100,7 +89,6 @@ public class SupplierGoodsDescrip implements Serializable {
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
         sb.append(", goodsId=").append(goodsId);
         sb.append(", createUser=").append(createUser);
         sb.append(", createTime=").append(createTime);

@@ -21,6 +21,34 @@ public class UpdateCommonSetParam extends BaseVo {
     @NotNull
     private Integer returnOrderTime;
 
+    private String consignee;
+    private String returnedContactWay;
+    private String returnedAddress;
+
+    public String getConsignee() {
+        return consignee;
+    }
+
+    public void setConsignee(String consignee) {
+        this.consignee = consignee;
+    }
+
+    public String getReturnedContactWay() {
+        return returnedContactWay;
+    }
+
+    public void setReturnedContactWay(String returnedContactWay) {
+        this.returnedContactWay = returnedContactWay;
+    }
+
+    public String getReturnedAddress() {
+        return returnedAddress;
+    }
+
+    public void setReturnedAddress(String returnedAddress) {
+        this.returnedAddress = returnedAddress;
+    }
+
     public Long getUnpaidTime() {
         return unpaidTime;
     }

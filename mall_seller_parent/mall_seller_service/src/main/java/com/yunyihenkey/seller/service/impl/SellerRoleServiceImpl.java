@@ -7,7 +7,7 @@ import com.yunyihenkey.basedao.malldb.basevo.SellerPerm;
 import com.yunyihenkey.basedao.malldb.basevo.SellerRole;
 import com.yunyihenkey.basedao.malldb.basevo.SellerRolePerm;
 import com.yunyihenkey.basedao.malldb.basevo.SellerUserRole;
-import com.yunyihenkey.common.idworker.SnowflakeIdWorker;
+import com.yunyihenkey.common.idworker.IdWorker;
 import com.yunyihenkey.common.utils.DateUtil;
 import com.yunyihenkey.common.utils.LogUtils;
 import com.yunyihenkey.common.vo.resultinfo.CodeEnum;
@@ -19,7 +19,6 @@ import com.yunyihenkey.seller.dao.malldb.vo.param.userController.*;
 import com.yunyihenkey.seller.service.SellerPermissionService;
 import com.yunyihenkey.seller.service.SellerRolePermService;
 import com.yunyihenkey.seller.service.SellerRoleService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,7 +40,7 @@ public class SellerRoleServiceImpl implements SellerRoleService {
     @Autowired
     private SellerPermBaseMapper sellerPermBaseMapper;
     @Autowired
-    private SnowflakeIdWorker snowflakeIdWorker;
+    private IdWorker idWorker;
     @Autowired
     private SellerUserRoleMapper sellerUserRoleMapper;
     @Autowired
@@ -80,23 +79,31 @@ public class SellerRoleServiceImpl implements SellerRoleService {
     }
 
     @Override
-    public List<QueryRoleListResult> queryRoleList(String name) {
-        return sellerRoleMapper.queryRoleList(name);
+    public List<QueryRoleListResult> queryRoleList(String name,Long shopId) {
+        SellerRole sellerRole = new SellerRole();
+        sellerRole.setShopId(shopId);
+        sellerRole.setName(name);
+        return sellerRoleMapper.queryLikeRoleList(sellerRole);
     }
 
     @Transactional
     @Override
     public ResultInfo<String> save(SaveRoleParam saveRoleParam) throws Exception {
-        String name = saveRoleParam.getName();
         List<PermissionVO> permissionVOList = saveRoleParam.getPermissionVOList();
+        if(permissionVOList==null||permissionVOList.isEmpty()){
+            return new ResultInfo<String>(SystemCodeEnum.SELLER, CodeEnum.ERROR, "请选择权限", null);
+        }
+        String name = saveRoleParam.getName();
+
+        Long shopId=saveRoleParam.getShopId();
         //检查角色名是否存在
-        if (query(name) != null) {
+        if (query(name,shopId) != null) {
             LogUtils.getLogger().info("角色名已存在" + name);
             return new ResultInfo<String>(SystemCodeEnum.SELLER, CodeEnum.ERROR, "角色名已存在", null);
         }
         //检查权限ID是否存在 不存在的删除
         List<SellerRolePerm> sellerRolePermList = new ArrayList<>();
-        Long id = snowflakeIdWorker.nextId();
+        Long id = idWorker.nextId();
         for (int i = 0; i < permissionVOList.size(); i++) {
             SellerPerm sellerPerm = sellerPermBaseMapper.selectByPrimaryKey(permissionVOList.get(i).getId());
             if (sellerPerm == null) {
@@ -113,6 +120,7 @@ public class SellerRoleServiceImpl implements SellerRoleService {
         sellerRole.setName(name);
         sellerRole.setDescription(name);
         sellerRole.setCreateTime(DateUtil.getCurrentDate());
+        sellerRole.setShopId(shopId);
         sellerRoleBaseMapper.insertSelective(sellerRole);
         //保存角色与权限关系表
         saveBatchRolePermission(sellerRolePermList);
@@ -126,9 +134,10 @@ public class SellerRoleServiceImpl implements SellerRoleService {
     }
 
     @Override
-    public SellerRole query(String name) {
+    public SellerRole query(String name,Long shopId) {
         SellerRole sellerRole = new SellerRole();
         sellerRole.setName(name);
+        sellerRole.setShopId(shopId);
         List<SellerRole> sellerRoleList = sellerRoleMapper.queryAllRoleList(sellerRole);
         if (sellerRoleList != null && !sellerRoleList.isEmpty()) {
             return sellerRoleList.get(0);
@@ -180,7 +189,7 @@ public class SellerRoleServiceImpl implements SellerRoleService {
             return new ResultInfo<Object>(SystemCodeEnum.SELLER, CodeEnum.ERROR, "角色ID不存在");
         }
         //检查是否存在的用户名
-        SellerRole sellerRoleName = query(updateRoleParam.getName());
+        SellerRole sellerRoleName = query(updateRoleParam.getName(),updateRoleParam.getShopId());
         if (sellerRoleName != null && sellerRoleName.getId().longValue() != sellerRole.getId().longValue()) {
             LogUtils.getLogger().info("角色名不存在");
             return new ResultInfo<Object>(SystemCodeEnum.SELLER, CodeEnum.ERROR, "角色名不存在");

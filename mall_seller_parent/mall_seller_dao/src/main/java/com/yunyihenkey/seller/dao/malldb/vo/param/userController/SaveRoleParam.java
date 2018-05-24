@@ -13,11 +13,20 @@ import java.util.List;
  * @date 2018/5/16 18:01
  */
 public class SaveRoleParam extends BaseVo {
-    @NotEmpty(message = "角色名称")
+    @NotEmpty(message = "角色名称不能为空")
     private String name;
-    @NotNull(message = "分配权限")
+    @NotNull(message = "分配权限不能为空")
     private List<PermissionVO> permissionVOList =new ArrayList<>();
 
+    private Long shopId;
+
+    public Long getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Long shopId) {
+        this.shopId = shopId;
+    }
     public String getName() {
         return name;
     }

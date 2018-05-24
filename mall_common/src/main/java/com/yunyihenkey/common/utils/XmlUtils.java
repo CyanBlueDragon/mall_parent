@@ -8,6 +8,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.yunyihenkey.common.constant.MallConstants;
 import com.yunyihenkey.common.utils.JacksonUtils.Aaa;
@@ -25,6 +27,12 @@ public class XmlUtils {
 
 	static {
 		xmlMapper = (XmlMapper) new XmlMapper().setDateFormat(new SimpleDateFormat(MallConstants.DATE_FORMAT_COMMON));
+
+		// 防止js中Long类型丢失精度
+		SimpleModule simpleModule = new SimpleModule();
+		simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
+		simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
+		xmlMapper.registerModule(simpleModule);
 	}
 
 	public static String writeValueAsString(Object obj) {

@@ -16,6 +16,9 @@ public class SellerRole implements Serializable {
 
     private Date updateTime;
 
+    /** 店铺ID */
+    private Long shopId;
+
     private static final long serialVersionUID = 1L;
 
     public Long getId() {
@@ -58,6 +61,14 @@ public class SellerRole implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public Long getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Long shopId) {
+        this.shopId = shopId;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -69,6 +80,7 @@ public class SellerRole implements Serializable {
         sb.append(", description=").append(description);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
+        sb.append(", shopId=").append(shopId);
         sb.append("]");
         return sb.toString();
     }

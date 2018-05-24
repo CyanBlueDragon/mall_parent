@@ -43,7 +43,7 @@ public class DeliverGoodsController extends BaseController {
     @Autowired
     private ShoppingmallOrderProductInfoService shoppingmallOrderProductInfoService;
 
-    @Autowired
+    @Autowired(required = false)
     private KdniaoService kdniaoService;
 
     /**

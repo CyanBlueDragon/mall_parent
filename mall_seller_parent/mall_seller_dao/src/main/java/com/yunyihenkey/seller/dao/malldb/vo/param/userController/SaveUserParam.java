@@ -21,6 +21,16 @@ public class SaveUserParam extends BaseVo {
     private String nickName;
     @NotNull(message = "角色ID不能为空")
     private Long roleId;
+    @NotEmpty(message = "联系方式不能为空")
+    private String mobile;
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
 
     public Long getRoleId() {
         return roleId;

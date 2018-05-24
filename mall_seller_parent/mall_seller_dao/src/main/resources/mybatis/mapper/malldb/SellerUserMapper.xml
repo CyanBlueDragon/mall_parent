@@ -21,13 +21,12 @@
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="login_time" jdbcType="TIMESTAMP" property="loginTime"/>
-        <result column="status" jdbcType="INTEGER" property="status"/>
 
     </resultMap>
     <sql id="Base_Column_List">
     id, shop_id, user_name, nick_name,  email, mobile, sex, logo_url, birthday,
     user_type, parent_user_id, register_source, register_ip, city_code, seller_grade,
-    create_time, update_time,login_time,status
+    create_time, update_time,login_time
   </sql>
     <select id="queryUserList" resultMap="BaseResultMap" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerUser">
         select
@@ -35,7 +34,7 @@
         from
         seller_user
         <where>
-            1=1
+            is_delete=0
             <if test=" userName!=null and userName!='' ">
                 and user_name =#{userName}
             </if>
@@ -70,13 +69,12 @@
         u.seller_grade,
         u.create_time,
         u.update_time,
-        u.login_time,
-        u.status
+        u.login_time
         from
         seller_user u
         LEFT JOIN seller_user_role r ON u.id = r.user_id
         <where>
-            1=1
+            u.is_delete=0
             <if test=" userName!=null and userName!='' ">
                 and u.user_name LIKE CONCAT('%',#{userName},'%')
             </if>

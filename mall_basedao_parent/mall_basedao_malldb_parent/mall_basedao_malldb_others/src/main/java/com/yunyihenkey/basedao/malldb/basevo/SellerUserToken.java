@@ -9,7 +9,7 @@ public class SellerUserToken implements Serializable {
     /** tokenID */
     private String tokenId;
 
-    /** 登录来源 */
+    /** 登录来源#ANDROID,安卓端|ANDROID;IOS,IOS端|IOS;PC,电脑端|PC;WEB,网页端|WEB */
     private String loginSource;
 
     private Date createTime;

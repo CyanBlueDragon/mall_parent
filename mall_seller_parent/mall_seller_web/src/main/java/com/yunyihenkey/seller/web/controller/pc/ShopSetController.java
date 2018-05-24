@@ -52,8 +52,7 @@ public class ShopSetController extends BaseController {
     public Object query(HttpServletRequest request) throws Exception {
         AuthSellerUser sellerUser = jwtUtils.getSellerUser(request);
         SellerShop sellerShop = sellerShopService.selectByPrimaryKey(Long.parseLong(sellerUser.getShopId()));
-        BeanMapUtils.beanToMap(sellerShop);
-        return new ResultInfo(SystemCodeEnum.SELLER, CodeEnum.SUCCESS, sellerShop);
+        return new ResultInfo(SystemCodeEnum.SELLER, CodeEnum.SUCCESS,  sellerShop);
     }
 
     /**
@@ -99,7 +98,7 @@ public class ShopSetController extends BaseController {
      * @throws Exception
      */
     @PostMapping("updatePay")
-    public Object updatePay(@RequestBody UpdatePayParam updatePayParam, HttpServletRequest request) throws Exception {
+    public Object updatePay(@RequestBody UpdatePayParam updatePayParam,HttpServletRequest request) throws Exception {
         // 验证必填项
         String errorInfo = validatorUtils.validateAndGetErrorInfo(updatePayParam, Default.class);
         if (StringUtils.isNotEmpty(errorInfo)) {
@@ -129,7 +128,7 @@ public class ShopSetController extends BaseController {
             sellerShop.setConfirmOrderTime(CommonSetEnum.CONFIRM_ORDER_TIME.getValue().intValue());
         }
         if (sellerShop.getRefundTime() == null) {
-            sellerShop.setRefundTime(CommonSetEnum.REFUND_TIME.getValue().intValue());
+            sellerShop.setRefundTime( CommonSetEnum.REFUND_TIME.getValue().intValue());
         }
         if (sellerShop.getSellOutTime() == null) {
             sellerShop.setSellOutTime(CommonSetEnum.SELLER_OUT_TIME.getValue().intValue());
@@ -141,15 +140,16 @@ public class ShopSetController extends BaseController {
     }
 
     /**
-     * 查询店铺信息通用设置
+     * 修改店铺信息通用设置
      *
      * @return
      * @throws Exception
+     *
      */
     @PostMapping("updateCommonSet")
     public Object updateCommonSet(@RequestBody UpdateCommonSetParam updateCommonSetParam, HttpServletRequest request) throws Exception {
         AuthSellerUser sellerUser = jwtUtils.getSellerUser(request);
-        sellerShopService.updateCommonSet(Long.parseLong(sellerUser.getShopId()), updateCommonSetParam.getUnpaidTime(), updateCommonSetParam.getConfirmOrderTime(), updateCommonSetParam.getRefundTime(), updateCommonSetParam.getSellOutTime(), updateCommonSetParam.getReturnOrderTime());
+        sellerShopService.updateCommonSet(updateCommonSetParam.getConsignee(),updateCommonSetParam.getReturnedContactWay(),updateCommonSetParam.getReturnedAddress(),Long.parseLong(sellerUser.getShopId()),updateCommonSetParam.getUnpaidTime(),updateCommonSetParam.getConfirmOrderTime(),updateCommonSetParam.getRefundTime(),updateCommonSetParam.getSellOutTime(),updateCommonSetParam.getReturnOrderTime());
         return new ResultInfo(SystemCodeEnum.SELLER, CodeEnum.SUCCESS);
 
     }

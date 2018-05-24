@@ -20,6 +20,16 @@ public class UpdateRoleParam extends BaseVo {
     @NotNull(message = "分配权限不能为空")
     private List<PermissionVO> permissionVOList = new ArrayList<>();
 
+    private Long shopId;
+
+    public Long getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(Long shopId) {
+        this.shopId = shopId;
+    }
+
     public Long getId() {
         return id;
     }

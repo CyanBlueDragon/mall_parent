@@ -2,8 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yunyihenkey.basedao.malldb.basemapper.SupplierGoodsDescripBaseMapper">
   <resultMap id="BaseResultMap" type="com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsDescrip">
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="goods_id" jdbcType="BIGINT" property="goodsId" />
+    <id column="goods_id" jdbcType="BIGINT" property="goodsId" />
     <result column="create_user" jdbcType="VARCHAR" property="createUser" />
     <result column="create__time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
@@ -14,7 +13,7 @@
     <result column="description" jdbcType="LONGVARCHAR" property="description" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, goods_id, create_user, create__time, update_user, update_time, is_delete
+    goods_id, create_user, create__time, update_user, update_time, is_delete
   </sql>
   <sql id="Blob_Column_List">
     description
@@ -25,26 +24,23 @@
     ,
     <include refid="Blob_Column_List" />
     from supplier_goods_descrip
-    where id = #{id,jdbcType=BIGINT}
+    where goods_id = #{goodsId,jdbcType=BIGINT}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from supplier_goods_descrip
-    where id = #{id,jdbcType=BIGINT}
+    where goods_id = #{goodsId,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsDescrip">
-    insert into supplier_goods_descrip (id, goods_id, create_user, 
-      create__time, update_user, update_time, 
-      is_delete, description)
-    values (#{id,jdbcType=BIGINT}, #{goodsId,jdbcType=BIGINT}, #{createUser,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{isDelete,jdbcType=INTEGER}, #{description,jdbcType=LONGVARCHAR})
+    insert into supplier_goods_descrip (goods_id, create_user, create__time, 
+      update_user, update_time, is_delete, 
+      description)
+    values (#{goodsId,jdbcType=BIGINT}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER}, 
+      #{description,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsDescrip">
     insert into supplier_goods_descrip
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
       <if test="goodsId != null">
         goods_id,
       </if>
@@ -68,9 +64,6 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=BIGINT},
-      </if>
       <if test="goodsId != null">
         #{goodsId,jdbcType=BIGINT},
       </if>
@@ -97,9 +90,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsDescrip">
     update supplier_goods_descrip
     <set>
-      <if test="goodsId != null">
-        goods_id = #{goodsId,jdbcType=BIGINT},
-      </if>
       <if test="createUser != null">
         create_user = #{createUser,jdbcType=VARCHAR},
       </if>
@@ -119,27 +109,25 @@
         description = #{description,jdbcType=LONGVARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=BIGINT}
+    where goods_id = #{goodsId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsDescrip">
     update supplier_goods_descrip
-    set goods_id = #{goodsId,jdbcType=BIGINT},
-      create_user = #{createUser,jdbcType=VARCHAR},
+    set create_user = #{createUser,jdbcType=VARCHAR},
       create__time = #{createTime,jdbcType=TIMESTAMP},
       update_user = #{updateUser,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       is_delete = #{isDelete,jdbcType=INTEGER},
       description = #{description,jdbcType=LONGVARCHAR}
-    where id = #{id,jdbcType=BIGINT}
+    where goods_id = #{goodsId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.yunyihenkey.basedao.malldb.basevo.SupplierGoodsDescrip">
     update supplier_goods_descrip
-    set goods_id = #{goodsId,jdbcType=BIGINT},
-      create_user = #{createUser,jdbcType=VARCHAR},
+    set create_user = #{createUser,jdbcType=VARCHAR},
       create__time = #{createTime,jdbcType=TIMESTAMP},
       update_user = #{updateUser,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
       is_delete = #{isDelete,jdbcType=INTEGER}
-    where id = #{id,jdbcType=BIGINT}
+    where goods_id = #{goodsId,jdbcType=BIGINT}
   </update>
 </mapper>

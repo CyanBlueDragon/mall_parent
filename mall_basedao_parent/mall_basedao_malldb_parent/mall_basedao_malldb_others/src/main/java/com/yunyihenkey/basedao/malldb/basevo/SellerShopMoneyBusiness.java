@@ -4,34 +4,25 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class SellerShopMoneyBusiness implements Serializable {
-    /**
-     * 主键
-     */
+    /** 主键 */
     private Long id;
 
-    /**
-     * 店铺id
-     */
+    /** 店铺id */
     private Long shopId;
 
-    /**
-     * 交易金额(分)
-     */
+    /** 交易金额(分)，盈利为正数，扣款为负数 */
     private Long businessMoney;
 
-    /**
-     * 营收金额(分)
-     */
+    /** 营收金额(分)，盈利为正数，扣款为负数 */
     private Long revenueMoney;
 
-    /**
-     * 交易类型#0,店铺盈利|SHOP_SELL;1,B级抽成|B_TAKE;2,C级抽成|C_TAKE;3,商品退货退款|REFUND_GOODS;4,商品退货退回抽成|REFUND_TAKE;5,冻结金额|FREEZE_MONEY;6,冻结金额退还|UNFREEZE_MONEY;
-     */
+    /** 交易类型#0,店铺盈利|SHOP_SELL;1,B级抽成|B_TAKE;2,C级抽成|C_TAKE;3,商品退货退款|REFUND_GOODS;4,商品退货退回抽成|REFUND_TAKE;5,冻结金额|FREEZE_MONEY;6,冻结金额退还|UNFREEZE_MONEY; */
     private Integer businessType;
 
-    private Date createTime;
+    /** 备注 */
+    private String remarks;
 
-    private Date updateTime;
+    private Date createTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -75,20 +66,20 @@ public class SellerShopMoneyBusiness implements Serializable {
         this.businessType = businessType;
     }
 
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks == null ? null : remarks.trim();
+    }
+
     public Date getCreateTime() {
         return createTime;
     }
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
     }
 
     @Override
@@ -102,8 +93,8 @@ public class SellerShopMoneyBusiness implements Serializable {
         sb.append(", businessMoney=").append(businessMoney);
         sb.append(", revenueMoney=").append(revenueMoney);
         sb.append(", businessType=").append(businessType);
+        sb.append(", remarks=").append(remarks);
         sb.append(", createTime=").append(createTime);
-        sb.append(", updateTime=").append(updateTime);
         sb.append("]");
         return sb.toString();
     }

@@ -9,7 +9,7 @@ import com.yunyihenkey.basedao.malldb.basevo.SellerUser;
 import com.yunyihenkey.basedao.malldb.basevo.SellerUserRole;
 import com.yunyihenkey.basedao.malldb.basevoEnum.SellerUser.UserTypeEnum;
 import com.yunyihenkey.common.constant.RedisConstant;
-import com.yunyihenkey.common.idworker.SnowflakeIdWorker;
+import com.yunyihenkey.common.idworker.IdWorker;
 import com.yunyihenkey.common.utils.DateUtil;
 import com.yunyihenkey.common.utils.LogUtils;
 import com.yunyihenkey.common.utils.RedisUtil;
@@ -17,8 +17,8 @@ import com.yunyihenkey.common.vo.resultinfo.CodeEnum;
 import com.yunyihenkey.common.vo.resultinfo.ResultInfo;
 import com.yunyihenkey.common.vo.resultinfo.SystemCodeEnum;
 import com.yunyihenkey.seller.dao.malldb.mapper.SellerUserMapper;
-import com.yunyihenkey.seller.dao.malldb.vo.param.userController.QueryListParam;
 import com.yunyihenkey.seller.dao.malldb.vo.param.userController.DeleteUserParam;
+import com.yunyihenkey.seller.dao.malldb.vo.param.userController.QueryListParam;
 import com.yunyihenkey.seller.dao.malldb.vo.param.userController.UpdateUserParam;
 import com.yunyihenkey.seller.service.SellerUserBakService;
 import com.yunyihenkey.seller.service.SellerUserService;
@@ -47,9 +47,9 @@ public class SellerUserServiceImpl implements SellerUserService {
     @Autowired
     private SellerUserRoleBaseMapper sellerUserRoleBaseMapper;
     @Autowired
-    private SnowflakeIdWorker snowflakeIdWorker;
+    private IdWorker idWorker;
     @Autowired
-    private SellerUserBakService sellerUserBakService;
+    private  SellerUserBakService sellerUserBakService;
     @Override
     public int deleteByPrimaryKey(Long id) {
         return sellerUserBaseMapper.deleteByPrimaryKey(id);
@@ -90,7 +90,7 @@ public class SellerUserServiceImpl implements SellerUserService {
 
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public ResultInfo<String> save(Long pId, Long roleId, Long shopId, String userName, String password, String nickName, String code, String reqSource) throws Exception {
+    public ResultInfo<String> save(String mobile,Long pId,Long roleId, Long shopId, String userName, String password, String nickName, String code, String reqSource) throws Exception {
         String key = RedisConstant.REDIS_REGISTER_STAFF_CODE + userName;
         String rCode = (String) redisUtil.get(key);
         if (StringUtils.isBlank(rCode)) {
@@ -114,9 +114,9 @@ public class SellerUserServiceImpl implements SellerUserService {
         sellerUser.setPassword(PasswordUtil.enCode(userName, password));
         sellerUser.setNickName(nickName);
         sellerUser.setShopId(shopId);
-        Long id = snowflakeIdWorker.nextId();
+        Long id = idWorker.nextId();
         sellerUser.setId(id);
-        sellerUser.setMobile(userName);
+        sellerUser.setMobile(mobile);
         sellerUser.setRegisterSource(reqSource);
         sellerUser.setCreateTime(DateUtil.getCurrentDate());
         sellerUser.setParentUserId(pId);
@@ -185,6 +185,7 @@ public class SellerUserServiceImpl implements SellerUserService {
         sellerUserUp.setNickName(updateUserParam.getNickName());
         sellerUserUp.setPassword(PasswordUtil.enCode(sellerUser.getUserName(), updateUserParam.getPassword()));
         sellerUserUp.setUpdateTime(DateUtil.getCurrentDate());
+        sellerUserUp.setMobile(updateUserParam.getMobile());
         sellerUserBaseMapper.updateByPrimaryKeySelective(sellerUserUp);
         return new ResultInfo(SystemCodeEnum.SELLER, CodeEnum.SUCCESS, "修改成功");
     }
@@ -192,8 +193,8 @@ public class SellerUserServiceImpl implements SellerUserService {
     @Transactional
     @Override
     public ResultInfo deleteUser(DeleteUserParam deleteUserParam) throws Exception {
-        Long id = deleteUserParam.getId();
-        if (selectByPrimaryKey(id) == null) {
+        Long id=deleteUserParam.getId();
+        if(selectByPrimaryKey(id)==null){
             LogUtils.getLogger().info("用户的id不存在");
             return new ResultInfo(SystemCodeEnum.SELLER, CodeEnum.ERROR, "用户不存在");
         }

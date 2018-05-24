@@ -1,6 +1,7 @@
 
 package com.yunyihenkey.seller.service.impl;
 
+import com.yunyihenkey.seller.dao.malldb.vo.param.decorationShopController.GetShopTemplateResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -73,7 +74,7 @@ public class SellerShopServiceImpl implements SellerShopService {
 	}
 
 	@Override
-	public void updateCommonSet(Long id, Long unpaidTime, Integer confirmOrderTime, Integer refundTime,
+	public void updateCommonSet(String consignee, String returnedContactWay, String returnedAddress,Long id, Long unpaidTime, Integer confirmOrderTime, Integer refundTime,
 			Integer sellOutTime, Integer returnOrderTime) throws Exception {
 		SellerShop sellerShop = new SellerShop();
 		sellerShop.setId(id);
@@ -83,6 +84,9 @@ public class SellerShopServiceImpl implements SellerShopService {
 		sellerShop.setSellOutTime(sellOutTime);
 		sellerShop.setReturnOrderTime(returnOrderTime);
 		sellerShop.setCreateTime(DateUtil.getCurrentDate());
+		sellerShop.setConsignee(consignee);
+		sellerShop.setReturnedContactWay(returnedContactWay);
+		sellerShop.setReturnedAddress(returnedAddress);
 		updateByPrimaryKeySelective(sellerShop);
 	}
 
@@ -91,4 +95,18 @@ public class SellerShopServiceImpl implements SellerShopService {
 		return sellerShopMapper.getShopInfoForAccount(shopId);
 	}
 
+
+	@Override
+	public GetShopTemplateResult getShopTemplate(Long shopId) {
+		return sellerShopMapper.getShopTemplate(shopId);
+	}
+
+
+	@Override
+	public void updateTemplate(Long shopId, Integer type) {
+		SellerShop sellerShop = new SellerShop();
+		sellerShop.setId(shopId);
+		sellerShop.setTemplateType(type);
+		updateByPrimaryKeySelective(sellerShop);
+	}
 }

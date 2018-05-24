@@ -9,6 +9,8 @@ import java.util.List;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.yunyihenkey.common.constant.MallConstants;
 
 /**
@@ -16,6 +18,7 @@ import com.yunyihenkey.common.constant.MallConstants;
  * @desc 采用fastxml 不使用老的codehaus
  */
 public class JacksonUtils {
+
 	/**
 	 * final ObjectMapper mapper = new ObjectMapper(); // can use static singleton,
 	 * inject: just make sure to reuse!
@@ -23,6 +26,12 @@ public class JacksonUtils {
 	public static final ObjectMapper objectMapper;
 	static {
 		objectMapper = new ObjectMapper().setDateFormat(new SimpleDateFormat(MallConstants.DATE_FORMAT_COMMON));
+
+		// 防止js中Long类型丢失精度
+		SimpleModule simpleModule = new SimpleModule();
+		simpleModule.addSerializer(Long.class, ToStringSerializer.instance);
+		simpleModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
+		objectMapper.registerModule(simpleModule);
 	}
 
 	public static String writeValueAsString(Object obj) {

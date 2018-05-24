@@ -3,7 +3,6 @@
 <mapper namespace="com.yunyihenkey.basedao.malldb.basemapper.SellerGoodsDescripBaseMapper">
   <resultMap id="BaseResultMap" type="com.yunyihenkey.basedao.malldb.basevo.SellerGoodsDescrip">
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="goods_id" jdbcType="BIGINT" property="goodsId" />
     <result column="create_user" jdbcType="VARCHAR" property="createUser" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
@@ -13,7 +12,7 @@
     <result column="description" jdbcType="LONGVARCHAR" property="description" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, goods_id, create_user, create_time, update_user, update_time
+    id, create_user, create_time, update_user, update_time
   </sql>
   <sql id="Blob_Column_List">
     description
@@ -31,21 +30,18 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
   <insert id="insert" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerGoodsDescrip">
-    insert into seller_goods_descrip (id, goods_id, create_user, 
-      create_time, update_user, update_time, 
-      description)
-    values (#{id,jdbcType=BIGINT}, #{goodsId,jdbcType=BIGINT}, #{createUser,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=TIMESTAMP}, #{updateUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{description,jdbcType=LONGVARCHAR})
+    insert into seller_goods_descrip (id, create_user, create_time, 
+      update_user, update_time, description
+      )
+    values (#{id,jdbcType=BIGINT}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, #{description,jdbcType=LONGVARCHAR}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerGoodsDescrip">
     insert into seller_goods_descrip
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
-      </if>
-      <if test="goodsId != null">
-        goods_id,
       </if>
       <if test="createUser != null">
         create_user,
@@ -67,9 +63,6 @@
       <if test="id != null">
         #{id,jdbcType=BIGINT},
       </if>
-      <if test="goodsId != null">
-        #{goodsId,jdbcType=BIGINT},
-      </if>
       <if test="createUser != null">
         #{createUser,jdbcType=VARCHAR},
       </if>
@@ -90,9 +83,6 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerGoodsDescrip">
     update seller_goods_descrip
     <set>
-      <if test="goodsId != null">
-        goods_id = #{goodsId,jdbcType=BIGINT},
-      </if>
       <if test="createUser != null">
         create_user = #{createUser,jdbcType=VARCHAR},
       </if>
@@ -113,8 +103,7 @@
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerGoodsDescrip">
     update seller_goods_descrip
-    set goods_id = #{goodsId,jdbcType=BIGINT},
-      create_user = #{createUser,jdbcType=VARCHAR},
+    set create_user = #{createUser,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_user = #{updateUser,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
@@ -123,8 +112,7 @@
   </update>
   <update id="updateByPrimaryKey" parameterType="com.yunyihenkey.basedao.malldb.basevo.SellerGoodsDescrip">
     update seller_goods_descrip
-    set goods_id = #{goodsId,jdbcType=BIGINT},
-      create_user = #{createUser,jdbcType=VARCHAR},
+    set create_user = #{createUser,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_user = #{updateUser,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP}

@@ -3,6 +3,7 @@ package com.yunyihenkey.seller.dao.malldb.mapper;
 import com.yunyihenkey.basedao.malldb.basevo.SellerRole;
 import com.yunyihenkey.basedao.malldb.basevo.SellerRolePerm;
 import com.yunyihenkey.seller.dao.malldb.vo.param.userController.QueryRoleListResult;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -12,12 +13,12 @@ import java.util.List;
  */
 public interface SellerRoleMapper {
     /**
-     * 查询角色列表
+     * 模糊角色列表
      *
-     * @param name
+     * @param sellerRole
      * @return
      */
-    List<QueryRoleListResult> queryRoleList(String name);
+    List<QueryRoleListResult> queryLikeRoleList(SellerRole sellerRole);
 
     /**
      * 连表查询

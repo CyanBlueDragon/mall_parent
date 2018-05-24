@@ -220,13 +220,9 @@ public class UserServiceImpl implements UserService {
 			authSellerShopMapper.insertSelective(shop);
 			SellerShop shop1 = new SellerShop();
 			long shopId = shop.getId();
-			int port = request.getServerPort();
+			//int port = request.getServerPort();
 			shop1.setId(shopId);
-			if (port == 80) {
-				shop1.setUrl("http://" + request.getServerName() + "/" + shopId);
-			} else {
-				shop1.setUrl("http://" + request.getServerName() + ":" + port + "/" + shopId);
-			}
+			shop1.setUrl("http://" + request.getServerName() + "/" + shopId);
 			shop1.setCreateTime(new Timestamp(System.currentTimeMillis()));
 			sellerShopBaseMapper.updateByPrimaryKeySelective(shop1);
 			SellerUser user = new SellerUser();
@@ -240,7 +236,6 @@ public class UserServiceImpl implements UserService {
 			user.setMobile(phoneNumber);
 			user.setShopId(shopId);
 			user.setSellerGrade(distributorTypeResult.getType());
-			// user.setSellerGrade(distributorTypeResult.getType());
 			user.setCreateTime(new Timestamp(System.currentTimeMillis()));
 			redisUtil.expire(key, 0);
 			Integer countNewMembers = (Integer) redisUtil.get(Increment.CountNewMembers.getText());

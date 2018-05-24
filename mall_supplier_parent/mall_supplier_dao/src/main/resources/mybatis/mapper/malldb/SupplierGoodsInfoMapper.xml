@@ -61,6 +61,19 @@
         <result column="supplyName" jdbcType="VARCHAR" property="supplyName"/>
     </resultMap>
 
+    <resultMap id="selectWithDesc"
+               type="com.yunyihenkey.supplier.dao.malldb.vo.param.GoodsInfoController.MSupplierGoodsParam">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
+        <result column="pic_url" jdbcType="LONGVARCHAR" property="picUrl"/>
+        <result column="supply_price" jdbcType="BIGINT" property="supplyPrice"/>
+        <result column="min_profit" jdbcType="VARCHAR" property="minProfit"/>
+        <result column="max_profit" jdbcType="VARCHAR" property="maxProfit"/>
+        <result column="min_retail_price" jdbcType="BIGINT" property="minRetailPrice"/>
+        <result column="max_retail_price" jdbcType="BIGINT" property="maxRetailPrice"/>
+        <result column="stock" jdbcType="INTEGER" property="stock"/>
+        <result column="description" jdbcType="INTEGER" property="description"/>
+    </resultMap>
     <select id="checkAll" parameterType="java.lang.Long"
             resultMap="qualified">
         SELECT
@@ -85,6 +98,29 @@
 	        a.category_id = b.id
         AND
             a.supplier_id = s.id
+    </select>
+
+    <select id="selectWithDesc" parameterType="java.lang.Long" resultMap="selectWithDesc">
+          SELECT
+	          a.id,
+	          pic_url,
+	          goods_name,
+	          min_retail_price,
+	          max_retail_price,
+	          supply_price,
+	          min_profit,
+	          max_profit,
+	          stock,
+	          description
+          FROM
+	          supplier_goods_info a
+	      LEFT JOIN
+	          supplier_goods_descrip b
+          ON
+	          a.id = b.goods_id
+          AND
+              a.id = 5
+          LIMIT 1
     </select>
 
     <select id="getCount" parameterType="java.lang.Long" resultType="java.lang.Integer">
